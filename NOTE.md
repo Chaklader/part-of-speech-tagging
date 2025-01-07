@@ -673,6 +673,95 @@ P(C|T₁=+,T₂=+) = P'(C)/(P'(C) + P'(¬C))
 
 The P' notation is just a shorthand for the unnormalized probabilities before we divide by their sum.
 
+–––––––––––––––
+
+
+P(T₂=+ | T₁=+) = P(T₂|+₁,C)P(C|+₁) + P(T₂|+₁,¬C)P(¬C|+₁)
+
+
+This formula shows the probability of the second test being positive given that the first test was positive. Let's break it down:
+
+1. Total Probability Theorem:
+- It splits the probability into two cases:
+  * When cancer is present (C)
+  * When cancer is absent (¬C)
+
+2. Components:
+- P(T₂|+₁,C): Probability of second test positive given first test positive and cancer
+- P(C|+₁): Probability of cancer given first test positive
+- P(T₂|+₁,¬C): Probability of second test positive given first test positive and no cancer
+- P(¬C|+₁): Probability of no cancer given first test positive
+
+3. Due to Naive Independence Assumption:
+- P(T₂|+₁,C) = P(T₂|C) = 0.9
+- P(T₂|+₁,¬C) = P(T₂|¬C) = 0.2
+
+This formula helps understand how the result of the first test affects the probability of the second test being positive, taking into account both cancer and no-cancer scenarios.
+
+Let me solve this step by step:
+
+P(T₂=+ | T₁=+) = P(T₂|+₁,C)P(C|+₁) + P(T₂|+₁,¬C)P(¬C|+₁)
+
+1. First we need P(C|+₁) - probability of cancer given first positive test:
+
+P(C|+₁) = P(+₁|C)P(C)/[P(+₁|C)P(C) + P(+₁|¬C)P(¬C)]
+        = (0.9 × 0.01)/[(0.9 × 0.01) + (0.2 × 0.99)]
+        = 0.009/[0.009 + 0.198]
+        = 0.009/0.207
+        ≈ 0.0435 (4.35%)
+
+
+2. Then P(¬C|+₁) = 1 - P(C|+₁) = 0.9565
+
+3. Due to naive independence:
+- P(T₂|+₁,C) = P(T₂|C) = 0.9
+- P(T₂|+₁,¬C) = P(T₂|¬C) = 0.2
+
+4. Now plug everything into original formula:
+
+P(T₂=+ | T₁=+) = (0.9 × 0.0435) + (0.2 × 0.9565)
+                = 0.03915 + 0.1913
+                = 0.23045
+                ≈ 0.23 (23%)
+
+
+This means there's about a 23% chance the second test will be positive if we know the first test was positive. This is higher than the baseline rate because positive tests increase the probability of cancer, and cancer increases the probability of positive tests.
+–––––––––––––––
+
+
+Absolute And Conditional
+
+A ⊥ B
+A ⊥ B|C
+
+A ⊥ B → A ⊥ B|C   False [X]
+A ⊥ B|C → A ⊥ B   False [X]
+
+
+The symbol ⊥ (inverted T) represents "independence" in probability theory. So:
+
+1. A ⊥ B means "A is independent of B"
+   - P(A|B) = P(A) or equivalently P(A,B) = P(A)P(B)
+
+2. A ⊥ B|C means "A is conditionally independent of B given C"
+   - P(A|B,C) = P(A|C) or P(A,B|C) = P(A|C)P(B|C)
+
+The diagram shows that:
+- A and B by themselves are independent (top row)
+- A and B are conditionally independent given C (common cause)
+
+The False statements indicate that:
+1. Absolute independence doesn't imply conditional independence
+2. Conditional independence doesn't imply absolute independence
+
+This is important in Bayesian networks where:
+- Variables can be dependent but conditionally independent
+- Variables can be independent but conditionally dependent
+- Having a common cause (C) can create dependencies between otherwise independent variables
+–––––––––––––––
+
+
+
 
 There are two algorithms that to compute exact inferences:
 
@@ -910,6 +999,206 @@ influence the outcome we're interested in.
 
 R = Raise (at work)
 S = Sunny
+H = Happy 
+
+
+––––––––––––––––––––––––––––––––––––––––
+
+
+Given probabilities:
+P(S) = 0.7
+P(R) = 0.01
+P(R|S) = 0.01
+P(R|H,S) = 0.0142
+
+Conditional probabilities:
+P(H|S,R) = 1
+P(H|¬S,R) = 0.9  
+P(H|S,¬R) = 0.7
+P(H|¬S,¬R) = 0.1
+
+Formula:
+P(R|H,S) = P(H|R,S) × P(R|S) / P(H|S)
+         = P(H|R,S) × P(R) / [P(H|R,S)P(R) + P(H|¬R,S)P(¬R)]
+
+
+This appears to be a Bayesian network with three variables:
+- S (possibly some condition)
+- R (possibly some risk factor)
+- H (possibly health outcome)
+
+The graph shows S and R both influencing H.
+
+The calculations show:
+1. Using Bayes' Theorem to find P(R|H,S)
+2. Breaking down P(H|S) using total probability theorem
+3. Given P(R|H,S) = 0.0142 is calculated from:
+   
+   = (1 × 0.01) / (0.01 + 0.7)
+   
+
+The incomplete calculation at the bottom suggests they're working through the formula step by step but haven't finished the division.
+
+Ah, now with context let me explain the formula for calculating probability of getting a Raise given Happiness and Sunny weather:
+
+P(R|H,S) = P(H|R,S) × P(R|S) / P(H|S)
+
+Let's break it down step by step:
+
+1. First Form Using Bayes' Rule:
+
+P(R|H,S) = P(H|R,S) × P(R|S) / P(H|S)
+
+Where:
+- P(R|H,S): Probability of Raise given Happy and Sunny
+- P(H|R,S): Probability of Happy given Raise and Sunny (= 1)
+- P(R|S): Probability of Raise when Sunny (= 0.01)
+- P(H|S): Probability of Happy when Sunny (denominator)
+
+
+2. Expanded Form using Total Probability for denominator:
+
+= P(H|R,S) × P(R) / [P(H|R,S)P(R) + P(H|¬R,S)P(¬R)]
+
+Where:
+- P(H|R,S)P(R): Probability of Happy when Raise & Sunny
+- P(H|¬R,S)P(¬R): Probability of Happy when No Raise but Sunny
+
+
+3. Plugging in values:
+
+= (1 × 0.01) / [1 × 0.01 + 0.7 × 0.99]
+= 0.01 / (0.01 + 0.693)
+= 0.0142
+
+
+This shows that even if someone is happy on a sunny day, the probability they got a raise is still quite low (about 1.42%).
+
+
+Let me break down both equations and show how they relate:
+
+1. First Equation (Bayes' Rule):
+
+P(R|H,S) = P(H|R,S) × P(R|S) / P(H|S)
+
+This reads as: Probability of Raise given Happiness and Sunny equals:
+- P(H|R,S): Probability of being Happy given Raise and Sunny
+- P(R|S): Probability of getting Raise when Sunny
+- Divided by P(H|S): Total probability of being Happy when Sunny
+
+2. Second Equation (Expansion):
+
+= P(H|R,S) × P(R) / [P(H|R,S)P(R) + P(H|¬R,S)P(¬R)]
+
+Here we're expanding P(H|S) in denominator using Total Probability Theorem:
+- P(H|S) = P(H|R,S)P(R) + P(H|¬R,S)P(¬R)
+  * First term: Probability of Happy if got Raise
+  * Second term: Probability of Happy if no Raise
+
+3. The Link:
+- P(R|S) in first equation becomes P(R) in second
+- P(H|S) in denominator is expanded to cover all cases
+- This expansion ensures we account for all ways someone could be happy on a sunny day
+
+4. With Values:
+
+P(R|H,S) = 1 × 0.01 / [1 × 0.01 + 0.7 × 0.99]
+         = 0.01 / [0.01 + 0.693]
+         = 0.01 / 0.703
+         = 0.0142
+
+
+P(R|S) changes to P(R)
+
+In the formulas:
+
+P(R|H,S) = P(H|R,S) × P(R|S) / P(H|S)
+becomes
+P(R|H,S) = P(H|R,S) × P(R) / [P(H|R,S)P(R) + P(H|¬R,S)P(¬R)]
+
+
+This change is based on an assumption of independence between R (Raise) and S (Sunny), meaning:
+- P(R|S) = P(R)
+- Weather doesn't affect probability of getting a raise
+
+However, looking at the given probabilities:
+
+P(R) = 0.01
+P(R|S) = 0.01
+
+
+While these values are equal in this case, we shouldn't automatically assume P(R|S) = P(R) without checking independence. I should have explained that this transformation is based on either:
+1. An explicit independence assumption, or
+2. The given probabilities showing R and S are independent
+
+
+
+### What is the probability of a raise given that all I know is that I’m happy? 
+
+
+P(S) = 0.7      P(H|S,R) = 1
+P(R) = 0.01     P(H|¬S,R) = 0.9
+P(R|S) = 0.01   P(H|S,¬R) = 0.7
+P(R|H,S) = 0.0142 P(H|¬S,¬R) = 0.1
+P(R|H) = [blank]
+
+P(H|R)P(R)/P(H) = 0.97•0.01/0.5245
+
+P(H|R) = P(H|R,S)P(S) + P(H|R,¬S)P(¬S) = 0.97
+
+P(H) = P(H|S,R)P(S,R) + P(H|¬S,R)P(¬S,R)
+     + P(H|S,¬R)P(S,¬R) + P(H|¬S,¬R)P(¬S,¬R)
+     = 1•0.7•0.01... = 0.5245
+
+
+To find P(R|H), we use Bayes' Theorem:
+
+P(R|H) = P(H|R)P(R)/P(H)
+       = 0.97 × 0.01/0.5245
+       = 0.0097/0.5245
+       = 0.0185 (to 4 decimal places)
+
+
+This calculation shows:
+1. P(H|R) = 0.97 (probability of being happy given a raise)
+2. P(R) = 0.01 (prior probability of raise)
+3. P(H) = 0.5245 (total probability of being happy)
+
+Therefore, if you're happy, the probability you got a raise is about 1.85%, which is higher than the base rate of 1% but still quite low - suggesting happiness often comes from factors other than raises!
+
+
+### What is the probability of a raise given that I look happy and it’s not sunny? 
+
+Let me break down calculating P(R|H,¬S):
+
+
+P(S) = 0.7        P(H|S,R) = 1
+P(R) = 0.01       P(H|¬S,R) = 0.9
+P(R|S) = 0.01     P(H|S,¬R) = 0.7
+                  P(H|¬S,¬R) = 0.1
+
+Formula shown:
+P(H|R,¬S)P(R|¬S)/P(H|¬S) = 0.9•0.01/[0.9•0.01 + 0.1•0.99]
+                          = 0.009/(0.009 + 0.099)
+
+
+2. Using Bayes' Theorem:
+
+P(R|H,¬S) = P(H|R,¬S)P(R|¬S)/P(H|¬S)
+          = 0.009/(0.009 + 0.099)
+          = 0.009/0.108
+          = 0.0833
+
+
+Therefore, P(R|H,¬S) = 0.0833 (to 4 decimal places)
+
+This means if you're happy when it's not sunny, there's about an 8.33% chance you got a raise. This is higher than:
+- Base rate of raises (1%)
+- Probability of raise given just happiness (1.85%)
+
+This makes sense because being happy on a non-sunny day is more likely to be due to something like a raise rather than the weather.
+
+––––––––––––––––––––––––––––––––––––––––
 
 Given this new context:
 
