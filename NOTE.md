@@ -455,6 +455,19 @@ Being able to identify spam messages is a binary classification problem as messa
 
 # 4. Bayes Nets
 
+In this lesson, we will continue talking about probabilistic graphical models by expanding on Bayes Networks (also known as Bayes Nets), which explicitly encode the dependencies between variables to model joint probability distributions.
+
+They are particularly useful because they provide a compact representation for practically arbitrary distributions, and efficient algorithms exist to sample and perform inference over the joint distribution.
+
+Bayes Nets Components
+Bayes Nets is a graph that has no directed cycles, also known as a directed acyclic graph, or DAG. To build Bayes Nets, we need to specify the following:
+
+Random Variables: Each node corresponds to a random variable.
+Conditional Relations: A set of directed links or arrows connects pairs of nodes.
+Probability Distributions: Each node has a conditional probability distribution that quantifies the effect of the parents on the node.
+
+
+![bayes](images/alarm_bayes_network.png)
 
 There are two algorithms that to compute exact inferences:
 
