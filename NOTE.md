@@ -1846,9 +1846,6 @@ learning applications.
 
 
 # 5. Inference in Bayes Nets
-# 6. Part of Speech Tagging with HMMs
-# 7. Dynamic Time Warping
-# 8. Project: Part of Speech Tagging
 
 Imagine a smart home system that manages energy usage. We'll create a simple Bayesian Network for this scenario:
 
@@ -2461,3 +2458,7 @@ While DTW is a powerful tool for sequence alignment and comparison, it's importa
 provide probabilistic interpretations like PGMs do. In many modern applications, especially those involving large datasets, 
 probabilistic methods like HMMs or more advanced deep learning techniques have largely supplanted DTW. However, DTW remains 
 useful in certain domains and can complement probabilistic approaches in some scenarios.
+
+
+# 6. Part of Speech Tagging with HMMs
+# 7. Dynamic Time Warping
