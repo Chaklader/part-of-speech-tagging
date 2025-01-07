@@ -469,6 +469,211 @@ Probability Distributions: Each node has a conditional probability distribution 
 
 ![bayes](images/alarm_bayes_network.png)
 
+
+
+Bayes Rule
+
+P(A|B) = P(B|A)P(A)/P(B)
+
+P(¬A|B) = P(B|¬A)P(¬A)/P(B)
+
+P'(A|B) = P(B|A)P(A)
+P'(¬A|B) = P(B|¬A)P(¬A)
+
+P(A|B) + P(¬A|B) = 1
+
+P(A|B) = η P'(A|B)
+P(¬A|B) = η P'(¬A|B)
+
+η = (P'(A|B) + P'(¬A|B))⁻¹
+
+
+This shows:
+1. Standard Bayes Rule equation
+2. Complementary form for ¬A (not A)
+3. Unnormalized forms (P')
+4. Normalization constraint
+5. Relationship between normalized and unnormalized probabilities
+6. Definition of normalization constant η (eta)
+
+The prime notation (P') indicates unnormalized probabilities, and η is used to normalize them to proper probabilities that sum to 1.
+
+Let me substitute step by step:
+
+1. Given: P(A|B) = η P'(A|B) and η = (P'(A|B) + P'(¬A|B))⁻¹
+
+2. Substitute η:
+
+P(A|B) = P'(A|B)/(P'(A|B) + P'(¬A|B))
+
+
+3. Now substitute P'(A|B) and P'(¬A|B):
+
+P(A|B) = [P(B|A)P(A)]/[P(B|A)P(A) + P(B|¬A)P(¬A)]
+
+
+4. This is equivalent to the original Bayes' Rule because:
+
+P(B) = P(B|A)P(A) + P(B|¬A)P(¬A)
+
+
+So we've shown that:
+
+P(A|B) = P(B|A)P(A)/P(B) = P(B|A)P(A)/[P(B|A)P(A) + P(B|¬A)P(¬A)]
+
+
+This demonstrates why η is called the normalization constant - it ensures the probabilities sum to 1.
+
+
+<br>
+<br>
+
+Two Test Cancer Example
+
+C           P(C) = 0.01    P(¬C) = 0.99
+T₁ T₂       P(+|C) = 0.9   P(-|C) = 0.1
+           P(-|¬C) = 0.8   P(+|¬C) = 0.2
+
+P(C|T₁=+,T₂=+) = P(C|++) = 0.1698
+P(C|T₁=+,T₂=-) = P(C|+-) = [blank]
+
+Table:
+     prior   +     -      P'    P(C|+-)
+C     0.01   0.9   0.1   0.0009  0.0056
+¬C    0.99   0.2   0.8   0.1584  0.9943
+                         0.1593
+
+
+
+
+Two Test Cancer Example
+
+C           P(C) = 0.01    P(¬C) = 0.99
+T₁ T₂       P(+|C) = 0.9   P(-|C) = 0.1
+            P(-|¬C) = 0.8   P(+|¬C) = 0.2
+
+P(C|T₁=+,T₂=+) = P(C|++) = 0.1698
+P(C|T₁=+,T₂=-) = P(C|+-) = [blank]
+
+Table:
+      prior   +     -      P'    P(C|+-)
+C     0.01   0.9   0.1   0.0009  0.0056
+¬C    0.99   0.2   0.8   0.1584  0.9943
+                          0.1593
+
+
+This shows a cancer testing scenario with:
+1. Prior probabilities of having cancer (C) or not (¬C)
+2. Test accuracies for positive (+) and negative (-) results
+3. Calculations for probability of having cancer given test results
+4. Shows how combining two test results affects the posterior probability
+
+
+Let me break down this cancer testing example step by step:
+
+1. Prior Probabilities:
+- P(C) = 0.01 (1% chance of having cancer)
+- P(¬C) = 0.99 (99% chance of not having cancer)
+
+2. Test Accuracies:
+- P(+|C) = 0.9 (90% chance of positive test if you have cancer)
+- P(-|C) = 0.1 (10% chance of negative test if you have cancer)
+- P(-|¬C) = 0.8 (80% chance of negative test if you don't have cancer)
+- P(+|¬C) = 0.2 (20% chance of positive test if you don't have cancer)
+
+3. Calculating P(C|++):
+When both tests are positive:
+
+P'(C) = 0.01 × 0.9 × 0.9 = 0.0081
+P'(¬C) = 0.99 × 0.2 × 0.2 = 0.0396
+Normalize: 0.0081/(0.0081 + 0.0396) = 0.1698
+
+
+4. Calculating P(C|+-):
+When first test positive, second negative:
+
+P'(C) = 0.01 × 0.9 × 0.1 = 0.0009
+P'(¬C) = 0.99 × 0.2 × 0.8 = 0.1584
+Normalize: 0.0009/(0.0009 + 0.1584) = 0.0056
+
+
+This shows how:
+- Two positive tests increase cancer probability from 1% to 17%
+- Mixed results (+ and -) decrease cancer probability to 0.56%
+- Even with positive test(s), cancer probability remains relatively low due to low prior probability
+
+This is a classic example of why medical tests need to be interpreted in context of prior probabilities.
+
+Let me explain using Bayes' Theorem and the normalization formula:
+
+P(C|T₁=+,T₂=+) = P'(C)/(P'(C) + P'(¬C))
+
+1. For P'(C):
+
+P'(C) = P(C) × P(+|C) × P(+|C)
+      = 0.01 × 0.9 × 0.9 
+      = 0.0081
+
+(Prior × Likelihood for T₁ × Likelihood for T₂)
+
+2. For P'(¬C):
+
+P'(¬C) = P(¬C) × P(+|¬C) × P(+|¬C)
+       = 0.99 × 0.2 × 0.2
+       = 0.0396
+
+
+3. Normalize:
+
+P(C|++) = 0.0081/(0.0081 + 0.0396)
+        = 0.0081/0.0477
+        = 0.1698
+
+
+This is equivalent to:
+
+P(C|++) = P(C)P(+|C)P(+|C)/[P(C)P(+|C)P(+|C) + P(¬C)P(+|¬C)P(+|¬C)]
+
+
+The naive assumption allows us to multiply the individual test probabilities because we assume the tests are independent:
+- P(T₁=+,T₂=+|C) = P(T₁=+|C) × P(T₂=+|C)
+- P(T₁=+,T₂=+|¬C) = P(T₁=+|¬C) × P(T₂=+|¬C)
+
+
+These formulas come from applying Bayes' Theorem and the Naive assumption. Let me break it down:
+
+1. Original Bayes' Theorem:
+
+P(C|T₁,T₂) = P(T₁,T₂|C)P(C)/P(T₁,T₂)
+
+
+2. Naive Assumption (independence):
+
+P(T₁,T₂|C) = P(T₁|C) × P(T₂|C)
+
+
+3. Total Probability for denominator:
+
+P(T₁,T₂) = P(T₁,T₂|C)P(C) + P(T₁,T₂|¬C)P(¬C)
+
+
+4. Putting it together:
+
+P(C|T₁=+,T₂=+) = [P(+|C)×P(+|C)×P(C)] / [P(+|C)×P(+|C)×P(C) + P(+|¬C)×P(+|¬C)×P(¬C)]
+
+
+5. To simplify notation:
+- Let P'(C) = P(C)×P(+|C)×P(+|C)
+- Let P'(¬C) = P(¬C)×P(+|¬C)×P(+|¬C)
+
+Therefore:
+
+P(C|T₁=+,T₂=+) = P'(C)/(P'(C) + P'(¬C))
+
+
+The P' notation is just a shorthand for the unnormalized probabilities before we divide by their sum.
+
+
 There are two algorithms that to compute exact inferences:
 
    1. Enumeration: the query’s conditional probability is computed by summing the terms from the full joint distribution.
