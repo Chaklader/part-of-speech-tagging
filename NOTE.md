@@ -1,5 +1,119 @@
-Probabilistic Graphical Model
-–––––––––––––––––––––––––
+# Fundamentals ofProbabilistic Graphical Model
+
+
+# 1. Introduction to Probabilistic Models
+
+
+In this course, we'll talk about probabilistic models, which will allow knowledge-based AI agents to handle uncertainty in the real world with the concept of a "belief state" (a probability distribution over the possible world states). These ideas have been used in robot localization and other real-world tasks, including use in neural networks(opens in a new tab).
+
+Knowledge-based AI agents utilize belief state to reason and plan under uncertainty.
+
+In this course, we will learn Probabilistic Models and Bayes Networks as the tools for these AI agents to quantify and act under the uncertainty of the surrounding world. Unlike the logical assertions, which see the possible worlds in a set of strict rules, the probabilistic assertions quantify how probable the various worlds are.
+
+
+### Bayesian Networks (Bayes Nets)
+
+Bayesian Networks are probabilistic graphical models that represent dependencies among variables using a directed acyclic graph (DAG). Think of it as a family tree of probabilities, where each node's probability depends only on its parent nodes, making complex probability calculations much more manageable.
+
+## Detailed Explanation
+
+### Core Components
+1. Network Structure
+   - Directed Acyclic Graph (DAG)
+   - Nodes represent random variables
+   - Edges represent direct dependencies
+   - Conditional Independence relationships
+
+2. Probability Tables
+   - Each node has CPT (Conditional Probability Table)
+   - P(X|Parents(X)) for each node X
+   - Root nodes have prior probabilities
+
+### Mathematical Foundation
+1. Chain Rule
+```
+P(X₁,...,Xₙ) = ∏ᵢ P(Xᵢ|Parents(Xᵢ))
+```
+
+2. Conditional Independence
+```
+P(X|Y,Z) = P(X|Z) if X ⊥ Y|Z
+```
+
+## Key Features
+1. Compact Representation
+   - Reduces complexity from O(2ⁿ) to O(2ᵏ)
+   - k = maximum number of parents
+
+2. Inference Types
+   - Exact inference
+   - Approximate inference
+   - Most Probable Explanation (MPE)
+
+## Common Applications
+1. Medical Diagnosis
+   - Symptoms → Diseases
+   - Risk factors → Conditions
+
+2. Decision Support
+   - Expert systems
+   - Risk assessment
+   - Fault diagnosis
+
+## Building Bayes Nets
+1. Structure Learning
+   - Expert knowledge
+   - Data-driven approaches
+   - Hybrid methods
+
+2. Parameter Learning
+   - Maximum Likelihood Estimation
+   - Bayesian Estimation
+   - EM Algorithm for hidden variables
+
+## Inference Methods
+1. Variable Elimination
+   - Factor multiplication
+   - Marginalization
+   - Ordered elimination
+
+2. Sampling Methods
+   - Forward sampling
+   - Likelihood weighting
+   - Gibbs sampling
+
+## Limitations
+1. Computational Complexity
+   - Exact inference is NP-hard
+   - Structure learning is complex
+
+2. Data Requirements
+   - Large datasets needed
+   - Quality of probability estimates
+
+## Best Practices
+1. Network Design
+   - Keep structure simple
+   - Use expert knowledge
+   - Validate independence assumptions
+
+2. Inference Choice
+   - Consider problem size
+   - Balance accuracy vs speed
+   - Use approximations when appropriate
+
+
+# 2. Probability
+
+
+
+# 3. Spam Classifier with Naive Bayes
+# 4. Bayes Nets
+# 5. Inference in Bayes Nets
+# 6. Part of Speech Tagging with HMMs
+# 7. Dynamic Time Warping
+# 8. Project: Part of Speech Tagging
+
 
 In this lesson, we learned how to make inferences (query) from Bayes Nets based on the evidence variables and the conditional 
 probabilities as configured in the Bayes Nets. of the evidence variables as defined in the network.
