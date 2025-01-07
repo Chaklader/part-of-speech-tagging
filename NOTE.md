@@ -31,14 +31,14 @@ Bayesian Networks are probabilistic graphical models that represent dependencies
 
 ### Mathematical Foundation
 1. Chain Rule
-```
+
 P(X₁,...,Xₙ) = ∏ᵢ P(Xᵢ|Parents(Xᵢ))
-```
+
 
 2. Conditional Independence
-```
+
 P(X|Y,Z) = P(X|Z) if X ⊥ Y|Z
-```
+
 
 ## Key Features
 1. Compact Representation
@@ -105,18 +105,356 @@ P(X|Y,Z) = P(X|Z) if X ⊥ Y|Z
 
 # 2. Probability
 
+In this lesson, we will review a few key concepts in probability including:
+
+- Discrete distributions
+- Joint probabilities
+- Conditional probabilities
+
+In this lesson, we learned how to make inferences (query) from Bayes Nets based on the evidence variables and the conditional probabilities as configured in the Bayes Nets. of the evidence variables as defined in the network.
 
 
 # 3. Spam Classifier with Naive Bayes
+
+
+Alex comes to the office 3 days a week
+Brenda comes to the office 1 day a week
+
+We saw a Person had red sweater
+
+Alex wears red 2 times a week  
+Brenda wears red 3 times a week
+
+P(A|R) = (0.75 * 0.4)/(0.75 * 0.4 + 0.25 * 0.6)
+
+The scenario is they work remotely from home and then can wear Red as well. They can wear red even when working from home. Let me break this down:
+
+For Alex:
+- Comes to office 3/5 days = 0.75 (Prior P(A))
+- Wears red 2/5 times = 0.4 (P(R|A))
+- Red wearing is independent of office attendance
+
+For Brenda:
+- Comes to office 1/5 days = 0.25 (Prior P(B))
+- Wears red 3/5 times = 0.6 (P(R|B))
+- Red wearing is independent of office attendance
+
+Using Bayes Theorem to find P(A|R) - probability it was Alex given we saw red:
+
+
+P(A|R) = P(R|A) × P(A) / P(R)
+
+where P(R) = P(R|A)×P(A) + P(R|B)×P(B)
+           = 0.4 × 0.75 + 0.6 × 0.25
+           = 0.3 + 0.15
+           = 0.45
+
+Therefore:
+P(A|R) = (0.4 × 0.75) / 0.45
+       = 0.3 / 0.45
+       = 0.667
+       ≈ 66.7%
+
+
+Now the numbers make sense because:
+1. They can wear red while working remotely
+2. Red sweater wearing is independent of office attendance
+3. The probabilities reflect their overall red-wearing pattern, not just office days
+
+
+
+                 P(R|A)
+        P(A) ─→ A ─┬─→ R     P(R∩A)
+Event ─┤          └─→ Rᶜ    P(Rᶜ∩A)
+       │
+       │            P(R|B)
+        P(B) ─→ B ─┬─→ R     P(R∩B)
+                   └─→ Rᶜ    P(Rᶜ∩B)
+
+                P(R|A)
+       P(A) ─→ A ────→ R     P(A)P(R|A)
+Event ─┤          
+      │
+      │            P(R|B)
+       P(B) ─→ B ────→ R     P(B)P(R|B)
+
+
+P(A|R) = P(A)P(R|A) / [P(A)P(R|A) + P(B)P(R|B)]
+
+P(B|R) = P(B)P(R|B) / [P(A)P(R|A) + P(B)P(R|B)]
+
+
+
+Say, a diagnostic test for a disease has a 99% accuracy and 1 out of 10,000 people are sick. What is the probability that a person is sick (has disease) if the test says positive?
+
+S: sick
+H: healthy
++: positive
+
+Given probabilities:
+P(S) = 0.0001
+P(H) = 0.9999
+P(+|S) = 0.99
+P(+|H) = 0.01
+
+
+Total: 1,000,000
+                              (+) Test
+                           ┌─→ 99    (True +)
+                     ┌─ 100 ┤
+            Sick     │      └─→ 1     (False -)
+1000000 ──┤          │
+            Healthy  │              ┌─→ 9,999  (False +)
+                     └─ 999,900 ─┤
+                                 └─→ 989,901 (True -)
+
+                        
+1 out of every 10,000 patients is sick, Test has 99% accuracy
+
+Patient tested positive =
+P(sick|+) = 99/(9,999 + 99)
+         = 0.0098
+         < 1
+
+
+P(S|+) = P(S)P(+|S) / [P(S)P(+|S) + P(H)P(+|H)]
+       = 0.0001 * 0.99 / (0.0001 * 0.99 + 0.9999 * 0.01)
+       = 0.0098
+       < 1%
+
+
+
+Spam:
+Win money now!
+Make cash easy!
+Cheap money, reply.
+
+Ham:
+How are you?
+There you are!
+Can I borrow money?
+Say hi to grandma.
+Was the exam easy?
+
+
+
+P(spam | 'easy')
+
+Email ─┬─→ Spam (3/8) ─┬─→ 'easy' (1/3)
+       │              └─→ no (2/3)
+       │
+       └─→ Ham (5/8) ──┬─→ 'easy' (1/5)
+                       └─→ no (4/5)
+
+
+This diagram shows:
+
+1. Prior Probabilities:
+   - P(Spam) = 3/8
+   - P(Ham) = 5/8
+
+2. Conditional Probabilities:
+   For Spam:
+   - P('easy'|Spam) = 1/3
+   - P(no|Spam) = 2/3
+
+   For Ham:
+   - P('easy'|Ham) = 1/5
+   - P(no|Ham) = 4/5
+
+This can be used to calculate P(spam|'easy') using Bayes' Theorem:
+
+P(spam|'easy') = P(spam)P('easy'|spam) / [P(spam)P('easy'|spam) + P(ham)P('easy'|ham)]
+                = (3/8 × 1/3) / [(3/8 × 1/3) + (5/8 × 1/5)]
+
+
+P(spam | 'money')
+
+Email ─┬─→ Spam (3/8) ─┬─→ 'money' (2/3)   1/4
+       │              └─→ no (1/3)         1/4
+       │
+       └─→ Ham (5/8) ──┬─→ 'money' (1/5)   1/8
+                       └─→ no (4/5)         1/2
+
+
+This shows the probability breakdown for emails containing 'money':
+
+1. Prior Probabilities:
+   - P(Spam) = 3/8
+   - P(Ham) = 5/8
+
+2. Conditional Probabilities:
+   For Spam:
+   - P('money'|Spam) = 2/3
+   - P(no|Spam) = 1/3
+
+   For Ham:
+   - P('money'|Ham) = 1/5
+   - P(no|Ham) = 4/5
+
+3. Joint Probabilities (shown on right):
+   - P(Spam ∩ 'money') = 1/4
+   - P(Spam ∩ no) = 1/4
+   - P(Ham ∩ 'money') = 1/8
+   - P(Ham ∩ no) = 1/2
+
+
+
+These are the Bayes' Theorem formulas for calculating:
+
+1. P(A|R): Probability of A given R occurred
+2. P(B|R): Probability of B given R occurred
+
+The denominator [P(A)P(R|A) + P(B)P(R|B)] represents P(R), the total probability of R occurring, which can happen through either path A or path B.
+
+These formulas allow us to update our prior probabilities P(A) and P(B) to posterior probabilities P(A|R) and P(B|R) after observing evidence R.
+
+
+
+This tree diagram shows:
+1. Initial probabilities: P(A) and P(B)
+2. Conditional probabilities: P(R|A) and P(R|B)
+3. Complementary events: R and Rᶜ (not R)
+4. Joint probabilities: P(R∩A), P(Rᶜ∩A), P(R∩B), P(Rᶜ∩B)
+
+The structure illustrates how Bayes Theorem decomposes conditional probabilities in a hierarchical manner.
+
+
+## Naive Bayes Algorithm
+
+Naive Bayes is a probabilistic algorithm based on Bayes' Theorem that assumes all features are independent of each other. This "naive" assumption makes the calculations much simpler but isn't always realistic in real-world situations.
+
+## Why "Naive"?
+Consider spam detection example:
+- If we see "money" and "easy" in an email:
+  * Algorithm assumes these words appear independently
+  * In reality, "easy money" is a common spam phrase
+  * Words in real text are often related
+
+This independence assumption is what makes it "naive", but surprisingly effective!
+
+
+P(spam | 'easy', 'money') ∝ P('easy', 'money' | spam)P(spam)
+
+P(A & B) = P(A)P(B)
+
+P(spam | 'easy', 'money') ∝ P('easy' | spam)P('money' | spam)P(spam)
+
+P(A & B) = P(A)P(B)
+
+Let me explain these two forms:
+
+1. Full Bayes' Theorem:
+
+P(A|B) = P(B|A)P(A)/P(B)
+
+This can be rewritten as:
+
+P(A|B)P(B) = P(B|A)P(A)
+
+
+2. Proportional Form (∝):
+
+P(A|B) ∝ P(B|A)P(A)
+
+
+Why use proportional form?
+
+1. Often we don't need exact probabilities, just relative ones
+2. We can skip calculating P(B) which is often complex
+3. P(B) acts as a normalizing constant
+
+In spam example:
+
+P(spam|words) ∝ P(words|spam)P(spam)
+
+Instead of:
+
+P(spam|words) = P(words|spam)P(spam)/P(words)
+
+
+Advantages:
+- Simpler calculations
+- Same classification results
+- Avoid computing denominator P(words)
+- Can normalize at the end if needed
+
+The ∝ symbol basically means "proportional to" - the relative relationships stay the same even without the denominator.
+
+
+
+## Bayes' Theorem Applied
+Given an email with word "money":
+
+P(spam|money) = P(money|spam) × P(spam) / P(money)
+
+Where:
+- P(spam|money): Probability it's spam given it has "money"
+- P(money|spam): Probability of "money" appearing in spam
+- P(spam): Prior probability of any email being spam
+- P(money): Total probability of word "money" appearing
+
+
+## Example from Data
+Using numbers from example:
+1. Prior Probabilities:
+   - P(spam) = 3/8
+   - P(ham) = 5/8
+
+2. Conditional Probabilities:
+   
+   For word "money":
+   - P(money|spam) = 2/3
+   - P(money|ham) = 1/5
+
+
+3. When multiple words appear:
+   
+   P(spam|money,easy) ∝ P(money|spam) × P(easy|spam) × P(spam)
+
+   * The ∝ symbol means "proportional to"
+   * We multiply because of independence assumption
+
+## Why It Works
+1. Despite naive assumptions:
+   - Fast and simple calculations
+   - Works well for text classification
+   - Easy to understand and implement
+
+2. Advantages:
+   - Requires small training data
+   - Handles multiple classes well
+   - Real-time prediction
+
+## Common Applications
+1. Text Classification:
+   - Spam detection
+   - Document categorization
+   - Sentiment analysis
+
+2. Medical Diagnosis:
+   - Symptom independence assumption
+   - Quick preliminary diagnosis
+
+
+Bayes Theorem transfers from what we know to what we infer.
+
+
+Practice Project: Building a spam classifier
+Introduction
+Spam detection is one of the major applications of Machine Learning on the internet. Pretty much all of the major email service providers have spam detection systems built-in and automatically classify such mail as 'Junk Mail'.
+
+In this exercise, we will be using the Naive Bayes algorithm to create a model that can classify dataset SMS messages as spam or not spam, based on the training we give to the model. It is important to have some level of intuition as to what a spammy text message might look like.
+
+What are spammy messages?
+Usually, they have words like 'free', 'win', 'winner', 'cash', 'prize', or similar words in them, as these texts are designed to catch your eye and tempt you to open them. Also, spam messages tend to have words written in all capitals and also tend to use a lot of exclamation marks. To the recipient, it is usually pretty straightforward to identify a spam text and our objective here is to train a model to do that for us!
+
+Being able to identify spam messages is a binary classification problem as messages are classified as either 'Spam' or 'Not Spam' and nothing else. Also, this is a supervised learning problem, as we know what we are trying to predict. We will be feeding a labeled dataset into the model, that it can learn from, to make future predictions.
+
+
+
 # 4. Bayes Nets
-# 5. Inference in Bayes Nets
-# 6. Part of Speech Tagging with HMMs
-# 7. Dynamic Time Warping
-# 8. Project: Part of Speech Tagging
 
-
-In this lesson, we learned how to make inferences (query) from Bayes Nets based on the evidence variables and the conditional 
-probabilities as configured in the Bayes Nets. of the evidence variables as defined in the network.
 
 There are two algorithms that to compute exact inferences:
 
@@ -141,39 +479,40 @@ In the final lesson, we will learn the Hidden Markov Model (HMM) and its applica
 to tag Parts of Speech. HMM assumes unobservable states and computes the transition and emission probabilities from one state 
 to another.
 
-––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+
 The general formula for the joint probability of multiple events is known as the chain rule of probability or the general 
 product rule. For n events A₁, A₂, ..., Aₙ, the general formula is:
 
-`   P(A₁, A₂, ..., Aₙ) = P(A₁) * P(A₂|A₁) * P(A₃|A₁,A₂) * ... * P(Aₙ|A₁,A₂,...,Aₙ₋₁)
-`
+P(A₁, A₂, ..., Aₙ) = P(A₁) * P(A₂|A₁) * P(A₃|A₁,A₂) * ... * P(Aₙ|A₁,A₂,...,Aₙ₋₁)
+
 
 In our specific case with cancer (C) and two test results (T1 and T2), we have:
 
-`   P(C, T1=+, T2=+) = P(C) * P(T1=+|C) * P(T2=+|C,T1=+)
-`
+P(C, T1=+, T2=+) = P(C) * P(T1=+|C) * P(T2=+|C,T1=+)
+
 However, we typically assume that the test results are conditionally independent given the disease status. This means that 
 knowing the result of one test doesn't affect the probability of the result of the other test, given that we know whether 
 the person has cancer or not. Under this assumption:
 
-`   P(T2=+|C,T1=+) = P(T2=+|C)
-`
+   P(T2=+|C,T1=+) = P(T2=+|C)
+
 Which is why we can simplify to:
 
-`   P(C, T1=+, T2=+) = P(C) * P(T1=+|C) * P(T2=+|C)
-`
+   P(C, T1=+, T2=+) = P(C) * P(T1=+|C) * P(T2=+|C)
+
 This assumption of conditional independence is common in many probabilistic models, including Naive Bayes classifiers, but 
 it's important to recognize that it's an assumption that may not always hold in real-world scenarios.
 
 
 General form of Bayes' theorem:
 
-`   P(A|B) = P(B|A) * P(A) / P(B)
-`
+   P(A|B) = P(B|A) * P(A) / P(B)
+
 In our specific case:
 
-`   P(C|T1=+,T2=+) = [P(T1=+,T2=+|C) * P(C)] / P(T1=+,T2=+)
-`
+   P(C|T1=+,T2=+) = [P(T1=+,T2=+|C) * P(C)] / P(T1=+,T2=+)
+
 
 Where:
 - A is C (having cancer)
@@ -183,24 +522,24 @@ Breaking it down further:
 
 1. P(T1=+,T2=+|C) * P(C) is equivalent to P(C,T1=+,T2=+), by the chain rule of probability:
 
-   `P(C,T1=+,T2=+) = P(T1=+,T2=+|C) * P(C)`
+   P(C,T1=+,T2=+) = P(T1=+,T2=+|C) * P(C)
 
 2. P(T1=+,T2=+) in the denominator can be expanded using the law of total probability:
    
-   `P(T1=+,T2=+) = P(T1=+,T2=+|C) * P(C) + P(T1=+,T2=+|¬C) * P(¬C)`
+   P(T1=+,T2=+) = P(T1=+,T2=+|C) * P(C) + P(T1=+,T2=+|¬C) * P(¬C)
 
 So, the full expansion of the formula in terms of the general Bayes' theorem would be:
 
-   `P(C|T1=+,T2=+) = [P(T1=+,T2=+|C) * P(C)] / [P(T1=+,T2=+|C) * P(C) + P(T1=+,T2=+|¬C) * P(¬C)]`
-   `P(C|T1=+,T2=+) = P(C,T1=+,T2=+) / P(C,T1=+,T2=+) + P(¬C,T1=+,T2=+)`
-   `P(C|T1=+,T2=+) = P(C,T1=+,T2=+) / P(T1=+,T2=+)`
+   P(C|T1=+,T2=+) = [P(T1=+,T2=+|C) * P(C)] / [P(T1=+,T2=+|C) * P(C) + P(T1=+,T2=+|¬C) * P(¬C)]
+   P(C|T1=+,T2=+) = P(C,T1=+,T2=+) / P(C,T1=+,T2=+) + P(¬C,T1=+,T2=+)
+   P(C|T1=+,T2=+) = P(C,T1=+,T2=+) / P(T1=+,T2=+)
 
 This form directly shows how we're updating our prior belief P(C) based on the likelihood of the test results given cancer 
 P(T1=+,T2=+|C) and normalizing it by the total probability of getting these test results.
 
 
-Bayes Rule
-––––––––––
+### Bayes Rule
+
 
    P(A|B) = P(B|A) P(A) / P(B) 
    P(¬A|B) = P(B|¬A) P(¬A) / P(B)
@@ -223,8 +562,8 @@ used to denote unnormalized probabilities, and η (eta) represents a normalizati
 Summary: Two-Test Cancer Screening Problem
 
 
-Theory
-–––––––
+### Summary: Probability Theory
+
 
    1. Bayesian Inference:
       - Uses Bayes' theorem to update probabilities based on new evidence.
@@ -287,7 +626,7 @@ Key Takeaways:
 3. Bayesian reasoning is crucial for correctly interpreting medical test results.
 4. The assumption of conditional independence between tests simplifies calculations but may not always hold in reality.
 
-––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
 
 To find P(T2=+ | T1=+), we need to use the concept of conditional independence and the law of total probability. Here's 
 how we can calculate it:
@@ -325,7 +664,7 @@ Therefore, P(T2=+ | T1=+) ≈ 0.2304 or about 23.04%.
 This result shows that the probability of the second test being positive, given that the first test was positive, is about 23.04%. 
 This is higher than the base rate of positive tests (which would be around 2.7% if we calculated P(T=+) directly), but lower than 
 one might intuitively expect, demonstrating the importance of careful probability calculations in such scenarios.
-––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
 
 P(A | X, Y) is read as "the probability of A given X and Y" or "the probability of A in the presence of both X and Y."
 
@@ -349,7 +688,7 @@ this is not generally assumed without evidence.
 
 This concept is crucial in probability theory, especially in complex scenarios where multiple conditions or events can 
 influence the outcome we're interested in.
-––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
 
 R = Raise (at work)
 S = Sunny
@@ -373,7 +712,7 @@ affect happiness. The equality P(R|S) = P(R) correctly represents that the chanc
 
 Thank you for this clarification. It's an excellent example of how crucial context is in interpreting probability problems 
 and how independence between events is represented in probabilistic models.
-––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
 
 1. Variables:
    S: Sunny (weather)
@@ -433,7 +772,6 @@ P(R|H,S) = (1 * 0.01) / [(1 * 0.01) + (0.7 * 0.99)]
 This calculation shows that even if you're happy and it's sunny, the probability of having received a raise is still quite low, 
 only slightly higher than the base probability of getting a raise (1%).
 
-––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 1. Given Probabilities:
    P(S) = 0.7 (probability of sunny weather)
@@ -594,12 +932,14 @@ Bayes Net concept in more detail:
 This Bayes Net example demonstrates how we can model real-world scenarios with multiple interacting factors, represent their relationships 
 probabilistically, and make inferences based on observed evidence. It's a powerful tool for reasoning under uncertainty in AI and machine 
 learning applications.
-––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 
 
-Inference in Bayes Net
-––––––––––––––––––––––
+
+# 5. Inference in Bayes Nets
+# 6. Part of Speech Tagging with HMMs
+# 7. Dynamic Time Warping
+# 8. Project: Part of Speech Tagging
 
 Imagine a smart home system that manages energy usage. We'll create a simple Bayesian Network for this scenario:
 
@@ -671,8 +1011,6 @@ the complex calculations required for larger, real-world Bayesian Networks.
 This example demonstrates how Bayesian Networks can model complex systems with multiple interrelated variables, allowing 
 for various types of probabilistic reasoning and inference.
 
-
-I apologize for not explaining that step clearly. Let's break down Step 3 in more detail:
 
 The Chain Rule of Probability is a fundamental rule that allows us to express a joint probability as a product of conditional probabilities. In its general form, for events A, B, and C, it states:
 
@@ -793,7 +1131,7 @@ P(A|T,C) = P(C|A,T) * P(A|T) / P(C|T)
 This derivation shows how we can transform a conditional probability that we want to calculate (left side) into a form 
 that often matches the structure and available information in a Bayesian network (right side). It's a powerful tool for 
 inference in these networks.
-––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
 
 Variable elimination is an algorithm for inference in Bayesian networks. Based on the chart provided, let's explain how it would work for this specific network:
 
@@ -952,7 +1290,7 @@ Challenges:
 
 Gibbs sampling is particularly useful in complex networks where direct probability calculations are intractable, allowing 
 us to approximate probabilities through this iterative sampling process.
-––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
 
 Hidden Markov Models (HMMs) in Natural Language Processing
 
@@ -1088,8 +1426,8 @@ Understanding the distinction between these two types of probabilities is crucia
 and interpreting Hidden Markov Models in various applications.
 
 
-Viterbi Algorithm
-–––––––––––––––––
+### Viterbi Algorithm
+
 
 Suppose we have a Hidden Markov Model for predicting weather conditions (Sunny, Rainy) based on observed activities (Walk, Shop, Clean).
 
@@ -1153,7 +1491,7 @@ Explanation:
 This example demonstrates how the Viterbi algorithm efficiently computes the most likely sequence of hidden states (weather 
 conditions) given a sequence of observations (activities), taking into account both transition and emission probabilities 
 at each step.
-––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
 
 Dynamic Time Warping (DTW) is not typically associated with Probabilistic Graphical Models (PGMs), but it is an important 
 algorithm in time series analysis and pattern recognition. Let me explain DTW and then clarify its relationship to PGMs:
@@ -1214,5 +1552,3 @@ While DTW is a powerful tool for sequence alignment and comparison, it's importa
 provide probabilistic interpretations like PGMs do. In many modern applications, especially those involving large datasets, 
 probabilistic methods like HMMs or more advanced deep learning techniques have largely supplanted DTW. However, DTW remains 
 useful in certain domains and can complement probabilistic approaches in some scenarios.
-––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
