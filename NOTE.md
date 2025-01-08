@@ -2227,6 +2227,303 @@ The f(e,a) in denominator is a normalizing factor to ensure probabilities sum to
 ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 
+Let me OCR the tables and fill the boxes for +e,+a case:
+
+Tables:
+
+B    P(B)         E    P(E)
++b   0.001        +e   0.002
+¬b   0.999        ¬e   0.998
+
+A    J    P(J|A)      A    M    P(M|A)
++a   +j   0.9         +a   +m   0.7
++a   ¬j   0.1         +a   ¬m   0.3
+¬a   +j   0.05        ¬a   +m   0.01
+¬a   ¬j   0.95        ¬a   ¬m   0.99
+
+B    E    A    P(A|B,E)
++b   +e   +a   0.95
++b   +e   ¬a   0.05
++b   ¬e   +a   0.94
++b   ¬e   ¬a   0.06
+¬b   +e   +a   0.29
+¬b   +e   ¬a   0.71
+¬b   ¬e   +a   0.001
+¬b   ¬e   ¬a   0.999
+
+
+For +e,+a case, filling the boxes:
+
+P(+b) = 0.001
+P(+e) = 0.002
+P(+a|+b,+e) = 0.95
+P(+j|+a) = 0.9
+P(+m|+a) = 0.7
++e,+a = [product of above] = 0.001 × 0.002 × 0.95 × 0.9 × 0.7
+
+
+
+### Pulling out terms
+
+∑ₑ ∑ₐ P(+b) P(e) P(a|+b,e) P(+j|a) P(+m|a)
+
+= P(+b) ∑ₑ P(e) ∑ₐ P(a|+b,e) P(+j|a) P(+m|a)
+
+
+
+
+
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+R = Rain 
+T = Traffic 
+L = Late
+
+
+
+Bayesian Network: R → T → L
+
+P(R):
++r  0.1
+-r  0.9
+
+P(T|R):
++r  +t  0.8
++r  -t  0.2
+-r  +t  0.1
+-r  -t  0.9
+
+P(L|T):
++t  +l  0.3
++t  -l  0.7
+-t  +l  0.1
+-t  -l  0.9
+
+
+This shows a simple Bayes Network with three nodes in a chain:
+- R (root node) with prior probabilities
+- T (depends on R) with conditional probabilities given R
+- L (depends on T) with conditional probabilities given T
+
+Each node is binary (+ or -) and the probabilities for each condition sum to 1:
+- For P(R): 0.1 + 0.9 = 1
+- For P(T|R) given +r: 0.8 + 0.2 = 1
+- For P(T|R) given -r: 0.1 + 0.9 = 1
+- For P(L|T) given +t: 0.3 + 0.7 = 1
+- For P(L|T) given -t: 0.1 + 0.9 = 1
+
+
+
+
+R → T → L (Bayesian Network)
+
+Tables:
+P(R):
++r | 0.1
+-r | 0.9
+
+P(T|R):
++r +t | 0.8
++r -t | 0.2
+-r +t | 0.1 
+-r -t | 0.9
+
+P(L|T):
++t +l | 0.3
++t -l | 0.7
+-t +l | 0.1
+-t -l | 0.9
+
+Formula:
+P(+l) = ∑ᵣ ∑ₜ P(r)P(t|r)P(+l|t)
+
+
+This shows:
+1. A three-node chain Bayesian network
+2. Probability tables for each node
+3. Formula for computing P(+l) by marginalizing over r and t variables
+4. Uses sum notation for marginalization over both r and t variables
+
+
+
+P(R):
++r | 0.1
+-r | 0.9
+
+P(T|R):
++r +t | 0.8
++r -t | 0.2
+-r +t | 0.1
+-r -t | 0.9
+
+P(L|T):
++t +l | 0.3
++t -l | 0.7
+-t +l | 0.1
+-t -l | 0.9
+
+P(R,T):
++r +t | 0.08
++r -t | 0.02
+-r +t | 0.09
+-r -t | 0.81
+
+
+The P(R,T) table shows the joint probability distribution, which is calculated by:
+P(R,T) = P(T|R) × P(R)
+
+For example:
+- P(+r,+t) = P(+t|+r) × P(+r) = 0.8 × 0.1 = 0.08
+- P(-r,-t) = P(-t|-r) × P(-r) = 0.9 × 0.9 = 0.81
+
+Each entry in P(R,T) represents the probability of both events occurring together.
+
+Let me explain the difference between these two Bayesian Network structures:
+
+1. R → T → L (Chain structure):
+- Rain affects Traffic, which affects being Late
+- Given Traffic, Late is conditionally independent of Rain
+- P(L|T,R) = P(L|T)
+- As shown in previous network with probability tables
+
+2. RT → L (Combined structure):
+- Both Rain and Traffic together affect being Late
+- Late depends directly on both Rain and Traffic
+- Would need different probability table: P(L|R,T)
+- More parameters needed as conditional probability table grows exponentially
+
+Differences in Parameters:
+
+Chain (R → T → L):
+- P(R): 2-1 = 1 parameter
+- P(T|R): 2×(2-1) = 2 parameters
+- P(L|T): 2×(2-1) = 2 parameters
+Total: 5 parameters
+
+Combined (RT → L):
+- P(R): 2-1 = 1 parameter
+- P(T|R): 2×(2-1) = 2 parameters
+- P(L|R,T): 4×(2-1) = 4 parameters
+Total: 7 parameters
+
+
+The chain structure makes stronger independence assumptions but requires fewer parameters to specify.
+
+
+Two Bayes Network structures:
+R → T → L
+RT → L
+
+Probability Tables:
+
+P(R,T):
++r +t | 0.08
++r -t | 0.02
+-r +t | 0.09
+-r -t | 0.81
+
+P(L|T):
++t +l | 0.3
++t -l | 0.7
+-t +l | 0.1
+-t -l | 0.9
+
+P(T):
++t | 0.17
+-t | 0.83
+
+
+Note: P(T) appears to be derived from P(R,T):
+- P(+t) = P(+r,+t) + P(-r,+t) = 0.08 + 0.09 = 0.17
+- P(-t) = P(+r,-t) + P(-r,-t) = 0.02 + 0.81 = 0.83
+
+This shows how joint probabilities P(R,T) can be marginalized to get P(T), and how the same probabilities can be structured either as a chain (R→T→L) or with direct dependence (RT→L).
+
+
+RT → L and T → L (Two network structures shown)
+
+Tables:
+
+P(T):
++t | 0.17
+-t | 0.83
+
+P(L|T):
++t +l | 0.3
++t -l | 0.7
+-t +l | 0.1 
+-t -l | 0.9
+
+
+This appears to show two alternative structures:
+1. RT → L: Using joint probability of Rain and Traffic to predict Late
+2. T → L: Using just Traffic to predict Late 
+
+The tables show:
+- Marginal probability of Traffic (P(T))
+- Conditional probability of being Late given Traffic (P(L|T))
+
+Note that P(T) was derived from previous P(R,T) table by marginalization:
+- P(+t) = 0.08 + 0.09 = 0.17 (traffic with and without rain)
+- P(-t) = 0.02 + 0.81 = 0.83 (no traffic with and without rain)
+
+
+P(T):
++t | 0.17
+-t | 0.83
+
+P(L|T):
++t +l | 0.3
++t -l | 0.7
+-t +l | 0.1
+-t -l | 0.9
+
+P(T,L):
++t +l | 0.051
++t -l | 0.119
+-t +l | 0.083
+-t -l | 0.747
+
+
+The P(T,L) table is derived from P(T) and P(L|T) using the chain rule:
+P(T,L) = P(L|T)P(T)
+
+For example:
+- P(+t,+l) = P(+l|+t)P(+t) = 0.3 × 0.17 = 0.051
+- P(+t,-l) = P(-l|+t)P(+t) = 0.7 × 0.17 = 0.119
+- P(-t,+l) = P(+l|-t)P(-t) = 0.1 × 0.83 = 0.083
+- P(-t,-l) = P(-l|-t)P(-t) = 0.9 × 0.83 = 0.747
+
+Note that the probabilities in P(T,L) sum to 1:
+0.051 + 0.119 + 0.083 + 0.747 = 1
+
+
+P(T,L):
++t +l | 0.051
++t -l | 0.119
+-t +l | 0.083
+-t -l | 0.747
+
+P(L):
++l | 0.134
+-l | 0.866
+
+
+P(L) is derived from P(T,L) by marginalization over T:
+
+For P(+l):
+- P(+l) = P(+t,+l) + P(-t,+l)
+- P(+l) = 0.051 + 0.083 = 0.134
+
+For P(-l):
+- P(-l) = P(+t,-l) + P(-t,-l)
+- P(-l) = 0.119 + 0.747 = 0.866
+
+This shows how to calculate the marginal probability of being late by summing over all traffic conditions. The probability of being late is about 13.4%, regardless of traffic conditions.
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+
 
 
 
