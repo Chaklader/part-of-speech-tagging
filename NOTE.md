@@ -2276,6 +2276,79 @@ P(+m|+a) = 0.7
 ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+
+## Variable Elimination in Bayesian Networks
+
+Variable Elimination is a technique for computing conditional probabilities in Bayesian Networks by progressively summing out (eliminating) variables that aren't part of the query. It's like solving a complex probability problem by breaking it down and removing unnecessary variables one at a time.
+
+## Core Concepts
+
+### 1. Basic Process
+1. Factor Creation
+   - Convert conditional probability tables to factors
+   - Each factor represents part of the joint distribution
+   - Example: P(T|R) becomes factor f(R,T)
+
+2. Variable Elimination
+   - Choose an elimination ordering
+   - Sum out variables one by one
+   - Multiply relevant factors before summing
+
+### 2. Example (Rain-Traffic-Late Network)
+Using previous example:
+
+Initial Factors:
+- P(R)
+- P(T|R)
+- P(L|T)
+
+To find P(L):
+1. Multiply P(R) and P(T|R) to get P(R,T)
+2. Eliminate R by summing: P(T)
+3. Multiply P(T) and P(L|T) to get P(T,L)
+4. Eliminate T by summing: P(L)
+
+
+### 3. Worked Example
+
+P(L) from P(T,L):
+P(+l) = ∑ₜ P(t,+l)
+      = P(+t,+l) + P(-t,+l)
+      = 0.051 + 0.083
+      = 0.134
+
+
+## Advantages
+1. Efficiency
+   - More efficient than full joint probability table
+   - Avoids computing entire joint distribution
+
+2. Space Complexity
+   - Only stores necessary factors
+   - Intermediate results typically smaller than full joint
+
+## Best Practices
+1. Elimination Order
+   - Choose order that minimizes intermediate factor size
+   - Consider network structure
+
+2. Factor Operations
+   - Multiply only necessary factors
+   - Sum out variables as soon as possible
+
+## Applications
+1. Probabilistic Inference
+   - Computing marginal probabilities
+   - Finding conditional probabilities
+
+2. Decision Support
+   - Medical diagnosis
+   - Fault diagnosis
+   - Risk assessment
+
+
+
 R = Rain 
 T = Traffic 
 L = Late
