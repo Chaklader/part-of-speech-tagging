@@ -2594,6 +2594,212 @@ For P(-l):
 - P(-l) = 0.119 + 0.747 = 0.866
 
 This shows how to calculate the marginal probability of being late by summing over all traffic conditions. The probability of being late is about 13.4%, regardless of traffic conditions.
+
+
+
+
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+
+# Approximate Inference through Sampling
+
+Approximate Inference uses sampling methods to estimate probabilities in Bayesian networks when exact inference is computationally expensive. Instead of calculating exact probabilities, we generate random samples and use their frequencies to approximate the true probabilities.
+
+## Main Sampling Methods
+
+### 1. Prior (Forward) Sampling
+- Sample variables in topological order
+- Start from root nodes and follow network structure
+- Easy to implement but inefficient for evidence
+
+Example:
+
+For Rain → Traffic → Late:
+1. Sample Rain based on P(R)
+2. Sample Traffic based on sampled Rain value: P(T|R)
+3. Sample Late based on sampled Traffic value: P(L|T)
+
+
+### 2. Rejection Sampling
+- Like prior sampling but:
+  * Generate samples as in forward sampling
+  * Reject samples inconsistent with evidence
+  * Count only accepted samples
+
+Drawbacks:
+- Wastes samples that don't match evidence
+- Very inefficient with unlikely evidence
+
+### 3. Likelihood Weighting
+- Fix evidence variables to observed values
+- Weight samples by likelihood of evidence
+- More efficient than rejection sampling
+- Every sample contributes to final result
+
+### 4. Gibbs Sampling
+- Start with arbitrary assignment to non-evidence variables
+- Repeatedly resample one variable given others
+- More sophisticated but handles complex networks better
+
+## Trade-offs
+1. Accuracy vs Speed
+   - More samples = better accuracy
+   - Fewer samples = faster but less accurate
+
+2. Method Selection
+   - Simple networks: Prior sampling
+   - Evidence: Likelihood weighting
+   - Complex networks: Gibbs sampling
+
+
+
+
+
+
+Bayesian Network: Cloudy → (Sprinkler, Rain) → WetGrass
+
+
+Cloudy
+   /       \
+  /         \
+ v           v
+Sprinkler    Rain
+ \           /
+  \         /
+   v       v
+   WetGrass
+
+
+Probability Tables:
+
+P(S|C) - Sprinkler given Cloudy:
++C +S | 0.1    +C -S | 0.9
+-C +S | 0.5    -C -S | 0.5
+
+P(R|C) - Rain given Cloudy:
++C +r | 0.8    +C -r | 0.2
+-C +r | 0.2    -C -r | 0.8
+
+P(W|S,R) - WetGrass given Sprinkler and Rain:
++S +r +w | 0.99    +S +r -w | 0.01
++S -r +w | 0.90    +S -r -w | 0.10
+-S +r +w | 0.90    -S +r -w | 0.10
+-S -r +w | 0.01    -S -r -w | 0.99
+
+P(C) - Cloudy prior:
++C | 0.5
+-C | 0.5
+
+Sample shown:
++C, -S, +r, +w
+
+
+This seems to be showing a sampling example for wet grass caused by either rain or sprinkler, with cloudiness affecting both. The dots to the right appear to indicate observations or samples, with filled dots representing wet grass (+w) and empty dots representing dry grass (-w).
+
+
+
+
+### Rejection Sampling
+
+Rejection sampling is a technique where:
+1. Generate samples using prior sampling
+2. Reject samples that don't match evidence
+3. Count only accepted samples
+
+## Example using Wet Grass Network
+
+Given Evidence: WetGrass = True (+w)
+
+Process:
+1. Sample Cloudy (C) using P(C)
+2. Sample Rain (R) using P(R|C)
+3. Sample Sprinkler (S) using P(S|C)
+4. Sample WetGrass (W) using P(W|S,R)
+5. If sampled W ≠ evidence (+w), reject sample
+
+Example Sample:
+
+Sample 1: +C, -S, +r, +w ✓ (Accept)
+Sample 2: -C, -S, -r, -w ✗ (Reject)
+Sample 3: +C, +S, -r, +w ✓ (Accept)
+
+
+## Pros and Cons
+
+Advantages:
+- Simple to implement
+- Unbiased estimates
+- Samples are independent
+
+Disadvantages:
+- Inefficient with unlikely evidence
+- Many samples may be rejected
+- Computation time wasted on rejected samples
+
+If evidence probability is low (e.g., 1%), approximately 99% of samples will be rejected.
+
+
+
+### Likelihood Weighting
+
+Likelihood Weighting is an improvement over rejection sampling where:
+
+1. Evidence variables are fixed to their observed values
+2. Non-evidence variables are sampled normally
+3. Each sample is weighted by probability of evidence given parents
+
+## How It Works
+
+### Sample Generation Process:
+1. Fix evidence variables to observed values
+2. Sample non-evidence variables following network order
+3. Weight = product of probabilities of evidence values
+
+Example using Wet Grass Network:
+
+Evidence: W = +w (wet grass)
+
+Sample Generation:
+1. Sample C using P(C)
+2. Sample R using P(R|C)
+3. Sample S using P(S|C)
+4. Fix W = +w
+5. Weight = P(W=+w|sampled S, sampled R)
+
+
+### Weight Calculation
+
+For sample {+C, -S, +r, +w}:
+Weight = P(W=+w|S=-s, R=+r)
+       = 0.90 (from P(W|S,R) table)
+
+
+## Advantages
+1. No samples rejected
+2. More efficient than rejection sampling
+3. Handles multiple evidence variables
+4. Works well with unlikely evidence
+
+## Disadvantages
+1. Samples not independent
+2. Can perform poorly with long sequences
+3. May need more samples for accurate results
+
+## Implementation Example
+
+
+
+def likelihood_weighting(evidence, num_samples):
+    weights = []
+    samples = []
+    for i in range(num_samples):
+        sample, weight = weighted_sample(evidence)
+        samples.append(sample)
+        weights.append(weight)
+    return normalize(samples, weights)
+
 ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 
@@ -2951,6 +3157,31 @@ Gibbs sampling is particularly useful in complex networks where direct probabili
 us to approximate probabilities through this iterative sampling process.
 
 
+
+
+
+In this lesson, we learned how to make inferences (query) from Bayes Nets based on the evidence variables and the conditional probabilities as configured in the Bayes Nets. of the evidence variables as defined in the network.
+
+There are two algorithms that to compute exact inferences:
+
+1. Enumeration: the query’s conditional probability is computed by summing the terms from the full joint distribution.
+2. Variable Elimination: an algorithm to reduce the enumeration computation by doing the repeated calculations once and store the results for later re-use.
+
+However, it is computationally expensive to make exact inference from a large and highly connected Bayes Network. In these cases, we can approximate inferences by sampling. Sampling is a technique to select and count the occurances of the query and evidence variables to estimate the probability distributions in the network. We looked at four sampling techniques as follows:
+
+1. Direct sampling: the simplest form of samples generation from a known probability distribution. For example, to sample the odds of Head or Tail in a coin flip, we can randomly generate the events based on uniform probability distribution (assuming we use a non-bias coin).
+2. Rejection sampling: generates samples from the known distribution in the network and rejects the non-matching evidence.
+3. Likelihood sampling: is similar to rejection sampling but generating only events that are consistent with the evidence.
+4. Gibbs sampling: initiates an arbitrary state and generates the next state by randomly sampling a non-evidence variable, while keeping all evidence variables fixed.
+
+
+In the final lesson, we will learn the Hidden Markov Model (HMM) and its application in the Natural Language Processing task to tag Parts of Speech. HMM assumes unobservable states and computes the transition and emission probabilities from one state to another.
+
+
+# 6. Part of Speech Tagging with HMMs
+
+
+
 Hidden Markov Models (HMMs) in Natural Language Processing
 
 1. Definition:
@@ -3213,5 +3444,8 @@ probabilistic methods like HMMs or more advanced deep learning techniques have l
 useful in certain domains and can complement probabilistic approaches in some scenarios.
 
 
-# 6. Part of Speech Tagging with HMMs
+
+
+
+
 # 7. Dynamic Time Warping
