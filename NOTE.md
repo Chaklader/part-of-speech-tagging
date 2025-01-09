@@ -3374,9 +3374,10 @@ Jane will spot Will
 Based on the provided images, Hidden Markov Models (HMMs) are statistical models used for sequence labeling tasks like part-of-speech tagging. The images demonstrate an example of tagging sentences like "Mary Jane can see Will" and "Spot will see Mary."
 
 ## Key Components 
+
 The HMM structure shows:
 1. Hidden States (N, M, V) - Representing parts of speech
-2. Start State (<S>) and End State (<E>)
+2. Start State (\<S>) and End State (\<E>)
 3. Transition Probabilities (solid arrows)
 4. Emission Probabilities (dotted arrows)
 5. Observations (words in gray boxes)
@@ -3384,8 +3385,8 @@ The HMM structure shows:
 ## Transition Probabilities
 
 From Images 4, 5, and 6, we can see the transition probability matrix showing:
-- From <S> to N: 3/4
-- From <S> to M: 1/4
+- From \<S> to N: 3/4
+- From \<S> to M: 1/4
 - From N to M: 1/3
 - From M to V: 3/4
 - From V to N: 1
@@ -3424,6 +3425,7 @@ The model can be used for:
 - Sequence labeling tasks
 
 ## Model Performance
+
 The model uses:
 1. Forward algorithm for sequence probability
 2. Viterbi algorithm for best path
@@ -3434,17 +3436,17 @@ Understanding these concepts is crucial for applications in natural language pro
 
 ## Transition Probabilities Analysis:
 
-1. From <S> (Start) State
-   * Total probability from <S> must sum to 1
-   * <S> → N: 3/4 (0.75)
-   * <S> → M: 1/4 (0.25)
+1. From \<S> (Start) State
+   * Total probability from \<S> must sum to 1
+   * \<S> → N: 3/4 (0.75)
+   * \<S> → M: 1/4 (0.25)
    * Verification: 3/4 + 1/4 = 1
 
 2. **From N (Noun) State**
    * N → M: 1/3 (0.33)
    * N → V: 1/9 (0.11)
    * N → N: 1/9 (0.11)
-   * N → <E>: 4/9 (0.44)
+   * N → \<E>: 4/9 (0.44)
    * Verification: 1/3 + 1/9 + 1/9 + 4/9 = 1
 
 3. **From M (Modal) State**
@@ -3479,10 +3481,10 @@ Understanding these concepts is crucial for applications in natural language pro
 ## Example Calculation:
 Let's calculate the probability of the sequence "Mary will see Will":
 
-1. Path: <S> → N → M → V → N → <E>
+1. Path: \<S> → N → M → V → N → \<E>
 
 2. Calculation:
-   * Transition: <S> → N (3/4)
+   * Transition: \<S> → N (3/4)
    * Emission: N → "Mary" (4/9)
    * Transition: N → M (1/3)
    * Emission: M → "will" (3/4)
@@ -3490,7 +3492,7 @@ Let's calculate the probability of the sequence "Mary will see Will":
    * Emission: V → "see" (1/2)
    * Transition: V → N (1)
    * Emission: N → "Will" (1/9)
-   * Transition: N → <E> (4/9)
+   * Transition: N → \<E> (4/9)
 
 3. Total Probability:
    * P = (3/4 × 4/9 × 1/3 × 3/4 × 3/4 × 1/2 × 1 × 1/9 × 4/9)
@@ -3511,6 +3513,7 @@ Each probability represents the likelihood of moving between states (transitions
 | Pat  | 0 | 0 | 1 |
 
 ## Example Sentences
+
 1. "Mary Jane can see Will" (N N M V N)
 2. "Spot will see Mary" (N M V N)
 3. "Will Jane spot Mary?" (M N V N)
@@ -3779,6 +3782,9 @@ This diagram shows:
 4. The hierarchical structure of the HMM with different parts of speech
 
 All state transitions and emissions follow the probability tables we discussed earlier, though they're not shown in the visualization for clarity.
+
+
+
 ––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
 
 
