@@ -3178,8 +3178,17 @@ However, it is computationally expensive to make exact inference from a large an
 In the final lesson, we will learn the Hidden Markov Model (HMM) and its application in the Natural Language Processing task to tag Parts of Speech. HMM assumes unobservable states and computes the transition and emission probabilities from one state to another.
 
 
+
+
+
+
+
+
+
 # 6. Part of Speech Tagging with HMMs
 
+
+Hidden Markov Models (HMMs) are used to model sequences (including time-series data). HMMs have been successfully used on both supervised and unsupervised problems with sequence data in applications like speech recognition, bioinformatics, sign language recognition, and gesture recognition.
 
 
 Hidden Markov Models (HMMs) in Natural Language Processing
@@ -3257,12 +3266,10 @@ Hidden Markov Models (HMMs) in Natural Language Processing
     - Hierarchical HMMs
     - Continuous HMMs
 
-Understanding HMMs is crucial for many NLP tasks, as they provide a powerful framework for modeling sequential data with 
-underlying hidden states. They form the basis for more advanced models in machine learning and artificial intelligence.
+Understanding HMMs is crucial for many NLP tasks, as they provide a powerful framework for modeling sequential data with underlying hidden states. They form the basis for more advanced models in machine learning and artificial intelligence.
 
 
-Transition Probabilities and Emission Probabilities are two key components of Hidden Markov Models (HMMs). While they're 
-both types of probabilities, they represent different aspects of the model. Let's break down the differences:
+Transition Probabilities and Emission Probabilities are two key components of Hidden Markov Models (HMMs). While they're both types of probabilities, they represent different aspects of the model. Let's break down the differences:
 
 1. Transition Probabilities:
 
@@ -3383,6 +3390,14 @@ conditions) given a sequence of observations (activities), taking into account b
 at each step.
 
 
+
+
+
+
+# 7. Dynamic Time Warping
+
+
+
 Dynamic Time Warping (DTW) is not typically associated with Probabilistic Graphical Models (PGMs), but it is an important 
 algorithm in time series analysis and pattern recognition. Let me explain DTW and then clarify its relationship to PGMs:
 
@@ -3448,4 +3463,4 @@ useful in certain domains and can complement probabilistic approaches in some sc
 
 
 
-# 7. Dynamic Time Warping
+
