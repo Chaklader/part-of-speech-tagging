@@ -3365,6 +3365,89 @@ These methods provide a richer, more nuanced understanding of language, making t
 <br>
 
 
+<br>
+
+<img src="images/hmm_8.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/hmm_9.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/hmm_10.png" width="600" height=auto>
+
+<br>
+
+
+<br>
+
+<img src="images/hmm_11.png" width="600" height=auto>
+
+<br>
+
+
+<br>
+
+<img src="images/hmm_12.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/hmm_13.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/hmm_14.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/hmm_15.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/hmm_16.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/hmm_17.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/hmm_18.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/hmm_19.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/hmm_20.png" width="600" height=auto>
+
+<br>
+
+
+
+
 ```textmate
 N → M → V → N
 ↓   ↓   ↓   ↓
@@ -3923,7 +4006,103 @@ Understanding the distinction between these two types of probabilities is crucia
 and interpreting Hidden Markov Models in various applications.
 
 
-### Viterbi Algorithm
+
+
+
+## Viterbi Algorithm
+
+
+
+<br>
+
+<img src="images/viterbi_1.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/viterbi_2.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/viterbi_3.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/viterbi_4.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/viterbi_5.png" width="600" height=auto>
+
+<br>
+
+
+<br>
+
+<img src="images/viterbi_6.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/viterbi_7.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/viterbi_8.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/viterbi_9.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/viterbi_10.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/viterbi_11.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/viterbi_12.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/viterbi_13.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/viterbi_14.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/viterbi_15.png" width="600" height=auto>
+
+<br>
 
 
 Suppose we have a Hidden Markov Model for predicting weather conditions (Sunny, Rainy) based on observed activities (Walk, Shop, Clean).
