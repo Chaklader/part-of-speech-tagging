@@ -3191,6 +3191,599 @@ In the final lesson, we will learn the Hidden Markov Model (HMM) and its applica
 Hidden Markov Models (HMMs) are used to model sequences (including time-series data). HMMs have been successfully used on both supervised and unsupervised problems with sequence data in applications like speech recognition, bioinformatics, sign language recognition, and gesture recognition.
 
 
+
+
+
+
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+N - Noun
+V - Verb
+Dt - Determiner
+Ad - Adjective
+
+N - Mary
+V - had
+Dt - a
+Ad - little
+N - lamb
+The full sentence is "Mary had a little lamb."
+
+N - Noun: house, car, Mary, Bob, etc.
+M - Modal verb: can, would, should, may, etc.
+V - Verb: run, see, jump, eat, walk, etc.
+
+N - John
+M - can
+V - run
+
+
+
+
+
+
+
+| Sentence | Parts of Speech |
+|----------|----------------|
+| Mary saw Will. | Noun Verb Noun |
+| Data: Mary saw Jane. | Noun Verb Noun |
+| Jane saw Will. | Noun Verb Noun |
+
+
+|      | N | V |
+|------|---|---|
+| Mary | 1 | 0 |
+| saw  | 0 | 2 |
+| Jane | 2 | 0 |
+| Will | 1 | 0 |
+
+<br>
+
+<img src="images/hmm.png" width="400" height=auto>
+
+<br>
+
+
+
+| Sentence | Parts of Speech |
+|----------|----------------|
+| Mary will see Will. | Noun Modal Verb Modal |
+| Data: Mary will see Jane. | Noun Modal Verb Noun |
+| Will will see Mary | Noun Modal Verb Noun |
+| Jane will see Will. | Noun Modal Verb Noun |
+
+
+
+#### Lookup table
+
+|      | N | V | M |
+|------|---|---|---|
+| Mary | 2 | 0 | 0 |
+| see  | 0 | 3 | 0 |
+| Jane | 2 | 0 | 0 |
+| Will | 2 | 0 | 3 |
+
+This lookup table shows the count of occurrences for each part of speech (N - Noun, V - Verb, M - Modal) for the words "Mary", "see", "Jane", and "Will".
+
+
+### Big Arms
+
+| Bigram | N-M | M-V | V-N |
+|--------|-----|-----|-----|
+| mary-will | 1 | 0 | 0 |
+| will-see | 0 | 3 | 0 |
+| see-jane | 0 | 0 | 1 |
+| will-will | 1 | 0 | 0 |
+| see-mary | 0 | 0 | 1 |
+| jane-will | 1 | 0 | 0 |
+| see-will | 0 | 0 | 1 |
+
+This table shows the count of occurrences for each part of speech combination (N-M, M-V, V-N) for the various bigrams presented in the image.
+
+Mary will see Will.
+Mary | N  -> will | M  -> see | V  -> Will | N
+
+
+
+### Why Bigrams like this Don't Work Well for NLP:
+
+1. **Limited Context**:
+   - **Bigrams** only capture immediate word pairs, which limits the context to just two words. Language understanding often requires broader context. For example, understanding sentences or longer phrases needs more than just the immediate next word to predict or infer meanings accurately.
+
+2. **Sparsity**:
+   - With bigrams, especially in large vocabularies or languages with many inflections, you might encounter a **sparsity problem**. Many bigrams will occur very infrequently or not at all in training data, making it hard to generalize or predict new text based on this limited pattern. This leads to poor performance when dealing with novel or rare word combinations.
+
+3. **Lack of Hierarchical Structure**:
+   - Language has a hierarchical structure (syntax). Bigrams do not capture syntactic dependencies beyond the adjacent word level. For example, knowing that "will-see" is M-V doesn't tell you about the subject of "see" unless you consider even more context.
+
+4. **Ambiguity and Overfitting**:
+   - Bigrams might not handle ambiguity well, where words have multiple roles or meanings depending on context. For instance, "will" can be both a noun (as in "last will and testament") or a modal verb. Relying solely on bigrams might lead to overfitting on the specific sequences seen in the training data, reducing the model's ability to generalize.
+
+5. **No Semantic Understanding**:
+   - Bigrams focus on word adjacency and POS transitions but do not inherently include semantic understanding. For deeper NLP tasks like sentiment analysis, named entity recognition, or question answering, understanding the meaning or relationship beyond mere adjacency is crucial.
+
+6. **Dependency on Accurate POS Tagging**:
+   - The effectiveness of this approach heavily depends on the accuracy of the POS tagging. Any error in tagging can lead to incorrect counts or interpretations in the bigram model.
+
+7. **Scalability Issues**:
+   - As the size of the corpus grows or as one deals with languages with rich morphology, the number of unique bigrams can become extremely large, making the approach less practical or computationally intensive.
+
+Instead of this simplistic bigram model, modern NLP often employs:
+
+- **N-grams with higher N values** for capturing more context.
+- **Recurrent Neural Networks (RNNs)**, **LSTMs**, or **Transformers** which can learn long-range dependencies and contextual relationships within sequences.
+- **Dependency parsing** or **syntax trees** to understand sentence structure more comprehensively.
+- **Word embeddings** or **contextual embeddings** (like those from BERT or Word2Vec) to capture semantic relationships between words.
+
+These methods provide a richer, more nuanced understanding of language, making them more suitable for complex NLP tasks.
+
+
+
+## Hidden Markov Models
+
+
+<br>
+
+<img src="images/hmm_1.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/hmm_2.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/hmm_3.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/hmm_4.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/hmm_5.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/hmm_6.png" width="600" height=auto>
+
+<br>
+
+<br>
+
+<img src="images/hmm_7.png" width="600" height=auto>
+
+<br>
+
+
+```textmate
+N → M → V → N
+↓   ↓   ↓   ↓
+Jane will spot Will
+```
+
+Based on the provided images, Hidden Markov Models (HMMs) are statistical models used for sequence labeling tasks like part-of-speech tagging. The images demonstrate an example of tagging sentences like "Mary Jane can see Will" and "Spot will see Mary."
+
+## Key Components 
+The HMM structure shows:
+1. Hidden States (N, M, V) - Representing parts of speech
+2. Start State (<S>) and End State (<E>)
+3. Transition Probabilities (solid arrows)
+4. Emission Probabilities (dotted arrows)
+5. Observations (words in gray boxes)
+
+## Transition Probabilities
+
+From Images 4, 5, and 6, we can see the transition probability matrix showing:
+- From <S> to N: 3/4
+- From <S> to M: 1/4
+- From N to M: 1/3
+- From M to V: 3/4
+- From V to N: 1
+
+## Emission Probabilities
+Images 2 and 3 show emission probability examples:
+- N can emit: Mary (4/9), Jane (2/9), Will (1/9), Spot (2/9)
+- M can emit: Will (3/4), Can (1/4)
+- V can emit: Spot (1/4), See (1/2), Pat (1/4)
+
+## Example Applications
+Using Images 1 and 2, we can see example sentences:
+1. "Mary Jane can see Will"
+2. "Spot will see Mary"
+3. "Will Jane spot Mary?"
+4. "Mary will pat Spot"
+
+## Basic HMM Equations
+Important equations (in plain text):
+1. Markov Assumption:
+   P(next state | current state) = P(next state | current state, all previous states)
+
+2. Total Probability:
+   P(sequence) = P(transitions) × P(emissions)
+
+## Path Generation
+From Image 1, we can see how paths are generated:
+N → M → V → N
+Creating sequences like "Jane will spot Will"
+
+## Practical Applications
+The model can be used for:
+- Part-of-speech tagging
+- Named entity recognition
+- Speech recognition
+- Sequence labeling tasks
+
+## Model Performance
+The model uses:
+1. Forward algorithm for sequence probability
+2. Viterbi algorithm for best path
+3. Baum-Welch algorithm for parameter learning
+
+Understanding these concepts is crucial for applications in natural language processing and sequential data analysis.
+
+
+## Transition Probabilities Analysis:
+
+1. From <S> (Start) State
+   * Total probability from <S> must sum to 1
+   * <S> → N: 3/4 (0.75)
+   * <S> → M: 1/4 (0.25)
+   * Verification: 3/4 + 1/4 = 1
+
+2. **From N (Noun) State**
+   * N → M: 1/3 (0.33)
+   * N → V: 1/9 (0.11)
+   * N → N: 1/9 (0.11)
+   * N → <E>: 4/9 (0.44)
+   * Verification: 1/3 + 1/9 + 1/9 + 4/9 = 1
+
+3. **From M (Modal) State**
+   * M → V: 3/4 (0.75)
+   * M → N: 1/4 (0.25)
+   * Verification: 3/4 + 1/4 = 1
+
+4. **From V (Verb) State**
+   * V → N: 1 (1.0)
+   * Verification: 1 = 1
+
+## Emission Probabilities Analysis:
+
+1. **From N (Noun) State**
+   * N → Mary: 4/9 (0.44)
+   * N → Jane: 2/9 (0.22)
+   * N → Will: 1/9 (0.11)
+   * N → Spot: 2/9 (0.22)
+   * Verification: 4/9 + 2/9 + 1/9 + 2/9 = 1
+
+2. **From M (Modal) State**
+   * M → Will: 3/4 (0.75)
+   * M → Can: 1/4 (0.25)
+   * Verification: 3/4 + 1/4 = 1
+
+3. **From V (Verb) State**
+   * V → Spot: 1/4 (0.25)
+   * V → See: 1/2 (0.50)
+   * V → Pat: 1/4 (0.25)
+   * Verification: 1/4 + 1/2 + 1/4 = 1
+
+## Example Calculation:
+Let's calculate the probability of the sequence "Mary will see Will":
+
+1. Path: <S> → N → M → V → N → <E>
+
+2. Calculation:
+   * Transition: <S> → N (3/4)
+   * Emission: N → "Mary" (4/9)
+   * Transition: N → M (1/3)
+   * Emission: M → "will" (3/4)
+   * Transition: M → V (3/4)
+   * Emission: V → "see" (1/2)
+   * Transition: V → N (1)
+   * Emission: N → "Will" (1/9)
+   * Transition: N → <E> (4/9)
+
+3. Total Probability:
+   * P = (3/4 × 4/9 × 1/3 × 3/4 × 3/4 × 1/2 × 1 × 1/9 × 4/9)
+   * This gives us the probability of this specific sequence occurring in the model.
+
+Each probability represents the likelihood of moving between states (transitions) or generating specific words (emissions), and all probabilities from any state must sum to 1 to maintain a valid probability distribution.
+
+## Emission Probabilities Table
+
+| Word | N | M | V |
+|------|---|---|---|
+| Mary | 4 | 0 | 0 |
+| Jane | 2 | 0 | 0 |
+| Will | 1 | 3 | 0 |
+| Spot | 2 | 0 | 1 |
+| Can  | 0 | 1 | 0 |
+| See  | 0 | 0 | 2 |
+| Pat  | 0 | 0 | 1 |
+
+## Example Sentences
+1. "Mary Jane can see Will" (N N M V N)
+2. "Spot will see Mary" (N M V N)
+3. "Will Jane spot Mary?" (M N V N)
+4. "Mary will pat Spot" (N M V N)
+
+Each example sentence is shown with its corresponding part-of-speech tags represented by colored circles:
+- N (blue) = Noun
+- M (green) = Modal
+- V (brown) = Verb
+
+The table shows how many times each word appears as a particular part of speech in the training data, which is then used to calculate emission probabilities.
+
+
+### Emission Probabilities Table
+
+```textmate
++---------+-------+-------+-------+
+| Word    |   N   |   M   |   V   |
++---------+-------+-------+-------+
+| Mary    |  4/9  |   0   |   0   |
+| Jane    |  2/9  |   0   |   0   |
+| Will    |  1/9  |  3/4  |   0   |
+| Spot    |  2/9  |   0   | 1/4   |
+| Can     |   0   |  1/4  |   0   |
+| See     |   0   |   0   | 1/2   |
+| Pat     |   0   |   0   | 1/4   |
++---------+-------+-------+-------+
+```
+
+### Diagram 1: Noun (N) Emissions
+
+
+```mermaid
+graph TD
+    N((N)) --> |4/9| Mary
+    N --> |2/9| Jane
+    N --> |2/9| Spot
+    N --> |1/9| Will
+
+    style N fill:#4682B4
+```
+
+
+# Diagram 2: Modal (M) Emissions
+
+```mermaid
+graph TD
+    M((M)) --> |3/4| Will
+    M --> |1/4| Can
+
+    style M fill:#228B22
+```
+
+
+# Diagram 3: Verb (V) Emissions
+
+
+
+```mermaid
+graph TD
+    V((V)) --> |1/2| See
+    V --> |1/4| Spot
+    V --> |1/4| Pat
+
+    style V fill:#8B4513
+```
+
+
+This represents the emission probabilities from each state (N, M, V) to their respective words, with the probabilities shown in fractions. The diagrams show how each part of speech (N, M, V) can emit different words with their associated probabilities. Note that the probabilities for each state sum to 1, which is a requirement for a valid probability distribution.
+
+
+
+### Transition Probabilities Table
+
+
+```textmate
++--------+-----+-----+-----+-------+
+| From   |  N  |  M  |  V  | <E>  |
++--------+-----+-----+-----+-------+
+| <S>    |  3  |  1  |  0  |  0   |
+| N      |  1  |  3  |  1  |  4   |
+| M      |  1  |  0  |  3  |  0   |
+| V      |  4  |  0  |  0  |  0   |
++--------+-----+-----+-----+-------+
+```
+
+
+# Example Sentences with POS Tags
+
+```textmate
+1. `<S> N N M V N <E>`
+   "Mary Jane can see Will."
+
+2. `<S> N M V N <E>`
+   "Spot will see Mary."
+
+3. `<S> M N V N <E>`
+   "Will Jane spot Mary?"
+
+4. `<S> N M V N <E>`
+   "Mary will pat Spot"
+```
+
+Each sentence shows the tag sequence:
+- N = Noun (blue)
+- M = Modal (green)
+- V = Verb (brown)
+- <S> = Start tag (purple)
+- <E> = End tag (purple)
+
+The table shows the transition counts between different parts of speech, where each row represents the "from" state and each column represents the "to" state.
+
+
+# Transition Probabilities Table
+
+```textmate
++--------+-------+-------+-------+-------+
+| From   |   N   |   M   |   V   | <E>  |
++--------+-------+-------+-------+-------+
+| <S>    |  3/4  |  1/4  |   0   |  0   |
+| N      |  1/9  |  1/3  |  1/9  |  4/9 |
+| M      |  1/4  |   0   |  3/4  |  0   |
+| V      |   1   |   0   |   0   |  0   |
++--------+-------+-------+-------+-------+
+```
+
+# Example Sentences with POS Tags
+
+```textmate
+1. `<S> N N M V N <E>`
+   "Mary Jane can see Will."
+
+2. `<S> N M V N <E>`
+   "Spot will see Mary."
+
+3. `<S> M N V N <E>`
+   "Will Jane spot Mary?"
+
+4. `<S> N M V N <E>`
+   "Mary will pat Spot"
+```
+
+Note: The purple circle in the image highlights the row for Modal (M) transitions, showing:
+- M → N: 1/4 probability
+- M → M: 0 probability
+- M → V: 3/4 probability
+- M → <E>: 0 probability
+
+This table shows the normalized transition probabilities between different parts of speech, where each row sums to 1.
+
+
+# Transition Probabilities Table
+
+```textmate
++--------+-------+-------+-------+-------+
+| From   |   N   |   M   |   V   | <E>  |
++--------+-------+-------+-------+-------+
+| <S>    |  3/4  |  1/4  |   0   |  0   |
+| N      |  1/9  |  1/3  |  1/9  |  4/9 |
+| M      |  1/4  |   0   |  3/4  |  0   |
+| V      |   1   |   0   |   0   |  0   |
++--------+-------+-------+-------+-------+
+```
+
+# State Transition Graph
+
+```mermaid
+graph LR
+    S(("<S>")) --> |3/4| N((N))
+    S --> |1/4| M((M))
+    
+    N --> |1/9| N
+    N --> |1/3| M
+    N --> |1/9| V((V))
+    N --> |4/9| E(("<E>"))
+    
+    M --> |1/4| N
+    M --> |0| M
+    M --> |3/4| V
+    M --> |0| E
+    
+    V --> |1| N
+    V --> |0| M
+    V --> |0| V
+    V --> |0| E
+
+    style S fill:#9370DB
+    style N fill:#4682B4
+    style M fill:#228B22
+    style V fill:#8B4513
+    style E fill:#9370DB
+```
+
+The graph shows all possible transitions between states:
+- <S>: Start state (purple)
+- N: Noun state (blue)
+- M: Modal state (green)
+- V: Verb state (brown)
+- <E>: End state (purple)
+
+Each arrow is labeled with its transition probability, and all outgoing probabilities from each state sum to 1. Self-loops (transitions to the same state) are also shown.
+
+
+
+```mermaid
+graph LR
+    S[<S>] --> N
+    N --> N
+    N --> M
+    N --> V
+    N --> E[<E>]
+    M --> N
+    M --> V
+    V --> N
+    V --> E
+
+    %% Emission probabilities shown as dashed lines
+    N -.-> Mary
+    N -.-> Will1[Will]
+    N -.-> Spot1[Spot]
+    N -.-> Jane
+    M -.-> Will2[Will]
+    M -.-> Can
+    V -.-> Spot2[Spot]
+    V -.-> See
+    V -.-> Pat
+
+    %% Styling
+    classDef start fill:#9370DB
+    classDef noun fill:#4682B4
+    classDef modal fill:#228B22
+    classDef verb fill:#8B4513
+    classDef end fill:#9370DB
+    classDef word fill:#D3D3D3
+
+    class S start
+    class E end
+    class N noun
+    class M modal
+    class V verb
+    class Mary,Will1,Will2,Spot1,Spot2,Jane,Can,See,Pat word
+```
+
+Hidden Markov Model Structure:
+
+States and Transitions (Solid Lines):
+<S> → N → M → V → <E>
+
+Emission Probabilities (Dashed Lines):
+N (Noun) -----> Mary, Will, Spot, Jane
+M (Modal) ----> Will, Can
+V (Verb) -----> Spot, See, Pat
+
+Color Key:
+- Purple: <S>, <E> (Start/End)
+- Blue: N (Noun)
+- Green: M (Modal)
+- Brown: V (Verb)
+- Gray: Emitted Words
+
+
+This diagram shows:
+1. State transitions (solid lines)
+2. Emission probabilities (dashed lines)
+3. All possible words that can be emitted from each state
+4. The hierarchical structure of the HMM with different parts of speech
+
+All state transitions and emissions follow the probability tables we discussed earlier, though they're not shown in the visualization for clarity.
+––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+
+
+
+
 Hidden Markov Models (HMMs) in Natural Language Processing
 
 1. Definition:
