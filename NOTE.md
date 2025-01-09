@@ -3621,8 +3621,8 @@ Each sentence shows the tag sequence:
 - N = Noun (blue)
 - M = Modal (green)
 - V = Verb (brown)
-- <S> = Start tag (purple)
-- <E> = End tag (purple)
+- \<S> = Start tag (purple)
+- \<E> = End tag (purple)
 
 The table shows the transition counts between different parts of speech, where each row represents the "from" state and each column represents the "to" state.
 
@@ -3643,16 +3643,16 @@ The table shows the transition counts between different parts of speech, where e
 # Example Sentences with POS Tags
 
 ```textmate
-1. `<S> N N M V N <E>`
+1. <S> N N M V N <E>
    "Mary Jane can see Will."
 
-2. `<S> N M V N <E>`
+2. <S> N M V N <E>
    "Spot will see Mary."
 
-3. `<S> M N V N <E>`
+3. <S> M N V N <E>
    "Will Jane spot Mary?"
 
-4. `<S> N M V N <E>`
+4. <S> N M V N <E>
    "Mary will pat Spot"
 ```
 
@@ -3660,7 +3660,7 @@ Note: The purple circle in the image highlights the row for Modal (M) transition
 - M → N: 1/4 probability
 - M → M: 0 probability
 - M → V: 3/4 probability
-- M → <E>: 0 probability
+- M → \<E>: 0 probability
 
 This table shows the normalized transition probabilities between different parts of speech, where each row sums to 1.
 
@@ -3708,11 +3708,11 @@ graph LR
 ```
 
 The graph shows all possible transitions between states:
-- <S>: Start state (purple)
+- \<S>: Start state (purple)
 - N: Noun state (blue)
 - M: Modal state (green)
 - V: Verb state (brown)
-- <E>: End state (purple)
+- \<E>: End state (purple)
 
 Each arrow is labeled with its transition probability, and all outgoing probabilities from each state sum to 1. Self-loops (transitions to the same state) are also shown.
 
@@ -3760,7 +3760,8 @@ graph LR
 Hidden Markov Model Structure:
 
 States and Transitions (Solid Lines):
-<S> → N → M → V → <E>
+
+\<S> → N → M → V → \<E>
 
 Emission Probabilities (Dashed Lines):
 N (Noun) -----> Mary, Will, Spot, Jane
@@ -3768,7 +3769,7 @@ M (Modal) ----> Will, Can
 V (Verb) -----> Spot, See, Pat
 
 Color Key:
-- Purple: <S>, <E> (Start/End)
+- Purple: \<S>, \<E> (Start/End)
 - Blue: N (Noun)
 - Green: M (Modal)
 - Brown: V (Verb)
