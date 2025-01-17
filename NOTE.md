@@ -127,7 +127,7 @@ Key concepts in probability including:
 We make inferences (query) from Bayes Nets based on the evidence variables and the conditional probabilities as configured in the Bayes Nets. of the evidence variables as defined in the network.
 
 
-# 3. Spam Classifier with Naive Bayes
+# CHAPTER-3: Spam Classifier with Naive Bayes
 
 
 ### Problem: Alex comes to the office 3 days a week and Brenda comes to the office 1 day a week. We saw a Person had red sweater. Alex wears red 2 times a week and Brenda wears red 3 times a week.
@@ -201,6 +201,7 @@ H: healthy
 +: positive
 
 Given probabilities:
+
 P(S) = 0.0001
 P(H) = 0.9999
 P(+|S) = 0.99
@@ -208,6 +209,10 @@ P(+|H) = 0.01
 
 
 Total: 1,000,000
+
+
+```textmate
+
                               (+) Test
                            ┌─→ 99    (True +)
                      ┌─ 100 ┤
@@ -217,7 +222,8 @@ Total: 1,000,000
                      └─ 999,900 ─┤
                                  └─→ 989,901 (True -)
 
-                        
+```
+
 1 out of every 10,000 patients is sick, Test has 99% accuracy
 
 Patient tested positive =
@@ -225,13 +231,15 @@ P(sick|+) = 99/(9,999 + 99)
          = 0.0098
          < 1
 
-
 P(S|+) = P(S)P(+|S) / [P(S)P(+|S) + P(H)P(+|H)]
        = 0.0001 * 0.99 / (0.0001 * 0.99 + 0.9999 * 0.01)
        = 0.0098
        < 1%
 
 
+### Problem: Spam Classifier
+
+```textmate
 
 Spam:
 Win money now!
@@ -245,8 +253,6 @@ Can I borrow money?
 Say hi to grandma.
 Was the exam easy?
 
-
-
 P(spam | 'easy')
 
 Email ─┬─→ Spam (3/8) ─┬─→ 'easy' (1/3)
@@ -254,6 +260,8 @@ Email ─┬─→ Spam (3/8) ─┬─→ 'easy' (1/3)
        │
        └─→ Ham (5/8) ──┬─→ 'easy' (1/5)
                        └─→ no (4/5)
+
+```
 
 
 This diagram shows:
@@ -279,11 +287,14 @@ P(spam|'easy') = P(spam)P('easy'|spam) / [P(spam)P('easy'|spam) + P(ham)P('easy'
 
 P(spam | 'money')
 
+```textmate
+
 Email ─┬─→ Spam (3/8) ─┬─→ 'money' (2/3)   1/4
        │              └─→ no (1/3)         1/4
        │
        └─→ Ham (5/8) ──┬─→ 'money' (1/5)   1/8
                        └─→ no (4/5)         1/2
+```
 
 
 This shows the probability breakdown for emails containing 'money':
@@ -321,6 +332,7 @@ These formulas allow us to update our prior probabilities P(A) and P(B) to poste
 
 
 This tree diagram shows:
+
 1. Initial probabilities: P(A) and P(B)
 2. Conditional probabilities: P(R|A) and P(R|B)
 3. Complementary events: R and Rᶜ (not R)
@@ -331,10 +343,12 @@ The structure illustrates how Bayes Theorem decomposes conditional probabilities
 
 ## Naive Bayes Algorithm
 
-Naive Bayes is a probabilistic algorithm based on Bayes' Theorem that assumes all features are independent of each other. This "naive" assumption makes the calculations much simpler but isn't always realistic in real-world situations.
+Bayes Theorem transfers from what we know to what we infer. Naive Bayes is a probabilistic algorithm based on Bayes' Theorem that assumes all features are independent of each other. This "naive" assumption makes the calculations much simpler but isn't always realistic in real-world situations.
 
 ## Why "Naive"?
+
 Consider spam detection example:
+
 - If we see "money" and "easy" in an email:
   * Algorithm assumes these words appear independently
   * In reality, "easy money" is a common spam phrase
@@ -342,14 +356,12 @@ Consider spam detection example:
 
 This independence assumption is what makes it "naive", but surprisingly effective!
 
+Being able to identify spam messages is a binary classification problem as messages are classified as either 'Spam' or 'Not Spam' and nothing else. Also, this is a supervised learning problem, as we know what we are trying to predict. We will be feeding a labeled dataset into the model, that it can learn from, to make future predictions.
+
 
 P(spam | 'easy', 'money') ∝ P('easy', 'money' | spam)P(spam)
+P(spam | 'easy', 'money') ∝ P('easy' | spam)P('money' | spam)P(spam) [Note: P(A & B) = P(A)P(B)]
 
-P(A & B) = P(A)P(B)
-
-P(spam | 'easy', 'money') ∝ P('easy' | spam)P('money' | spam)P(spam)
-
-P(A & B) = P(A)P(B)
 
 Let me explain these two forms:
 
@@ -383,6 +395,7 @@ P(spam|words) = P(words|spam)P(spam)/P(words)
 
 
 Advantages:
+
 - Simpler calculations
 - Same classification results
 - Avoid computing denominator P(words)
@@ -393,6 +406,7 @@ The ∝ symbol basically means "proportional to" - the relative relationships st
 
 
 ## Bayes' Theorem Applied
+
 Given an email with word "money":
 
 P(spam|money) = P(money|spam) × P(spam) / P(money)
@@ -405,6 +419,7 @@ Where:
 
 
 ## Example from Data
+
 Using numbers from example:
 1. Prior Probabilities:
    - P(spam) = 3/8
@@ -425,6 +440,7 @@ Using numbers from example:
    * We multiply because of independence assumption
 
 ## Why It Works
+
 1. Despite naive assumptions:
    - Fast and simple calculations
    - Works well for text classification
@@ -436,6 +452,7 @@ Using numbers from example:
    - Real-time prediction
 
 ## Common Applications
+
 1. Text Classification:
    - Spam detection
    - Document categorization
@@ -445,42 +462,36 @@ Using numbers from example:
    - Symptom independence assumption
    - Quick preliminary diagnosis
 
+<br>
+<br>
 
-Bayes Theorem transfers from what we know to what we infer.
+# CHAPTER-4 Bayes Nets
 
+<br>
 
-Practice Project: Building a spam classifier
-Introduction
-Spam detection is one of the major applications of Machine Learning on the internet. Pretty much all of the major email service providers have spam detection systems built-in and automatically classify such mail as 'Junk Mail'.
+Probabilistic graphical models expands on Bayes Networks (also known as Bayes Nets), which explicitly encode the dependencies between variables to model joint probability distributions. They are particularly useful because they provide a compact representation for practically arbitrary distributions, and efficient algorithms exist to sample and perform inference over the joint distribution.
 
-In this exercise, we will be using the Naive Bayes algorithm to create a model that can classify dataset SMS messages as spam or not spam, based on the training we give to the model. It is important to have some level of intuition as to what a spammy text message might look like.
-
-What are spammy messages?
-Usually, they have words like 'free', 'win', 'winner', 'cash', 'prize', or similar words in them, as these texts are designed to catch your eye and tempt you to open them. Also, spam messages tend to have words written in all capitals and also tend to use a lot of exclamation marks. To the recipient, it is usually pretty straightforward to identify a spam text and our objective here is to train a model to do that for us!
-
-Being able to identify spam messages is a binary classification problem as messages are classified as either 'Spam' or 'Not Spam' and nothing else. Also, this is a supervised learning problem, as we know what we are trying to predict. We will be feeding a labeled dataset into the model, that it can learn from, to make future predictions.
-
-
-
-# 4. Bayes Nets
-
-In this lesson, we will continue talking about probabilistic graphical models by expanding on Bayes Networks (also known as Bayes Nets), which explicitly encode the dependencies between variables to model joint probability distributions.
-
-They are particularly useful because they provide a compact representation for practically arbitrary distributions, and efficient algorithms exist to sample and perform inference over the joint distribution.
-
-Bayes Nets Components
 Bayes Nets is a graph that has no directed cycles, also known as a directed acyclic graph, or DAG. To build Bayes Nets, we need to specify the following:
 
-Random Variables: Each node corresponds to a random variable.
-Conditional Relations: A set of directed links or arrows connects pairs of nodes.
-Probability Distributions: Each node has a conditional probability distribution that quantifies the effect of the parents on the node.
+1. Random Variables: Each node corresponds to a random variable.
+2. Conditional Relations: A set of directed links or arrows connects pairs of nodes.
+3. Probability Distributions: Each node has a conditional probability distribution that quantifies the effect of the parents on the node.
 
 
-![bayes](images/alarm_bayes_network.png)
+<br>
+
+<div align="center">
+   <img src="images/alarm_bayes_network.png" width="800" height="auto">
+</div>
+
+<br>
 
 
 
-Bayes Rule
+**Bayes Rule**
+
+
+```textmate
 
 P(A|B) = P(B|A)P(A)/P(B)
 
@@ -491,13 +502,19 @@ P'(¬A|B) = P(B|¬A)P(¬A)
 
 P(A|B) + P(¬A|B) = 1
 
-P(A|B) = η P'(A|B)
+P(A|B) = η P'(A|B) [Note: η=1/P(B)]
 P(¬A|B) = η P'(¬A|B)
 
+η P'(A|B) + η P'(¬A|B) = 1
 η = (P'(A|B) + P'(¬A|B))⁻¹
+
+P(B) = (P'(A|B) + P'(¬A|B))
+
+```
 
 
 This shows:
+
 1. Standard Bayes Rule equation
 2. Complementary form for ¬A (not A)
 3. Unnormalized forms (P')
@@ -518,17 +535,25 @@ P(A|B) = P'(A|B)/(P'(A|B) + P'(¬A|B))
 
 3. Now substitute P'(A|B) and P'(¬A|B):
 
+P'(A|B) = P(B|A)P(A)
+P'(¬A|B) = P(B|¬A)P(¬A)
+
 P(A|B) = [P(B|A)P(A)]/[P(B|A)P(A) + P(B|¬A)P(¬A)]
+[P(B|A)P(A) + P(B|¬A)P(¬A)] = [P(B|A)P(A)]/P(A|B)
+
+
+P(A|B)P(B)=[P(B|A)P(A)]
+P(B) = [P(B|A)P(A)]/P(A|B)
 
 
 4. This is equivalent to the original Bayes' Rule because:
 
-P(B) = P(B|A)P(A) + P(B|¬A)P(¬A)
+**P(B) = P(B|A)P(A) + P(B|¬A)P(¬A)**
 
 
 So we've shown that:
 
-P(A|B) = P(B|A)P(A)/P(B) = P(B|A)P(A)/[P(B|A)P(A) + P(B|¬A)P(¬A)]
+**P(A|B) = P(B|A)P(A)/P(B) = P(B|A)P(A)/[P(B|A)P(A) + P(B|¬A)P(¬A)]**
 
 
 This demonstrates why η is called the normalization constant - it ensures the probabilities sum to 1.
@@ -536,6 +561,7 @@ This demonstrates why η is called the normalization constant - it ensures the p
 
 <br>
 <br>
+
 
 Two Test Cancer Example
 
