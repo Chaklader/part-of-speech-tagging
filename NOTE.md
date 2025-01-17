@@ -1,14 +1,10 @@
 # Fundamentals ofProbabilistic Graphical Model
 
+# CHAPTER-1: Introduction to Probabilistic Models
 
-# 1. Introduction to Probabilistic Models
-
-
-In this course, we'll talk about probabilistic models, which will allow knowledge-based AI agents to handle uncertainty in the real world with the concept of a "belief state" (a probability distribution over the possible world states). These ideas have been used in robot localization and other real-world tasks, including use in neural networks(opens in a new tab).
 
 Knowledge-based AI agents utilize belief state to reason and plan under uncertainty.
-
-In this course, we will learn Probabilistic Models and Bayes Networks as the tools for these AI agents to quantify and act under the uncertainty of the surrounding world. Unlike the logical assertions, which see the possible worlds in a set of strict rules, the probabilistic assertions quantify how probable the various worlds are.
+They use Probabilistic Models and Bayes Networks as the tools for these AI agents to quantify and act under the uncertainty of the surrounding world. Unlike the logical assertions, which see the possible worlds in a set of strict rules, the probabilistic assertions quantify how probable the various worlds are.
 
 
 ### Bayesian Networks (Bayes Nets)
@@ -18,29 +14,35 @@ Bayesian Networks are probabilistic graphical models that represent dependencies
 ## Detailed Explanation
 
 ### Core Components
+
 1. Network Structure
+
    - Directed Acyclic Graph (DAG)
    - Nodes represent random variables
    - Edges represent direct dependencies
    - Conditional Independence relationships
 
 2. Probability Tables
+
    - Each node has CPT (Conditional Probability Table)
    - P(X|Parents(X)) for each node X
    - Root nodes have prior probabilities
 
+
 ### Mathematical Foundation
+
 1. Chain Rule
 
-P(X₁,...,Xₙ) = ∏ᵢ P(Xᵢ|Parents(Xᵢ))
+   P(X₁,...,Xₙ) = ∏ᵢ P(Xᵢ|Parents(Xᵢ))
 
 
 2. Conditional Independence
 
-P(X|Y,Z) = P(X|Z) if X ⊥ Y|Z
+   P(X|Y,Z) = P(X|Z) if X ⊥ Y|Z
 
 
 ## Key Features
+
 1. Compact Representation
    - Reduces complexity from O(2ⁿ) to O(2ᵏ)
    - k = maximum number of parents
@@ -50,7 +52,9 @@ P(X|Y,Z) = P(X|Z) if X ⊥ Y|Z
    - Approximate inference
    - Most Probable Explanation (MPE)
 
+
 ## Common Applications
+
 1. Medical Diagnosis
    - Symptoms → Diseases
    - Risk factors → Conditions
@@ -61,6 +65,7 @@ P(X|Y,Z) = P(X|Z) if X ⊥ Y|Z
    - Fault diagnosis
 
 ## Building Bayes Nets
+
 1. Structure Learning
    - Expert knowledge
    - Data-driven approaches
@@ -72,6 +77,7 @@ P(X|Y,Z) = P(X|Z) if X ⊥ Y|Z
    - EM Algorithm for hidden variables
 
 ## Inference Methods
+
 1. Variable Elimination
    - Factor multiplication
    - Marginalization
@@ -83,6 +89,7 @@ P(X|Y,Z) = P(X|Z) if X ⊥ Y|Z
    - Gibbs sampling
 
 ## Limitations
+
 1. Computational Complexity
    - Exact inference is NP-hard
    - Structure learning is complex
@@ -92,6 +99,7 @@ P(X|Y,Z) = P(X|Z) if X ⊥ Y|Z
    - Quality of probability estimates
 
 ## Best Practices
+
 1. Network Design
    - Keep structure simple
    - Use expert knowledge
@@ -103,31 +111,28 @@ P(X|Y,Z) = P(X|Z) if X ⊥ Y|Z
    - Use approximations when appropriate
 
 
-# 2. Probability
+<br>
+<br>
 
-In this lesson, we will review a few key concepts in probability including:
+# CHAPTER-2: Probability
+
+<br>
+
+Key concepts in probability including:
 
 - Discrete distributions
 - Joint probabilities
 - Conditional probabilities
 
-In this lesson, we learned how to make inferences (query) from Bayes Nets based on the evidence variables and the conditional probabilities as configured in the Bayes Nets. of the evidence variables as defined in the network.
+We make inferences (query) from Bayes Nets based on the evidence variables and the conditional probabilities as configured in the Bayes Nets. of the evidence variables as defined in the network.
 
 
 # 3. Spam Classifier with Naive Bayes
 
 
-Alex comes to the office 3 days a week
-Brenda comes to the office 1 day a week
+### Problem: Alex comes to the office 3 days a week and Brenda comes to the office 1 day a week. We saw a Person had red sweater. Alex wears red 2 times a week and Brenda wears red 3 times a week.
 
-We saw a Person had red sweater
-
-Alex wears red 2 times a week  
-Brenda wears red 3 times a week
-
-P(A|R) = (0.75 * 0.4)/(0.75 * 0.4 + 0.25 * 0.6)
-
-The scenario is they work remotely from home and then can wear Red as well. They can wear red even when working from home. Let me break this down:
+The scenario is they work remotely from home rest of the days and they can wear red even when working from home. Let me break this down:
 
 For Alex:
 - Comes to office 3/5 days = 0.75 (Prior P(A))
@@ -141,28 +146,32 @@ For Brenda:
 
 Using Bayes Theorem to find P(A|R) - probability it was Alex given we saw red:
 
+<br>
 
+```textmate
 P(A|R) = P(R|A) × P(A) / P(R)
 
 where P(R) = P(R|A)×P(A) + P(R|B)×P(B)
-           = 0.4 × 0.75 + 0.6 × 0.25
-           = 0.3 + 0.15
-           = 0.45
+         = 0.4 × 0.75 + 0.6 × 0.25
+         = 0.3 + 0.15
+         = 0.45
 
-Therefore:
 P(A|R) = (0.4 × 0.75) / 0.45
-       = 0.3 / 0.45
-       = 0.667
-       ≈ 66.7%
-
+      = 0.3 / 0.45
+      = 0.667
+      ≈ 66.7%
+```
 
 Now the numbers make sense because:
+
 1. They can wear red while working remotely
 2. Red sweater wearing is independent of office attendance
 3. The probabilities reflect their overall red-wearing pattern, not just office days
 
 
+<br>
 
+```textmate
                  P(R|A)
         P(A) ─→ A ─┬─→ R     P(R∩A)
 Event ─┤          └─→ Rᶜ    P(Rᶜ∩A)
@@ -180,12 +189,12 @@ Event ─┤
 
 
 P(A|R) = P(A)P(R|A) / [P(A)P(R|A) + P(B)P(R|B)]
-
 P(B|R) = P(B)P(R|B) / [P(A)P(R|A) + P(B)P(R|B)]
+```
 
 
 
-Say, a diagnostic test for a disease has a 99% accuracy and 1 out of 10,000 people are sick. What is the probability that a person is sick (has disease) if the test says positive?
+### Problem: Say, a diagnostic test for a disease has a 99% accuracy and 1 out of 10,000 people are sick. What is the probability that a person is sick (has disease) if the test says positive?
 
 S: sick
 H: healthy
