@@ -563,8 +563,11 @@ This demonstrates why η is called the normalization constant - it ensures the p
 <br>
 
 
-Two Test Cancer Example
+### Two Test Cancer Example
 
+<br>
+
+```textmate
 C           P(C) = 0.01    P(¬C) = 0.99
 T₁ T₂       P(+|C) = 0.9   P(-|C) = 0.1
            P(-|¬C) = 0.8   P(+|¬C) = 0.2
@@ -578,26 +581,13 @@ C     0.01   0.9   0.1   0.0009  0.0056
 ¬C    0.99   0.2   0.8   0.1584  0.9943
                          0.1593
 
+```
 
-
-
-Two Test Cancer Example
-
-C           P(C) = 0.01    P(¬C) = 0.99
-T₁ T₂       P(+|C) = 0.9   P(-|C) = 0.1
-            P(-|¬C) = 0.8   P(+|¬C) = 0.2
-
-P(C|T₁=+,T₂=+) = P(C|++) = 0.1698
-P(C|T₁=+,T₂=-) = P(C|+-) = [blank]
-
-Table:
-      prior   +     -      P'    P(C|+-)
-C     0.01   0.9   0.1   0.0009  0.0056
-¬C    0.99   0.2   0.8   0.1584  0.9943
-                          0.1593
+<br>
 
 
 This shows a cancer testing scenario with:
+
 1. Prior probabilities of having cancer (C) or not (¬C)
 2. Test accuracies for positive (+) and negative (-) results
 3. Calculations for probability of having cancer given test results
@@ -611,59 +601,17 @@ Let me break down this cancer testing example step by step:
 - P(¬C) = 0.99 (99% chance of not having cancer)
 
 2. Test Accuracies:
+
 - P(+|C) = 0.9 (90% chance of positive test if you have cancer)
 - P(-|C) = 0.1 (10% chance of negative test if you have cancer)
 - P(-|¬C) = 0.8 (80% chance of negative test if you don't have cancer)
 - P(+|¬C) = 0.2 (20% chance of positive test if you don't have cancer)
 
-3. Calculating P(C|++):
-When both tests are positive:
-
-P'(C) = 0.01 × 0.9 × 0.9 = 0.0081
-P'(¬C) = 0.99 × 0.2 × 0.2 = 0.0396
-Normalize: 0.0081/(0.0081 + 0.0396) = 0.1698
-
-
-4. Calculating P(C|+-):
-When first test positive, second negative:
-
-P'(C) = 0.01 × 0.9 × 0.1 = 0.0009
-P'(¬C) = 0.99 × 0.2 × 0.8 = 0.1584
-Normalize: 0.0009/(0.0009 + 0.1584) = 0.0056
-
-
-This shows how:
-- Two positive tests increase cancer probability from 1% to 17%
-- Mixed results (+ and -) decrease cancer probability to 0.56%
-- Even with positive test(s), cancer probability remains relatively low due to low prior probability
-
-This is a classic example of why medical tests need to be interpreted in context of prior probabilities.
+3. Calculating P(C|++)
 
 Let me explain using Bayes' Theorem and the normalization formula:
 
 P(C|T₁=+,T₂=+) = P'(C)/(P'(C) + P'(¬C))
-
-1. For P'(C):
-
-P'(C) = P(C) × P(+|C) × P(+|C)
-      = 0.01 × 0.9 × 0.9 
-      = 0.0081
-
-(Prior × Likelihood for T₁ × Likelihood for T₂)
-
-2. For P'(¬C):
-
-P'(¬C) = P(¬C) × P(+|¬C) × P(+|¬C)
-       = 0.99 × 0.2 × 0.2
-       = 0.0396
-
-
-3. Normalize:
-
-P(C|++) = 0.0081/(0.0081 + 0.0396)
-        = 0.0081/0.0477
-        = 0.1698
-
 
 This is equivalent to:
 
@@ -671,65 +619,92 @@ P(C|++) = P(C)P(+|C)P(+|C)/[P(C)P(+|C)P(+|C) + P(¬C)P(+|¬C)P(+|¬C)]
 
 
 The naive assumption allows us to multiply the individual test probabilities because we assume the tests are independent:
+
 - P(T₁=+,T₂=+|C) = P(T₁=+|C) × P(T₂=+|C)
 - P(T₁=+,T₂=+|¬C) = P(T₁=+|¬C) × P(T₂=+|¬C)
 
+When both tests are positive:
+
+P'(C) = P(C)xP(+|C)xP(+|C)= 0.01 × 0.9 × 0.9 = 0.0081
+P'(¬C) = P(¬C)xP(+|¬C)xP(+|¬C)= 0.99 × 0.2 × 0.2 = 0.0396
+
+Normalize: 0.0081/(0.0081 + 0.0396) = 0.1698
+
+
+4. Calculating P(C|+-):
+When first test positive, second negative:
+
+P'(C) = P(C)xP(+|C)xP(-|C) = 0.01 × 0.9 × 0.1 = 0.0009
+P'(¬C) = P(¬C)xP(+|¬C)xP(-|¬C) = 0.99 × 0.2 × 0.8 = 0.1584
+
+Normalize: 0.0009/(0.0009 + 0.1584) = 0.0056
+
+
+This shows how:
+
+- Two positive tests increase cancer probability from 1% to 17%
+- Mixed results (+ and -) decrease cancer probability to 0.56%
+- Even with positive test(s), cancer probability remains relatively low due to low prior probability
+
+This is a classic example of why medical tests need to be interpreted in context of prior probabilities.
+
+<br>
+<br>
 
 These formulas come from applying Bayes' Theorem and the Naive assumption. Let me break it down:
 
 1. Original Bayes' Theorem:
 
-P(C|T₁,T₂) = P(T₁,T₂|C)P(C)/P(T₁,T₂)
+**P(C|T₁,T₂) = P(T₁,T₂|C)P(C)/P(T₁,T₂)**
 
 
 2. Naive Assumption (independence):
 
-P(T₁,T₂|C) = P(T₁|C) × P(T₂|C)
+**P(T₁,T₂|C) = P(T₁|C) × P(T₂|C)**
 
 
 3. Total Probability for denominator:
 
-P(T₁,T₂) = P(T₁,T₂|C)P(C) + P(T₁,T₂|¬C)P(¬C)
+**P(T₁,T₂) = P(T₁,T₂|C)P(C) + P(T₁,T₂|¬C)P(¬C)**
 
 
 4. Putting it together:
 
-P(C|T₁=+,T₂=+) = [P(+|C)×P(+|C)×P(C)] / [P(+|C)×P(+|C)×P(C) + P(+|¬C)×P(+|¬C)×P(¬C)]
+**P(C|T₁=+,T₂=+) = [P(+|C)×P(+|C)×P(C)] / [P(+|C)×P(+|C)×P(C) + P(+|¬C)×P(+|¬C)×P(¬C)]**
 
 
 5. To simplify notation:
-- Let P'(C) = P(C)×P(+|C)×P(+|C)
-- Let P'(¬C) = P(¬C)×P(+|¬C)×P(+|¬C)
+
+- Let P'(C) = P(+|C)×P(+|C)xP(C)
+- Let P'(¬C) = P(+|¬C)×P(+|¬C)xP(¬C)
 
 Therefore:
 
-P(C|T₁=+,T₂=+) = P'(C)/(P'(C) + P'(¬C))
+**P(C|T₁=+,T₂=+) = P'(C)/(P'(C) + P'(¬C))**
 
 
-The P' notation is just a shorthand for the unnormalized probabilities before we divide by their sum.
+The P' notation is just a shorthand for the unnormalized probabilities before we divide by their sum. This formula shows the probability of the second test being positive given that the first test was positive. Let's break it down:
 
-–––––––––––––––
-
-
-P(T₂=+ | T₁=+) = P(T₂|+₁,C)P(C|+₁) + P(T₂|+₁,¬C)P(¬C|+₁)
-
-
-This formula shows the probability of the second test being positive given that the first test was positive. Let's break it down:
+**P(T₂=+ | T₁=+) = P(T₂|+₁,C)P(C|+₁) + P(T₂|+₁,¬C)P(¬C|+₁)**
 
 1. Total Probability Theorem:
+
 - It splits the probability into two cases:
   * When cancer is present (C)
   * When cancer is absent (¬C)
 
 2. Components:
+
 - P(T₂|+₁,C): Probability of second test positive given first test positive and cancer
 - P(C|+₁): Probability of cancer given first test positive
 - P(T₂|+₁,¬C): Probability of second test positive given first test positive and no cancer
 - P(¬C|+₁): Probability of no cancer given first test positive
 
 3. Due to Naive Independence Assumption:
-- P(T₂|+₁,C) = P(T₂|C) = 0.9
-- P(T₂|+₁,¬C) = P(T₂|¬C) = 0.2
+
+**P(T₂|+₁,C) = P(T₂|C) = 0.9**
+**P(T₂|+₁,¬C) = P(T₂|¬C) = 0.2**
+
 
 This formula helps understand how the result of the first test affects the probability of the second test being positive, taking into account both cancer and no-cancer scenarios.
 
@@ -749,6 +724,7 @@ P(C|+₁) = P(+₁|C)P(C)/[P(+₁|C)P(C) + P(+₁|¬C)P(¬C)]
 2. Then P(¬C|+₁) = 1 - P(C|+₁) = 0.9565
 
 3. Due to naive independence:
+
 - P(T₂|+₁,C) = P(T₂|C) = 0.9
 - P(T₂|+₁,¬C) = P(T₂|¬C) = 0.2
 
@@ -761,10 +737,9 @@ P(T₂=+ | T₁=+) = (0.9 × 0.0435) + (0.2 × 0.9565)
 
 
 This means there's about a 23% chance the second test will be positive if we know the first test was positive. This is higher than the baseline rate because positive tests increase the probability of cancer, and cancer increases the probability of positive tests.
-–––––––––––––––
 
 
-Absolute And Conditional
+### Absolute And Conditional
 
 A ⊥ B
 A ⊥ B|C
