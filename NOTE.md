@@ -127,6 +127,92 @@ Key concepts in probability including:
 We make inferences (query) from Bayes Nets based on the evidence variables and the conditional probabilities as configured in the Bayes Nets. of the evidence variables as defined in the network.
 
 
+## Law of Conditional Probability
+
+<br>
+
+For any two events A and B:
+
+**P(A|B) = P(A, B)/P(B)**
+
+Where:
+
+- P(A|B) is the probability of event A occurring given that event B has occurred
+- P(A, B) or P(A ∩ B) is the probability of both events A and B occurring (intersection)
+- P(B) is the probability of event B occurring
+
+This can be rearranged to give us the multiplication rule: P(A ∩ B) = P(A|B) × P(B)
+
+Key properties:
+
+0 ≤ P(A|B) ≤ 1
+P(B) must be > 0
+P(A|B) ≠ P(B|A) in general
+
+When A and B are independent event,  P(A ∩ B) = P(A)P(B)
+
+**P(A|B) = P(A)**
+
+<br>
+
+## Law of Total Probability
+
+<br>
+
+For any events A and B, and a set of mutually exclusive and exhaustive events {C, ¬C}:
+
+**P(A|B) = P(A|C,B)P(C|B) + P(A|¬C,B)P(¬C|B)**
+
+Where:
+
+- P(A|B) is the total conditional probability of A given B
+- {C, ¬C} form a partition of the sample space (meaning C and ¬C are:)
+- Mutually exclusive: P(C ∩ ¬C) = 0
+- Exhaustive: P(C) + P(¬C) = 1
+- P(C|B) + P(¬C|B) = 1
+
+This is a special case of the more general Law of Total Probability: For any event A and a partition {C₁, C₂, ..., Cₙ}: 
+
+**P(A) = ∑ᵢ P(A|Cᵢ)P(Cᵢ)**
+
+<br>
+
+We start with the definition of conditional probability for P(A|B):
+
+**P(A|B) = P(A,B)/P(B)**
+
+Since C and ¬C partition the sample space, we can split P(A,B):
+
+P(A,B) = P(A,B,C) + P(A,B,¬C)
+P(A|B) = [P(A,B,C) + P(A,B,¬C)]/P(B)
+
+Use the chain rule on each term:
+
+P(A,B,C) = P(A|B,C)P(B,C) = P(A|B,C)P(C|B)P(B) = P(B)P(C|B)P(A| B,C)
+P(A,B,¬C) = P(A|B,¬C)P(B,¬C) = P(A|B,¬C)P(¬C|B)P(B) = P(B)P(¬C|B)P(A| B,¬C)
+
+Substituting back:
+
+P(A|B) = [P(A|B,C)P(C|B)P(B) + P(A|B,¬C)P(¬C|B)P(B)]/P(B)
+P(A|B) = P(A|C,B)P(C|B) + P(A|¬C,B)P(¬C|B)
+
+This shows how we can express P(A|B) in terms of the conditional probabilities involving C and ¬C.
+
+<br>
+
+## Chain Rule of Probability
+
+<br>
+
+The general formula for the joint probability of multiple events is known as the chain rule of probability or the general 
+product rule. For n events A₁, A₂, ..., Aₙ, the general formula is:
+
+   **P(A₁, A₂, ..., Aₙ) = P(A₁) * P(A₂|A₁) * P(A₃|A₁,A₂) * ... * P(Aₙ|A₁,A₂,...,Aₙ₋₁)**
+
+
+
+
+
 # CHAPTER-3: Spam Classifier with Naive Bayes
 
 
@@ -810,18 +896,8 @@ follows:
    4. Gibbs sampling: initiates an arbitrary state and generates the next state by randomly sampling a non-evidence variable, 
       while keeping all evidence variables fixed.
 
-<br>
 
-## Chain Rule of Probability
-
-<br>
-
-The general formula for the joint probability of multiple events is known as the chain rule of probability or the general 
-product rule. For n events A₁, A₂, ..., Aₙ, the general formula is:
-
-   **P(A₁, A₂, ..., Aₙ) = P(A₁) * P(A₂|A₁) * P(A₃|A₁,A₂) * ... * P(Aₙ|A₁,A₂,...,Aₙ₋₁)**
-
-In our specific case with cancer (C) and two test results (T1 and T2), we have:
+In our specific case with cancer (C) and two test results (T1 and T2), we have using chgain rule of probability:
 
    P(C, T1=+, T2=+) = P(C) * P(T1=+|C) * P(T2=+|C,T1=+)
 
