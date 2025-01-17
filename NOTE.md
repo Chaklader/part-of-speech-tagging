@@ -753,14 +753,35 @@ The symbol ⊥ (inverted T) represents "independence" in probability theory. So:
 1. A ⊥ B means "A is independent of B"
    - P(A|B) = P(A) or equivalently P(A,B) = P(A)P(B)
 
+Example: Consider a simple case where:
+
+A = "Taking an umbrella"
+B = "Wearing a raincoat"
+C = "It's raining"
+
+Initially, your choice of taking an umbrella might be independent of wearing a raincoat (A ⊥ B). But if you know it's raining (conditioning on C), these choices become dependent because people tend to use either one or both when it rains
+This phenomenon is known as "explaining away"
+
+
 2. A ⊥ B|C means "A is conditionally independent of B given C"
    - P(A|B,C) = P(A|C) or P(A,B|C) = P(A|C)P(B|C)
 
+
+Example:
+
+A = "Fire alarm going off"
+B = "Sprinklers activated"
+C = "Fire in building"
+
+Given that we know there's a fire (C), the fire alarm and sprinklers might activate independently (A ⊥ B|C). But without knowing about the fire, seeing the sprinklers on makes the fire alarm more likely (and vice versa), so A and B are not independent
+
 The diagram shows that:
+
 - A and B by themselves are independent (top row)
 - A and B are conditionally independent given C (common cause)
 
 The False statements indicate that:
+
 1. Absolute independence doesn't imply conditional independence
 2. Conditional independence doesn't imply absolute independence
 
@@ -768,9 +789,6 @@ This is important in Bayesian networks where:
 - Variables can be dependent but conditionally independent
 - Variables can be independent but conditionally dependent
 - Having a common cause (C) can create dependencies between otherwise independent variables
-–––––––––––––––
-
-
 
 
 There are two algorithms that to compute exact inferences:
@@ -792,21 +810,20 @@ follows:
    4. Gibbs sampling: initiates an arbitrary state and generates the next state by randomly sampling a non-evidence variable, 
       while keeping all evidence variables fixed.
 
-In the final lesson, we will learn the Hidden Markov Model (HMM) and its application in the Natural Language Processing task 
-to tag Parts of Speech. HMM assumes unobservable states and computes the transition and emission probabilities from one state 
-to another.
+<br>
 
+## Chain Rule of Probability
 
+<br>
 
 The general formula for the joint probability of multiple events is known as the chain rule of probability or the general 
 product rule. For n events A₁, A₂, ..., Aₙ, the general formula is:
 
-P(A₁, A₂, ..., Aₙ) = P(A₁) * P(A₂|A₁) * P(A₃|A₁,A₂) * ... * P(Aₙ|A₁,A₂,...,Aₙ₋₁)
-
+   **P(A₁, A₂, ..., Aₙ) = P(A₁) * P(A₂|A₁) * P(A₃|A₁,A₂) * ... * P(Aₙ|A₁,A₂,...,Aₙ₋₁)**
 
 In our specific case with cancer (C) and two test results (T1 and T2), we have:
 
-P(C, T1=+, T2=+) = P(C) * P(T1=+|C) * P(T2=+|C,T1=+)
+   P(C, T1=+, T2=+) = P(C) * P(T1=+|C) * P(T2=+|C,T1=+)
 
 However, we typically assume that the test results are conditionally independent given the disease status. This means that 
 knowing the result of one test doesn't affect the probability of the result of the other test, given that we know whether 
@@ -816,7 +833,7 @@ the person has cancer or not. Under this assumption:
 
 Which is why we can simplify to:
 
-   P(C, T1=+, T2=+) = P(C) * P(T1=+|C) * P(T2=+|C)
+   **P(C, T1=+, T2=+) = P(C) * P(T1=+|C) * P(T2=+|C)**
 
 This assumption of conditional independence is common in many probabilistic models, including Naive Bayes classifiers, but 
 it's important to recognize that it's an assumption that may not always hold in real-world scenarios.
@@ -824,12 +841,11 @@ it's important to recognize that it's an assumption that may not always hold in 
 
 General form of Bayes' theorem:
 
-   P(A|B) = P(B|A) * P(A) / P(B)
+   **P(A|B) = P(B|A) * P(A) / P(B)**
 
 In our specific case:
 
-   P(C|T1=+,T2=+) = [P(T1=+,T2=+|C) * P(C)] / P(T1=+,T2=+)
-
+   **P(C|T1=+,T2=+) = [P(T1=+,T2=+|C) * P(C)] / P(T1=+,T2=+)**
 
 Where:
 - A is C (having cancer)
@@ -839,48 +855,46 @@ Breaking it down further:
 
 1. P(T1=+,T2=+|C) * P(C) is equivalent to P(C,T1=+,T2=+), by the chain rule of probability:
 
-   P(C,T1=+,T2=+) = P(T1=+,T2=+|C) * P(C)
+   **P(C,T1=+,T2=+) = P(T1=+,T2=+|C) * P(C)**
 
-2. P(T1=+,T2=+) in the denominator can be expanded using the law of total probability:
+2. P(T1=+,T2=+) in the denominator can be expanded using the law of total probability. The Law of Total Probability states that for any 
+   event B and a set of mutually exclusive and exhaustive events A₁, A₂, ..., Aₙ:
+
+   **P(B) = P(B|A₁)P(A₁) + P(B|A₂)P(A₂) + ... + P(B|Aₙ)P(Aₙ)**
    
-   P(T1=+,T2=+) = P(T1=+,T2=+|C) * P(C) + P(T1=+,T2=+|¬C) * P(¬C)
+   So, we find:
+
+   **P(T1=+,T2=+) = P(T1=+,T2=+|C) * P(C) + P(T1=+,T2=+|¬C) * P(¬C)**
 
 So, the full expansion of the formula in terms of the general Bayes' theorem would be:
 
-   P(C|T1=+,T2=+) = [P(T1=+,T2=+|C) * P(C)] / [P(T1=+,T2=+|C) * P(C) + P(T1=+,T2=+|¬C) * P(¬C)]
-   P(C|T1=+,T2=+) = P(C,T1=+,T2=+) / P(C,T1=+,T2=+) + P(¬C,T1=+,T2=+)
-   P(C|T1=+,T2=+) = P(C,T1=+,T2=+) / P(T1=+,T2=+)
+   P(C|T1=+,T2=+) = [P(T1=+,T2=+|C) * P(C)] / P(T1=+,T2=+)
+
+   **P(C|T1=+,T2=+) = P(C,T1=+,T2=+) / P(T1=+,T2=+)**
+
+
+This is a direct application of the definition of conditional probability:
+
+For any events X and Y: P(X|Y) = P(X,Y)/P(Y)
+
+In our case:
+
+X is the event C (having cancer)
+Y is the joint event (A,B)
+
+We can rewrite the equation for 3 events A, B, and C as:
+
+   **P (C| A, B) = P (C, A, B) / P (A, B)**
 
 This form directly shows how we're updating our prior belief P(C) based on the likelihood of the test results given cancer 
 P(T1=+,T2=+|C) and normalizing it by the total probability of getting these test results.
 
 
-### Bayes Rule
+<br>
 
+## Summary: Probability Theory
 
-   P(A|B) = P(B|A) P(A) / P(B) 
-   P(¬A|B) = P(B|¬A) P(¬A) / P(B)
-   
-   P(A|B) + P(¬A|B) = 1
-   
-   P'(A|B) = P(B|A) P(A)
-   P'(¬A|B) = P(B|¬A) P(¬A)
-   
-   P(A|B) = η P'(A|B)
-   P(¬A|B) = η P'(¬A|B)
-   
-   η = (P'(A|B) + P'(¬A|B))^-1
-
-
-These formulas represent various forms and implications of Bayes' Rule in probability theory. The prime notation (P') is 
-used to denote unnormalized probabilities, and η (eta) represents a normalization factor.
-
-
-Summary: Two-Test Cancer Screening Problem
-
-
-### Summary: Probability Theory
-
+<br>
 
    1. Bayesian Inference:
       - Uses Bayes' theorem to update probabilities based on new evidence.
@@ -901,91 +915,9 @@ Summary: Two-Test Cancer Screening Problem
       - P(B) = P(B|A) * P(A) + P(B|¬A) * P(¬A)
 
 
-Problem Setup
-
-- P(C) = 0.01 (prior probability of cancer)
-- P(+|C) = 0.9 (test sensitivity)
-- P(-|¬C) = 0.8 (test specificity)
-- Two independent tests performed: T1 and T2
-
-
-Solution Approach
-
-   1. Calculate joint probabilities:
-      P(C,T1=+,T2=+) = P(C) * P(T1=+|C) * P(T2=+|C)
-      P(¬C,T1=+,T2=+) = P(¬C) * P(T1=+|¬C) * P(T2=+|¬C)
-
-   2. Calculate total probability of two positive tests:
-      P(T1=+,T2=+) = P(C,T1=+,T2=+) + P(¬C,T1=+,T2=+)
-
-   3. Apply Bayes' theorem:
-      P(C|T1=+,T2=+) = P(C,T1=+,T2=+) / P(T1=+,T2=+)
-
-Calculations
-
-   1. P(C,T1=+,T2=+) = 0.01 * 0.9 * 0.9 = 0.0081
-   2. P(¬C,T1=+,T2=+) = 0.99 * 0.2 * 0.2 = 0.0396
-   3. P(T1=+,T2=+) = 0.0081 + 0.0396 = 0.0477
-   4. P(C|T1=+,T2=+) = 0.0081 / 0.0477 = 0.1698
-
-Final Result:
-P(C|T1=+,T2=+) ≈ 0.1698 or 16.98%
-
-Interpretation:
-- Despite two positive tests, the probability of having cancer is only about 17%.
-- This counterintuitive result is due to the low prior probability of cancer (1%).
-- Demonstrates the importance of considering base rates in diagnostic testing.
-- Shows how multiple tests can increase diagnostic confidence, but not as dramatically as one might expect.
-
-Key Takeaways:
-1. Multiple positive tests increase the probability of the condition, but the increase may be less than intuitively expected.
-2. Low-prevalence conditions can still have relatively low probabilities even after positive tests.
-3. Bayesian reasoning is crucial for correctly interpreting medical test results.
-4. The assumption of conditional independence between tests simplifies calculations but may not always hold in reality.
-
-
-
-To find P(T2=+ | T1=+), we need to use the concept of conditional independence and the law of total probability. Here's 
-how we can calculate it:
-
-1. Given:
-   P(C) = 0.01
-   P(+|C) = 0.9
-   P(-|¬C) = 0.8
-
-2. We can derive:
-   P(¬C) = 1 - P(C) = 0.99
-   P(+|¬C) = 1 - P(-|¬C) = 1 - 0.8 = 0.2
-
-3. Using the law of total probability:
-   P(T2=+ | T1=+) = P(T2=+ | T1=+, C) * P(C | T1=+) + P(T2=+ | T1=+, ¬C) * P(¬C | T1=+)
-
-4. Due to conditional independence:
-   P(T2=+ | T1=+, C) = P(T2=+ | C) = 0.9
-   P(T2=+ | T1=+, ¬C) = P(T2=+ | ¬C) = 0.2
-
-5. We need to calculate P(C | T1=+) using Bayes' theorem:
-   P(C | T1=+) = [P(T1=+ | C) * P(C)] / [P(T1=+ | C) * P(C) + P(T1=+ | ¬C) * P(¬C)]
-                = (0.9 * 0.01) / (0.9 * 0.01 + 0.2 * 0.99)
-                ≈ 0.0435
-
-6. P(¬C | T1=+) = 1 - P(C | T1=+) ≈ 0.9565
-
-7. Now we can calculate:
-   P(T2=+ | T1=+) = 0.9 * 0.0435 + 0.2 * 0.9565
-                  ≈ 0.0391 + 0.1913
-                  ≈ 0.2304
-
-Therefore, P(T2=+ | T1=+) ≈ 0.2304 or about 23.04%.
-
-This result shows that the probability of the second test being positive, given that the first test was positive, is about 23.04%. 
-This is higher than the base rate of positive tests (which would be around 2.7% if we calculated P(T=+) directly), but lower than 
-one might intuitively expect, demonstrating the importance of careful probability calculations in such scenarios.
-
-
 P(A | X, Y) is read as "the probability of A given X and Y" or "the probability of A in the presence of both X and Y."
 
-More specifically:
+**More specifically:**
 
 1. P(A | X, Y) represents the conditional probability of event A occurring, given that both events X and Y have occurred.
 
@@ -1007,27 +939,29 @@ This concept is crucial in probability theory, especially in complex scenarios w
 influence the outcome we're interested in.
 
 
+
+### Problem: Conditional Probability (Happiness and Raise)
+
 R = Raise (at work)
 S = Sunny
 H = Happy 
 
-
-––––––––––––––––––––––––––––––––––––––––
-
-
 Given probabilities:
+
 P(S) = 0.7
 P(R) = 0.01
 P(R|S) = 0.01
 P(R|H,S) = 0.0142
 
 Conditional probabilities:
+
 P(H|S,R) = 1
 P(H|¬S,R) = 0.9  
 P(H|S,¬R) = 0.7
 P(H|¬S,¬R) = 0.1
 
 Formula:
+
 P(R|H,S) = P(H|R,S) × P(R|S) / P(H|S)
          = P(H|R,S) × P(R) / [P(H|R,S)P(R) + P(H|¬R,S)P(¬R)]
 
