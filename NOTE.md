@@ -1022,6 +1022,50 @@ R = Raise (at work)
 S = Sunny
 H = Happy 
 
+
+1. Start with Bayes' Theorem for multiple conditions for someone is happy in a sunny day, the probability of getting a raise is:
+
+   P(R|H,S) = P(R,H,S) / P(H,S)
+
+2. For the numerator P(R,H,S), use the chain rule:
+
+   P(R,H,S) = P(H|R,S) × P(R,S)
+   P(R,S) = P(R|S) × P(S)
+
+Therefore: 
+
+   **P(R,H,S) = P(H|R,S) × P(R|S) × P(S)**
+
+
+3. For the denominator P(H,S), use the law of total probability:
+
+   P(H,S) = P(H|S) × P(S)
+
+4. Putting it all together:
+
+P(R|H,S) = P(R,H,S) / P(H,S)
+          = [P(H|R,S) × P(R|S) × P(S)] / [P(H|S) × P(S)]
+          = P(H|R,S) × P(R|S) / P(H|S)
+
+5. The Law of Total Probability states that for any events A and B, and a complete set of mutually exclusive events C and ¬C:
+
+   **P(A|B) = P(A|C,B)P(C|B) + P(A|¬C,B)P(¬C|B)**
+
+So: 
+
+   P(H|S) = P(H|R,S)P(R|S) + P(H|¬R,S)P(¬R|S)
+   **P(H|S) = P(H|R,S)P(R) + P(H|¬R,S)P(¬R)** [Note: R and S are independent]
+
+6. Finally it becomes:
+
+   P(R|H,S) = P(H|R,S) × P(R|S) / P(H|S)
+            = P(H|R,S) × P(R) / [P(H|R,S)P(R) + P(H|¬R,S)P(¬R)]
+
+   **P(R|H,S) = P(H|R,S) × P(R) / [P(H|R,S)P(R) + P(H|¬R,S)P(¬R)]**
+
+<br>
+
+
 Given probabilities:
 
 P(S) = 0.7
@@ -1036,187 +1080,157 @@ P(H|¬S,R) = 0.9
 P(H|S,¬R) = 0.7
 P(H|¬S,¬R) = 0.1
 
-Formula:
 
-P(R|H,S) = P(H|R,S) × P(R|S) / P(H|S)
-         = P(H|R,S) × P(R) / [P(H|R,S)P(R) + P(H|¬R,S)P(¬R)]
-
-
-This appears to be a Bayesian network with three variables:
-- S (possibly some condition)
-- R (possibly some risk factor)
-- H (possibly health outcome)
-
-The graph shows S and R both influencing H.
-
-The calculations show:
-1. Using Bayes' Theorem to find P(R|H,S)
-2. Breaking down P(H|S) using total probability theorem
-3. Given P(R|H,S) = 0.0142 is calculated from:
-   
-   = (1 × 0.01) / (0.01 + 0.7)
-   
-
-The incomplete calculation at the bottom suggests they're working through the formula step by step but haven't finished the division.
-
-Ah, now with context let me explain the formula for calculating probability of getting a Raise given Happiness and Sunny weather:
-
-P(R|H,S) = P(H|R,S) × P(R|S) / P(H|S)
-
-Let's break it down step by step:
-
-1. First Form Using Bayes' Rule:
-
-P(R|H,S) = P(H|R,S) × P(R|S) / P(H|S)
-
-Where:
-- P(R|H,S): Probability of Raise given Happy and Sunny
-- P(H|R,S): Probability of Happy given Raise and Sunny (= 1)
-- P(R|S): Probability of Raise when Sunny (= 0.01)
-- P(H|S): Probability of Happy when Sunny (denominator)
-
-
-2. Expanded Form using Total Probability for denominator:
-
-= P(H|R,S) × P(R) / [P(H|R,S)P(R) + P(H|¬R,S)P(¬R)]
-
-Where:
-- P(H|R,S)P(R): Probability of Happy when Raise & Sunny
-- P(H|¬R,S)P(¬R): Probability of Happy when No Raise but Sunny
-
-
-3. Plugging in values:
+P(R|H,S) = P(H|R,S) × P(R) / [P(H|R,S)P(R) + P(H|¬R,S)P(¬R)]
 
 = (1 × 0.01) / [1 × 0.01 + 0.7 × 0.99]
 = 0.01 / (0.01 + 0.693)
 = 0.0142
 
-
-This shows that even if someone is happy on a sunny day, the probability they got a raise is still quite low (about 1.42%).
-
-
-Let me break down both equations and show how they relate:
-
-1. First Equation (Bayes' Rule):
-
-P(R|H,S) = P(H|R,S) × P(R|S) / P(H|S)
-
-This reads as: Probability of Raise given Happiness and Sunny equals:
-- P(H|R,S): Probability of being Happy given Raise and Sunny
-- P(R|S): Probability of getting Raise when Sunny
-- Divided by P(H|S): Total probability of being Happy when Sunny
-
-2. Second Equation (Expansion):
-
-= P(H|R,S) × P(R) / [P(H|R,S)P(R) + P(H|¬R,S)P(¬R)]
-
-Here we're expanding P(H|S) in denominator using Total Probability Theorem:
-- P(H|S) = P(H|R,S)P(R) + P(H|¬R,S)P(¬R)
-  * First term: Probability of Happy if got Raise
-  * Second term: Probability of Happy if no Raise
-
-3. The Link:
-- P(R|S) in first equation becomes P(R) in second
-- P(H|S) in denominator is expanded to cover all cases
-- This expansion ensures we account for all ways someone could be happy on a sunny day
-
-4. With Values:
-
-P(R|H,S) = 1 × 0.01 / [1 × 0.01 + 0.7 × 0.99]
-         = 0.01 / [0.01 + 0.693]
-         = 0.01 / 0.703
-         = 0.0142
-
-
-P(R|S) changes to P(R)
-
-In the formulas:
-
-P(R|H,S) = P(H|R,S) × P(R|S) / P(H|S)
-becomes
-P(R|H,S) = P(H|R,S) × P(R) / [P(H|R,S)P(R) + P(H|¬R,S)P(¬R)]
-
-
-This change is based on an assumption of independence between R (Raise) and S (Sunny), meaning:
-- P(R|S) = P(R)
-- Weather doesn't affect probability of getting a raise
-
-However, looking at the given probabilities:
-
-P(R) = 0.01
-P(R|S) = 0.01
-
-
-While these values are equal in this case, we shouldn't automatically assume P(R|S) = P(R) without checking independence. I should have explained that this transformation is based on either:
-1. An explicit independence assumption, or
-2. The given probabilities showing R and S are independent
+If someone is happy on a sunny day, the probability they got a raise is 0.0142, which is **1.42%**
 
 
 
-### What is the probability of a raise given that all I know is that I’m happy? 
+## The probability of a raise given I’m happy with no information about the weather:
 
 
-P(S) = 0.7      P(H|S,R) = 1
-P(R) = 0.01     P(H|¬S,R) = 0.9
-P(R|S) = 0.01   P(H|S,¬R) = 0.7
-P(R|H,S) = 0.0142 P(H|¬S,¬R) = 0.1
-P(R|H) = [blank]
+This is an application of the Law of Total Probability across two independent variables (S and R). Let me explain how we get this:
 
-P(H|R)P(R)/P(H) = 0.97•0.01/0.5245
+For any event A and a partition of the sample space into mutually exclusive and exhaustive events, the Law of Total Probability states: 
 
-P(H|R) = P(H|R,S)P(S) + P(H|R,¬S)P(¬S) = 0.97
+   **P(A) = ∑ᵢ P(A|Cᵢ)P(Cᵢ)**
 
-P(H) = P(H|S,R)P(S,R) + P(H|¬S,R)P(¬S,R)
-     + P(H|S,¬R)P(S,¬R) + P(H|¬S,¬R)P(¬S,¬R)
-     = 1•0.7•0.01... = 0.5245
+In this case:
+
+We want P(H) (probability of being happy) and We have two binary variables S and R, creating four mutually exclusive and exhaustive events:
+
+1. (S,R): Sunny and Raise
+2. (¬S,R): Not Sunny and Raise
+3. (S,¬R): Sunny and No Raise
+4. (¬S,¬R): Not Sunny and No Raise
+
+Applying the Law of Total Probability across all four possibilities: 
+
+   **P(H) = P(H|S,R)P(S,R) + P(H|¬S,R)P(¬S,R) + P(H|S,¬R)P(S,¬R) + P(H|¬S,¬R)P(¬S,¬R)**
+
+This formula accounts for all possible ways someone could be happy:
+
+1. Happy when sunny and got raise: P(H|S,R)P(S,R)
+2. Happy when not sunny but got raise: P(H|¬S,R)P(¬S,R)
+3. Happy when sunny but no raise: P(H|S,¬R)P(S,¬R)
+4. Happy when not sunny and no raise: P(H|¬S,¬R)P(¬S,¬R)
 
 
-To find P(R|H), we use Bayes' Theorem:
+1. Calculate P(S,R):
+
+   Since S and R are independent (given P(R|S) = P(R) = 0.01)
+   P(S,R) = P(S)P(R) = 0.7 × 0.01 = 0.007
+
+2. Calculate P(¬S,R):
+
+   P(¬S) = 1 - P(S) = 1 - 0.7 = 0.3
+   P(¬S,R) = P(¬S)P(R) = 0.3 × 0.01 = 0.003
+
+3. Calculate P(S,¬R):
+
+   P(¬R) = 1 - P(R) = 1 - 0.01 = 0.99
+   P(S,¬R) = P(S)P(¬R) = 0.7 × 0.99 = 0.693
+
+4. Calculate P(¬S,¬R):
+
+   P(¬S,¬R) = P(¬S)P(¬R) = 0.3 × 0.99 = 0.297
+
+Now plug everything into the formula: 
+
+   P(H) = (1 × 0.007) + (0.9 × 0.003) + (0.7 × 0.693) + (0.1 × 0.297) = 0.007 + 0.0027 + 0.4851 + 0.0297 = 0.5245
+
+Therefore, **P(H) = 0.5245 or about 52.45%**, 
+
+This means there's about a 52.45% chance of being happy overall, considering all possible combinations of weather (sunny/not sunny) and raise status (raise/no raise).
+
+To find probability of raise when I'm happy P(R|H), we use Bayes' Theorem:
 
 P(R|H) = P(H|R)P(R)/P(H)
        = 0.97 × 0.01/0.5245
        = 0.0097/0.5245
-       = 0.0185 (to 4 decimal places)
+       = 0.0185 
 
 
-This calculation shows:
-1. P(H|R) = 0.97 (probability of being happy given a raise)
-2. P(R) = 0.01 (prior probability of raise)
-3. P(H) = 0.5245 (total probability of being happy)
-
-Therefore, if you're happy, the probability you got a raise is about 1.85%, which is higher than the base rate of 1% but still quite low - suggesting happiness often comes from factors other than raises!
+Therefore, if you're happy, the probability you got a raise is about **1.85%**, which is higher than the base rate of 1% but still quite low - suggesting happiness often comes from factors other than raises!
 
 
-### What is the probability of a raise given that I look happy and it’s not sunny? 
-
-Let me break down calculating P(R|H,¬S):
+### Probability of a raise given that I look happy and it’s not sunny:
 
 
-P(S) = 0.7        P(H|S,R) = 1
-P(R) = 0.01       P(H|¬S,R) = 0.9
-P(R|S) = 0.01     P(H|S,¬R) = 0.7
-                  P(H|¬S,¬R) = 0.1
+1. Applying Bayes' Theorem:
 
-Formula shown:
-P(H|R,¬S)P(R|¬S)/P(H|¬S) = 0.9•0.01/[0.9•0.01 + 0.1•0.99]
-                          = 0.009/(0.009 + 0.099)
+   P(R|H,¬S) = P(H,¬S|R)P(R)/P(H,¬S)
 
 
-2. Using Bayes' Theorem:
+2. The Chain Rule states that for any events A, B, and C: 
 
-P(R|H,¬S) = P(H|R,¬S)P(R|¬S)/P(H|¬S)
-          = 0.009/(0.009 + 0.099)
-          = 0.009/0.108
-          = 0.0833
+   P(A,B|C) = P(A|B,C)P(B|C)
+
+So: 
+
+   P(H,¬S|R) = P(H|¬S,R)P(¬S|R)
+   P(H,¬S|R) = P(H|¬S,R)P(¬S) [Note: Since R and S are independent, P(¬S|R) = P(¬S)]
 
 
-Therefore, P(R|H,¬S) = 0.0833 (to 4 decimal places)
+3. Therefore:
+
+   P(R|H,¬S) = [P(H|R,¬S)P(¬S)P(R)]/[P(H,¬S)]
+
+4. For denominator P(H,¬S):
+
+   P(H,¬S) = P(H|¬S)P(¬S)
+
+5. Substituting:
+
+   P(R|H,¬S) = [P(H|R,¬S)P(¬S)P(R)]/[P(H|¬S)P(¬S)]
+
+6. The P(¬S) terms cancel out:
+
+   P(R|H,¬S) = P(H|R,¬S)P(R)/P(H|¬S)
+
+7. Since R and S are independent:
+
+   P(R) = P(R|¬S) = P(R|S)
+   P(R|H,¬S) = P(H|R,¬S)P(R|¬S)/P(H|¬S)
+
+8. For P(H|¬S), we use the Law of Total Probability:
+
+   P(H|¬S) = P(H|R,¬S)P(R|¬S) + P(H|¬R,¬S)P(¬R|¬S)
+
+9. Substituting:
+
+   **P(R|H,¬S) = P(H|R,¬S)P(R|¬S)/[P(H|R,¬S)P(R|¬S) + P(H|¬R,¬S)P(¬R|¬S)]**
+
+<br>
+
+Our values:
+
+   P(S) = 0.7        P(H|S,R) = 1
+   P(R) = 0.01       P(H|¬S,R) = 0.9
+   P(R|S) = 0.01     P(H|S,¬R) = 0.7
+                     P(H|¬S,¬R) = 0.1
+
+So, probability of a raise given that I look happy and it’s not sunny:
+
+P(H|R,¬S)P(R|¬S)/P(H|¬S) 
+   = 0.9x0.01/[0.9x0.01 + 0.1x0.99]
+   = 0.009/(0.009 + 0.099)
+   = 0.0833
+
 
 This means if you're happy when it's not sunny, there's about an 8.33% chance you got a raise. This is higher than:
-- Base rate of raises (1%)
-- Probability of raise given just happiness (1.85%)
+   - Base rate of raises (1%)
+   - Probability of raise given just happiness (1.85%)
 
 This makes sense because being happy on a non-sunny day is more likely to be due to something like a raise rather than the weather.
+
+<br>
+<br>
 
 
 # Bayes Network Parameter Computation
