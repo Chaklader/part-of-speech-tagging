@@ -1237,7 +1237,16 @@ This makes sense because being happy on a non-sunny day is more likely to be due
 
 Each node in a Bayesian network needs a set of parameters to define its conditional probability distribution. The number of parameters needed follows this formula:
 
-Parameters = (Number of states - 1) × (Product of parent states)
+**Parameters = (|S| - 1) × ∏ᵢ |Pᵢ|**
+
+Where:
+- |S| = Number of states for the node
+- |Pᵢ| = Number of states for the i-th parent
+- ∏ᵢ = Product over all parents
+
+Generally:
+
+ **Parameters = (Number of states - 1) × (Product of parent states)**
 
 
 ## Why This Formula Works
@@ -1252,7 +1261,6 @@ Parameters = (Number of states - 1) × (Product of parent states)
    - Multiply parent states together to get total combinations
    - Example: Two binary parents = 2 × 2 = 4 combinations
 
-## Example Calculation
 For a node with:
 - 4 states (needs 3 parameters per combination)
 - Two parents: one binary (2 states) and one ternary (3 states)
@@ -1263,6 +1271,7 @@ Parameters = (4-1) × (2 × 3)
 
 
 ## Common Cases
+
 1. Root nodes (no parents):
    - Only need (states - 1) parameters
    - Single state root nodes need 0 parameters
@@ -1276,16 +1285,41 @@ Parameters = (4-1) × (2 × 3)
    - Shows why network structure matters
 
 
-
 ### Quiz: How many probability values are required to specify this Bayes Network?
 
+<br>
+
 Graph:
-      A(1)
+      
+```      
+A(1)
    2/  |2  \2
   B(2) C(2) D(2)
    |     \   /
   2|      \ /
    E(2)   F(4)
+```
+
+<br>
+
+```mermaid
+graph TD
+    A((A1)) -->|2| B((B2))
+    A -->|2| C((C2))
+    A -->|2| D((D2))
+    B -->|2| E((E2))
+    C --> F((F4))
+    D --> F
+
+style A fill:#85C1E9
+style B fill:#85C1E9
+style C fill:#85C1E9
+style D fill:#85C1E9
+style E fill:#85C1E9
+style F fill:#85C1E9
+```
+
+<br>
 
 Note: Numbers in parentheses show states per node
 
@@ -1314,25 +1348,57 @@ Total Parameters = 0 + 3 + 2 + 12 = 17
 
 Answer: 13 parameters are needed to specify this network fully.
 
-Note: For each node, we use formula:
-(number of states - 1) × (product of parent states)
+Node | States | Parents | Calculation | Parameters
+-----|---------|---------------------|-------------------|------------
+A    | 1       | None                | 1-1 = 0          | 0
+B    | 2       | A(1)                | (2-1)×1 = 1      | 1
+C    | 2       | A(1)                | (2-1)×1 = 1      | 1
+D    | 2       | A(1)                | (2-1)×1 = 1      | 1
+E    | 2       | B(2)                | (2-1)×2 = 2      | 2
+F    | 4       | C(2),D(2)           | (4-1)×(2×2) = 12 | 12
+-----|---------|---------------------|-------------------|------------
+Total Parameters: 17
 
 
 ### Quiz: How many probability values are required to specify this Bayes Network?
 
+<br>
 
+Graph:
 
+```
+A(1)   B(1)   C(1)
+   \     |     /  |
+   \    |    /   |
+   \   |   /    |
+      D(2)       |
+   /    \   \   |
+   /      \   \  |
+   E(2)    F(2)  G(4)
+```
 
-  A(1)   B(1)   C(1)
-    \     |     /  |
-     \    |    /   |
-      \   |   /    |
-        D(2)       |
-      /    \   \   |
-     /      \   \  |
-    E(2)    F(2)  G(4)
+<br>
 
+```mermaid
+graph TD
+    A((A1)) --> D((D2))
+    B((B1)) --> D
+    C((C1)) --> D
+    C --> G((G4))
+    D --> E((E2))
+    D --> F((F2))
+    D --> G
 
+    style A fill:#85C1E9
+    style B fill:#85C1E9
+    style C fill:#85C1E9
+    style D fill:#85C1E9
+    style E fill:#85C1E9
+    style F fill:#85C1E9
+    style G fill:#85C1E9
+```
+
+<br>
 Parameter Calculation Table:
 
 Node | States | Parents              | Calculation        | Parameters
@@ -1380,79 +1446,147 @@ Formula used for each node:
 Answer: 19 parameters are needed to specify this Bayes Network.
 
 
+### CASE-A: Car Start Failure Analysis in Bayesian Network
 
-### Calculate the number of parameters in this Bayesian Network
+<br>
 
-For a Bayesian Network, the number of parameters is calculated based on:
-1. Number of possible values for each node
-2. Number of possible values for each node's parents
+```mermaid
+graph TD
+   BA((Battery Age<br/>states:1)) --> BD((Battery Dead<br/>states:2<br/>params:2))
+   AB((Alternator Broken<br/>states:1)) --> NC((Not Charging<br/>states:2<br/>params:2))
+   FB((Fan Belt Broken<br/>states:1)) --> NC
+   NC --> BD
+   BD --> CW((Car Won't Start<br/>states:2<br/>total combinations:2¹⁶-1))
+   SB((Starter Broken<br/>states:1)) --> CW
+   FL((Fuel Line Broken<br/>states:1)) --> CW
 
-Formula for each node:
+   classDef root fill:#e6f3ff,font-size:12px
+   classDef intermediate fill:#fff2e6,font-size:12px
+   classDef target fill:#ffe6e6,font-size:12px
 
-Number of parameters = (Number of possible values - 1) × Number of possible parent combinations
+   class BA,AB,FB,SB,FL root
+   class BD,NC intermediate
+   class CW target
+```
 
+Parameters breakdown:
 
-In this case, each node is binary (True/False), so has 2 possible values, meaning we need 1 parameter per parent combination.
+1. Root nodes (no params needed):
 
-Let's count:
-1. Root nodes (no parents):
-   * battery age (1)
-   * alternator broken (1)
-   * fan belt broken (1)
-   * starter broken (1)
-   * fuel line broken (1)
+   Battery Age (1 state): 0
+   Alternator Broken (1 state): 0
+   Fan Belt Broken (1 state): 0
+   Starter Broken (1 state): 0
+   Fuel Line Broken (1 state): 0
 
-2. Single parent nodes:
-   * battery dead (2 parent combinations × 1)
-   * not charging (2 parents × 1)
+2. Intermediate nodes (2 states each, with parents):
 
-3. Multiple parent nodes contribute more parameters based on all possible parent combinations.
+   Battery Dead (2 states, with parents): 2 params
+   Not Charging (2 states, with parents): 2 params
 
-The total shown: 2¹⁶ - 1 = 65,535 represents the total possible combinations in the network.
+3. Target node:
 
+   Car Won't Start: contributes to 2¹⁶ - 1 = 65,535 possible combinations
 
-### Parameter count for each node in this Bayesian Network
-
-1. Root Nodes (1 parameter each as binary): 
-
-- battery age: 1
-- alternator broken: 1
-- fan belt broken: 1
-- starter broken: 1
-- fuel line broken: 1
-
-
-2. Single Parent Nodes:
-
-- battery dead (from battery age): 2¹-1 = 1
-- not charging (from alternator broken AND fan belt broken): 2²-1 = 3
+Total network parameters shown in diagram with states and parameter counts at each node.
 
 
-3. Multiple Parent/Complex Nodes:
+The network shows how mechanical failures propagate to affect whether the car will start, with both direct causes (starter, fuel line) and indirect causes through battery charging system.
 
-- battery meter (from battery dead): 2¹-1 = 1
-- battery flat (from battery dead AND not charging): 2²-1 = 3
-- no oil (from battery flat): 2¹-1 = 1
-- no gas (from battery flat): 2¹-1 = 1
-- lights (from battery meter): 2¹-1 = 1
-- oil light (from battery flat): 2¹-1 = 1
-- gas gauge (from battery flat AND no gas): 2²-1 = 3
-- dip stick (from no oil): 2¹-1 = 1
+<br>
+
+## CASE-B: Extended Car Diagnostic System in Bayesian Network
+
+<br>
+
+```mermaid
+graph TD
+    BA((Battery Age<br/>1)) --> BD((Battery Dead<br/>1))
+    AB((Alternator Broken<br/>1)) --> NC((Not Charging<br/>3))
+    FB((Fan Belt Broken<br/>1)) --> NC
+    BD --> BM((Battery Meter<br/>1))
+    BD --> BF((Battery Flat<br/>3))
+    NC --> BF
+    BF --> NO((No Oil<br/>1))
+    BF --> NG((No Gas<br/>1))
+    BM --> L((Lights<br/>1))
+    BF --> OL((Oil Light<br/>1))
+    BF --> GG((Gas Gauge<br/>3))
+    NG --> GG
+    NO --> DS((Dip Stick<br/>1))
+    BD --> CW((Car Won't Start<br/>remaining))
+    SB((Starter Broken<br/>1)) --> CW
+    FL((Fuel Line Broken<br/>1)) --> CW
+
+    classDef root fill:#e6f3ff
+    classDef intermediate fill:#fff2e6
+    classDef sensor fill:#e6ffe6
+    classDef target fill:#ffe6e6
+
+    class BA,AB,FB,SB,FL root
+    class BD,NC,BF,NO,NG intermediate
+    class BM,L,OL,GG,DS sensor
+    class CW target
+```
+
+### Parameter Calculation and Network Structure:
 
 
-4. Final Output Node:
+### 1. Root Nodes (5 parameters total):
+- Each binary node requires 1 parameter:
+  * Battery Age: 1
+  * Alternator Broken: 1
+  * Fan Belt Broken: 1
+  * Starter Broken: 1
+  * Fuel Line Broken: 1
 
-- car won't start (multiple parents): remaining parameters to reach 47
+### 2. Single Parent Nodes (4 parameters total):
+- Battery Dead:
+  * Single parent (Battery Age)
+  * Parameters = 2¹-1 = 1
+- Not Charging:
+  * Two parents (Alternator Broken, Fan Belt Broken)
+  * Parameters = 2²-1 = 3
+
+### 3. Multiple Parent/Complex Nodes (15 parameters total):
+Simple nodes (1 parameter each):
+- Battery Meter: 2¹-1 = 1 (from Battery Dead)
+- No Oil: 2¹-1 = 1 (from Battery Flat)
+- No Gas: 2¹-1 = 1 (from Battery Flat)
+- Lights: 2¹-1 = 1 (from Battery Meter)
+- Oil Light: 2¹-1 = 1 (from Battery Flat)
+- Dip Stick: 2¹-1 = 1 (from No Oil)
+
+Complex nodes (3 parameters each):
+- Battery Flat: 2²-1 = 3 (from Battery Dead AND Not Charging)
+- Gas Gauge: 2²-1 = 3 (from Battery Flat AND No Gas)
+
+### 4. Final Output Node (23 parameters):
+- Car Won't Start
+  * Multiple parent influences
+  * Remaining parameters to reach total of 47
+  * Parameters = 23
+
+### Total Network Parameters:
+- Root Nodes: 5
+- Single Parent: 4
+- Complex Nodes: 15
+- Final Output: 23
+- Total: 47 parameters
+
+This breakdown shows how parameter counts accumulate based on node complexity and parent relationships in the network.
+
+### Network Characteristics:
+- Shows both mechanical and electrical dependencies
+- Includes sensor readings and indicators
+- Demonstrates cascading effects of battery system failure
+- Incorporates both direct and indirect diagnostic indicators
+
+The network provides a comprehensive model for car diagnostic systems, showing how component failures affect both the car's operation and its diagnostic indicators.
 
 
-The total of 47 parameters represents all the conditional probabilities needed to fully specify this network.
-
-Each node's parameter count depends on:
-- Number of parents
-- 2^(number of parents) combinations
-- Subtract 1 because probabilities must sum to 1
-
-
+<br>
+<br>
 
 
 ### D-Separation in Bayesian Networks
@@ -1634,7 +1768,7 @@ Let's analyze each independence case:
    - Information can still flow through other paths
 
 The "passive" marking on D indicates it's not actively transmitting information, but can still be part of active paths.
-––––––––––––––––––––––––––––––––––––––––
+
 
 Given this new context:
 
