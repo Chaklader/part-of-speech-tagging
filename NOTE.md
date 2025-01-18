@@ -2041,9 +2041,75 @@ This example shows how complex networks can have multiple paths of information f
 
 <br>
 
-In this lesson, you will learn about probabilistic inference using Bayes Nets, i.e. how to answer questions that you are interested in, given certain inputs.
 
-We will first look into an enumeration algorithm to make exact inferences. The enumeration algorithm takes query and Bayes network as the inputs and outputs a probability distribution after computing the sums of products of conditional probabilities from the network. However, enumeration is hard to compute on large networks. We will learn a variable elimination algorithm to reduce the computations.
+## Inference in Bayesian Networks
+
+Inference is the process of calculating the probability of some variables given evidence about other variables in the network.
+
+### Types of Inference Questions
+
+### 1. Probability Queries
+- **P(Effect | Cause)**: What's the probability of an effect given its causes?
+  * Example: P(CarWontStart | BatteryDead)
+- **P(Cause | Effect)**: What's the probability of a cause given its effects?
+  * Example: P(BatteryDead | CarWontStart)
+
+### 2. Most Likely Explanation (MLE)
+- Finding the most probable assignment to all variables
+- Example: What's the most likely combination of problems if the car won't start?
+
+## Common Inference Tasks
+
+1. **Causal Inference**
+   - Reasoning from cause to effect
+   - Example: If the battery is dead, what's the probability the lights won't work?
+   
+2. **Diagnostic Inference**
+   - Reasoning from effect to cause
+   - Example: If the car won't start, what's the probability the battery is dead?
+
+3. **Intercausal Inference**
+   - Reasoning between causes of a common effect
+   - Example: If the car won't start and we know the battery is good, what's the probability the starter is broken?
+
+## Inference Methods
+
+1. **Exact Inference**
+   - Variable elimination
+   - Junction tree algorithms
+   - Gives precise probabilities
+   - Can be computationally expensive for large networks
+
+2. **Approximate Inference**
+   - Monte Carlo sampling
+   - Belief propagation
+   - Used when exact inference is too costly
+   - Trades accuracy for computational efficiency
+
+## Challenges in Inference
+
+1. **Computational Complexity**
+   - Exact inference is NP-hard in general
+   - Network size and structure affect complexity
+
+2. **Uncertainty Management**
+   - Dealing with incomplete or noisy evidence
+   - Handling conflicting evidence
+
+3. **Real-time Requirements**
+   - Many applications need quick responses
+   - Trade-off between accuracy and speed
+
+The key point about inference is that it allows us to:
+
+1. Use the network to answer probabilistic queries
+2. Update beliefs based on new evidence
+3. Make predictions about unobserved variables
+4. Understand cause-and-effect relationships in the system
+
+### enumeration algorithm
+
+The enumeration algorithm takes query and Bayes network as the inputs and outputs a probability distribution after computing the sums of products of conditional probabilities from the network. However, enumeration is hard to compute on large networks and we can use  variable elimination algorithm to reduce the computations.
 
 However, computing exact inferences by enumeration and variable elimination can be computationally expensive in large and well-connected networks. We can use samplings to approximate inferences instead. We will cover different sampling techniques, such as:
 
@@ -2059,10 +2125,10 @@ However, computing exact inferences by enumeration and variable elimination can 
 3. Independence
 4. Inference
 
+<br>
+<br>
 
-
-
-Bayesian Network:
+### Bayesian Network
 
 Burglary → Alarm ← Earthquake
             ↓        ↓
