@@ -1156,7 +1156,14 @@ P(R|H) = P(H|R)P(R)/P(H)
        = 0.0185 
 
 
-Therefore, if you're happy, the probability you got a raise is about **1.85%**, which is higher than the base rate of 1% but still quite low - suggesting happiness often comes from factors other than raises!
+Therefore, if you're happy, the probability you got a raise is about **1.85%**, which is higher than the base rate of 1% but still quite low - suggesting happiness often comes from factors other than raises!. 
+
+
+**Key Insights:**
+   - Being happy slightly increases the probability of having received a raise (from 1% to 1.85%).
+   - Sunny weather and happiness together only marginally increase the probability of a raise (to 1.42%).
+   - The overall probability of happiness (52.45%) is influenced more by sunny weather than by getting a raise, due to the 
+   low probability of getting a raise.
 
 
 ### Probability of a raise given that I look happy and it’s not sunny:
@@ -1237,7 +1244,47 @@ This makes sense because being happy on a non-sunny day is more likely to be due
 
 <br>
 
-A Bayesian network is a probabilistic model that shows relationships between different variables (nodes). Let me break this down with examples:
+A Bayesian Network (Bayes Net) is a probabilistic graphical model that represents a set of variables and their conditional 
+dependencies via a directed acyclic graph (DAG). Based on the information you've shared and the image, let's explain the 
+Bayes Net concept in more detail:
+
+1. Components of a Bayes Net:
+   - Random variables (In this case: S, R, H)
+   - Conditional independence relationships (shown by the graph structure)
+   - Probability distributions (given in the image)
+
+2. Structure:
+   The graph shows S (Sunny) and R (Raise) as parent nodes to H (Happiness), indicating that H is directly influenced by both S and R.
+
+3. Conditional Independence:
+   S and R are not connected, implying they are independent. However, they become conditionally dependent when we observe H (explaining away effect).
+
+4. Probability Distributions:
+   - Prior probabilities: P(S), P(R)
+   - Conditional probabilities: P(H|S,R), P(H|¬S,R), P(H|S,¬R), P(H|¬S,¬R)
+
+5. Inference:
+   The image shows calculations of P(R|H,S) and P(R|H,¬S), demonstrating how we can infer the probability of a raise given happiness and weather conditions.
+
+6. Normalization Constant:
+   While not explicitly shown in the image, the concept of normalization constant (α) is used in Bayes Net calculations to simplify computations.
+
+7. Explaining Away:
+   The difference between P(R|H,S) and P(R|H,¬S) demonstrates the explaining away effect. The probability of a raise is higher when happy on a non-sunny day because the raise better explains the happiness in the absence of sun.
+
+8. Value of the Network:
+   This Bayes Net allows us to model complex relationships and make inferences about unobserved variables based on observed evidence.
+
+9. D-Separation:
+   While not directly addressed in the image, d-separation is a concept used in Bayes Nets to determine conditional independence relationships.
+
+This Bayes Net example demonstrates how we can model real-world scenarios with multiple interacting factors, represent their relationships 
+probabilistically, and make inferences based on observed evidence. It's a powerful tool for reasoning under uncertainty in AI and machine 
+learning applications.
+
+<br>
+
+Let me break this down with examples:
 
 1. **States**: These are the possible values a node can take.
    * Example 1: A "Weather" node might have 3 states: **[Sunny, Rainy, Cloudy]**
@@ -1986,252 +2033,6 @@ Key Points:
 
 
 This example shows how complex networks can have multiple paths of information flow, and how d-separation depends on which nodes are observed and the types of connections (serial, diverging, or converging) along these paths. The "passive" marking on D indicates it's not actively transmitting information, but can still be part of active paths.
-
-<br>
-<br>
-
-
-Given this new context:
-
-1. P(R) = 0.01: The probability of getting a raise is 1%.
-2. P(S) = 0.7: The probability of a sunny day is 70%.
-3. P(R|S) = 0.01: The probability of getting a raise given that it's sunny is also 1%.
-
-Your explanation is correct:
-
-P(R|S) is the same as P(R) because the events are independent. The weather (sunny or not) does not affect the probability 
-of getting a raise at work, and vice versa.
-
-This independence means:
-P(R|S) = P(R) = 0.01
-
-This makes perfect sense in the context of a Bayesian network modeling how external factors (weather and work events) might 
-affect happiness. The equality P(R|S) = P(R) correctly represents that the chance of a raise doesn't change based on the weather.
-
-Thank you for this clarification. It's an excellent example of how crucial context is in interpreting probability problems 
-and how independence between events is represented in probabilistic models.
-
-
-1. Variables:
-   S: Sunny (weather)
-   R: Raise (at work)
-   H: Happiness
-
-2. Given probabilities:
-   P(S) = 0.7 (probability of a sunny day)
-   P(R) = 0.01 (probability of getting a raise)
-   P(R|S) = 0.01 (probability of a raise given it's sunny, same as P(R) indicating independence)
-
-3. Conditional probabilities for Happiness:
-   P(H|S,R) = 1 (100% happy if sunny and got a raise)
-   P(H|¬S,R) = 0.9 (90% happy if not sunny but got a raise)
-   P(H|S,¬R) = 0.7 (70% happy if sunny but no raise)
-   P(H|¬S,¬R) = 0.1 (10% happy if not sunny and no raise)
-
-4. The main calculation shown is for P(R|H,S), which is the probability of getting a raise given that you're happy and it's sunny:
-
-   P(R|H,S) = [P(H|R,S) * P(R|S)] / P(H|S)
-             = [1 * 0.01] / [0.01 + 0.7*0.99]
-             = 0.01 / 0.7033
-             ≈ 0.0142 (or 1.42%)
-
-5. The network graph shows that both S and R influence H, but S and R are independent of each other.
-
-This example demonstrates how Bayesian networks can model the relationships between different variables and how to calculate 
-conditional probabilities using Bayes' theorem. It shows that even if you're happy and it's sunny, the probability of having 
-received a raise is still quite low (only slightly higher than the base probability of getting a raise).
-
-
-Thank you for that hint. You're right to point this out, as it's a crucial part of the calculation shown in the image. Let's 
-incorporate this into our explanation:
-
-P(R|H,S) = [P(H|R,S) * P(R)] / [P(H|R,S)*P(R) + P(H|¬R,S)*P(¬R)]
-
-The second formula is indeed correct and matches the hint you provided. This is an application of Bayes' theorem for calculating 
-the probability of R given H and S.
-
-Let's break down the calculation using this formula:
-
-P(R|H,S) = [P(H|R,S) * P(R)] / [P(H|R,S)*P(R) + P(H|¬R,S)*P(¬R)]
-
-Given:
-P(H|R,S) = 1
-P(R) = 0.01
-P(H|¬R,S) = 0.7 (from the conditional probability table)
-P(¬R) = 1 - P(R) = 0.99
-
-Plugging in the values:
-
-P(R|H,S) = (1 * 0.01) / [(1 * 0.01) + (0.7 * 0.99)]
-         = 0.01 / (0.01 + 0.693)
-         = 0.01 / 0.703
-         ≈ 0.0142 (or about 1.42%)
-
-This calculation shows that even if you're happy and it's sunny, the probability of having received a raise is still quite low, 
-only slightly higher than the base probability of getting a raise (1%).
-
-
-1. Given Probabilities:
-   P(S) = 0.7 (probability of sunny weather)
-   P(R) = 0.01 (probability of getting a raise)
-   P(R|S) = 0.01 (probability of raise given sunny, indicating independence)
-
-2. Conditional Probabilities for Happiness (H):
-   P(H|S,R) = 1 (100% happy if sunny and got a raise)
-   P(H|¬S,R) = 0.9 (90% happy if not sunny but got a raise)
-   P(H|S,¬R) = 0.7 (70% happy if sunny but no raise)
-   P(H|¬S,¬R) = 0.1 (10% happy if not sunny and no raise)
-
-3. Calculated Probabilities:
-   P(R|H,S) = 0.0142 (probability of raise given happy and sunny)
-   P(R|H) = 0.0185 (probability of raise given happy)
-
-4. Calculations Shown:
-
-   a. P(R|H) calculation:
-      P(R|H) = [P(H|R) * P(R)] / P(H)
-              = (0.97 * 0.01) / 0.5245
-              = 0.0185
-
-   b. P(H|R) calculation:
-      P(H|R) = P(H|R,S) * P(S) + P(H|R,¬S) * P(¬S)
-              = 1 * 0.7 + 0.9 * 0.3
-              = 0.97
-
-   c. P(H) calculation (Total Probability):
-      P(H) = P(H|S,R) * P(S,R) + P(H|¬S,R) * P(¬S,R)
-           + P(H|S,¬R) * P(S,¬R) + P(H|¬S,¬R) * P(¬S,¬R)
-           = 1 * 0.7 * 0.01 + 0.9 * 0.3 * 0.01
-           + 0.7 * 0.7 * 0.99 + 0.1 * 0.3 * 0.99
-           = 0.5245
-
-5. Interpretation:
-   - P(R|H,S) = 0.0142 means that if you're happy and it's sunny, there's a 1.42% chance you got a raise.
-   - P(R|H) = 0.0185 means that if you're happy (regardless of weather), there's a 1.85% chance you got a raise.
-   - P(H) = 0.5245 means that the overall probability of being happy is about 52.45%.
-
-6. Key Insights:
-   - Being happy slightly increases the probability of having received a raise (from 1% to 1.85%).
-   - Sunny weather and happiness together only marginally increase the probability of a raise (to 1.42%).
-   - The overall probability of happiness (52.45%) is influenced more by sunny weather than by getting a raise, due to the 
-   low probability of getting a raise.
-
-This Bayesian network demonstrates how different factors (weather and work events) can influence happiness, and how we can 
-use probability theory to understand these relationships quantitatively.
-
-Certainly. This image presents a Bayesian network problem involving Sunny weather (S), getting a Raise (R), and Happiness (H). 
-Let's break it down:
-
-1. Given probabilities:
-   P(S) = 0.7 (probability of sunny weather)
-   P(R) = 0.01 (probability of getting a raise)
-   P(R|S) = 0.01 (probability of raise given sunny weather, indicating independence)
-
-2. Conditional probabilities for Happiness:
-   P(H|S,R) = 1 (100% happy if sunny and got a raise)
-   P(H|¬S,R) = 0.9 (90% happy if not sunny but got a raise)
-   P(H|S,¬R) = 0.7 (70% happy if sunny but no raise)
-   P(H|¬S,¬R) = 0.1 (10% happy if not sunny and no raise)
-
-3. The main calculation shown is for P(R|H,¬S), which is the probability of getting a raise given that you're happy and it's not sunny:
-
-   P(R|H,¬S) = [P(H|R,¬S) * P(R|¬S)] / P(H|¬S)
-
-   This is derived from Bayes' theorem.
-
-4. The calculation is expanded as:
-
-   P(R|H,¬S) = [0.9 * 0.01] / [P(H|¬S,R) * P(R) + P(H|¬S,¬R) * P(¬R)]
-              = 0.009 / (0.9 * 0.01 + 0.1 * 0.99)
-              = 0.009 / (0.009 + 0.099)
-              = 0.009 / 0.108
-              ≈ 0.0833 or about 8.33%
-
-5. Interpretation:
-   If you're happy on a day that's not sunny, there's about an 8.33% chance that you got a raise. This is significantly 
-   higher than the base probability of getting a raise (1%), indicating that being happy on a non-sunny day is a strong 
-   indicator of having received a raise.
-
-6. The network graph shows that both S and R influence H, but S and R are independent of each other.
-
-This problem demonstrates how Bayesian networks can model complex relationships between variables and how to use Bayes' 
-theorem to calculate conditional probabilities based on observed evidence.
-
-This image illustrates the concept of Conditional Dependence in a Bayesian Network involving three variables: S (Sunny), 
-R (Raise), and H (Happiness). Let's break it down:
-
-1. Given Probabilities:
-   P(S) = 0.7 (probability of a sunny day)
-   P(R) = 0.01 (probability of getting a raise)
-   P(R|S) = 0.01 (probability of a raise given it's sunny, same as P(R), indicating independence)
-
-2. Conditional Probabilities for Happiness:
-   P(H|S,R) = 1 (100% happy if sunny and got a raise)
-   P(H|¬S,R) = 0.9 (90% happy if not sunny but got a raise)
-   P(H|S,¬R) = 0.7 (70% happy if sunny but no raise)
-   P(H|¬S,¬R) = 0.1 (10% happy if not sunny and no raise)
-
-3. Calculated Probabilities:
-   P(R|H,S) = 0.0142 (probability of a raise given happy and sunny)
-   P(R|H,¬S) = 0.0833 (probability of a raise given happy and not sunny)
-
-4. The main calculation shown is for P(R|H,¬S):
-   P(R|H,¬S) = [P(H|R,¬S) * P(R|¬S)] / P(H|¬S)
-              = [0.9 * 0.01] / [P(H|¬S,R) * P(R) + P(H|¬S,¬R) * P(¬R)]
-              = 0.009 / (0.9 * 0.01 + 0.1 * 0.99)
-              = 0.009 / 0.108
-              = 0.0833
-
-5. Conditional Dependence:
-   - While R and S are independent (P(R|S) = P(R) = 0.01), they become dependent when conditioned on H.
-   - P(R|H,S) ≠ P(R|H,¬S), showing that R and S are dependent given H.
-   - This is because H is a common effect of both R and S, creating a "explaining away" effect.
-
-6. Interpretation:
-   - The probability of getting a raise, given you're happy, is higher on a non-sunny day (8.33%) than on a sunny day (1.42%).
-   - This counterintuitive result occurs because happiness on a non-sunny day is more likely to be explained by getting a raise, whereas 
-   on a sunny day, the sunshine itself could explain the happiness.
-
-
-A Bayesian Network (Bayes Net) is a probabilistic graphical model that represents a set of variables and their conditional 
-dependencies via a directed acyclic graph (DAG). Based on the information you've shared and the image, let's explain the 
-Bayes Net concept in more detail:
-
-1. Components of a Bayes Net:
-   - Random variables (In this case: S, R, H)
-   - Conditional independence relationships (shown by the graph structure)
-   - Probability distributions (given in the image)
-
-2. Structure:
-   The graph shows S (Sunny) and R (Raise) as parent nodes to H (Happiness), indicating that H is directly influenced by both S and R.
-
-3. Conditional Independence:
-   S and R are not connected, implying they are independent. However, they become conditionally dependent when we observe H (explaining away effect).
-
-4. Probability Distributions:
-   - Prior probabilities: P(S), P(R)
-   - Conditional probabilities: P(H|S,R), P(H|¬S,R), P(H|S,¬R), P(H|¬S,¬R)
-
-5. Inference:
-   The image shows calculations of P(R|H,S) and P(R|H,¬S), demonstrating how we can infer the probability of a raise given happiness and weather conditions.
-
-6. Normalization Constant:
-   While not explicitly shown in the image, the concept of normalization constant (α) is used in Bayes Net calculations to simplify computations.
-
-7. Explaining Away:
-   The difference between P(R|H,S) and P(R|H,¬S) demonstrates the explaining away effect. The probability of a raise is higher when happy on a non-sunny day because the raise better explains the happiness in the absence of sun.
-
-8. Value of the Network:
-   This Bayes Net allows us to model complex relationships and make inferences about unobserved variables based on observed evidence.
-
-9. D-Separation:
-   While not directly addressed in the image, d-separation is a concept used in Bayes Nets to determine conditional independence relationships.
-
-This Bayes Net example demonstrates how we can model real-world scenarios with multiple interacting factors, represent their relationships 
-probabilistically, and make inferences based on observed evidence. It's a powerful tool for reasoning under uncertainty in AI and machine 
-learning applications.
-
-
 
 <br>
 <br>
