@@ -1358,7 +1358,7 @@ Generally:
 
 <br>
 
-Graph:
+**Graph:**
       
 ```      
 A(1)
@@ -1390,33 +1390,49 @@ style F fill:#85C1E9
 
 <br>
 
-Note: Numbers in parentheses show states per node
+# Parameter Calculation for Bayesian Network
 
-Let's calculate parameters needed for each node:
 
-1. Root Node (A):
-- 1 state, needs 1-1 = 0 parameters
+Each node is labeled with its number of states in parentheses, e.g., A(1) means node A has 1 state.
 
-2. Nodes with single parent (B, C, D):
-- Each has 2 states
-- Parent A has 1 state 
-- Each needs: 2-1 = 1 parameter
-- Total: 3 × 1 = 3 parameters
+### 1. Root Node
+**Node A (1 state)**:
+* Formula: states - 1
+* Calculation: 1 - 1 = 0 parameters
 
-3. Node E:
-- 2 states
-- Parent B has 2 states
-- Needs: (2-1) × 2 = 2 parameters
+### 2. Single Parent Nodes
+**Nodes B, C, D (each 2 states)**:
+* Formula: (states - 1) × parent states
+* For each node: (2 - 1) × 1 = 1 parameter
+* Total for single parent nodes: 3 × 1 = 3 parameters
 
-4. Node F:
-- 4 states
-- Two parents (C, D) each with 2 states
-- Needs: (4-1) × (2 × 2) = 3 × 4 = 12 parameters
+### 3. Node E
+**Node E (2 states, parent B has 2 states)**:
+* Formula: (states - 1) × parent states
+* Calculation: (2 - 1) × 2 = 2 parameters
 
-Total Parameters = 0 + 3 + 2 + 12 = 17
+### 4. Node F
+**Node F (4 states, parents C and D each have 2 states)**:
+* Formula: (states - 1) × (product of parent states)
+* Calculation: (4 - 1) × (2 × 2) = 3 × 4 = 12 parameters
+
+## Total Network Parameters
+* Root Node: 0
+* Single Parent Nodes: 3
+* Node E: 2
+* Node F: 12
+* Total: 0 + 3 + 2 + 12 = 17 parameters
+
+This network requires 17 parameters to be fully specified, with each node's parameter count determined by its number of states and the states of its parent nodes.
+
+
 
 Answer: 13 parameters are needed to specify this network fully.
 
+
+<br>
+
+```
 Node | States | Parents | Calculation | Parameters
 -----|---------|---------------------|-------------------|------------
 A    | 1       | None                | 1-1 = 0          | 0
@@ -1427,13 +1443,13 @@ E    | 2       | B(2)                | (2-1)×2 = 2      | 2
 F    | 4       | C(2),D(2)           | (4-1)×(2×2) = 12 | 12
 -----|---------|---------------------|-------------------|------------
 Total Parameters: 17
-
+```
 
 ### Quiz: How many probability values are required to specify this Bayes Network?
 
 <br>
 
-Graph:
+**Graph:**
 
 ```
 A(1)   B(1)   C(1)
@@ -1470,6 +1486,7 @@ graph TD
 <br>
 Parameter Calculation Table:
 
+```
 Node | States | Parents              | Calculation        | Parameters
 -----|---------|---------------------|-------------------|------------
 A    | 1       | None                | 1-1 = 0           | 0
@@ -1481,178 +1498,234 @@ F    | 2       | D(2)                | (2-1)×2 = 2       | 2
 G    | 4       | D(2),C(1)           | (4-1)×(2×1) = 14  | 14
 -----|---------|---------------------|-------------------|------------
 Total Parameters:                                          19
-
-
-This table and diagram help visualize how we arrive at the total of 19 parameters needed for this Bayesian network.
-
-Let me calculate the number of parameters needed for each node:
-
-1. Root Nodes (A, B, C):
-- Each has 1 state
-- Need: (1-1) = 0 parameters each
-- Total for roots: 0 parameters
-
-2. Node D:
-- Three parents (A, B, C) each with 1 state
-- Need: (2-1) × (1 × 1 × 1) = 1 parameter
-
-3. Nodes E and F:
-- Each has 2 states
-- Parent D has 2 states
-- Need: (2-1) × 2 = 2 parameters each
-- Total: 2 × 2 = 4 parameters
-
-4. Node G:
-- 4 states
-- Two parents (D, C): D has 2 states, C has 1 state
-- Need: (4-1) × (2 × 1) = 3 × 2 = 14 parameters
-
-Total Parameters = 0 + 1 + 4 + 14 = 19
-
-Formula used for each node:
-(number of states - 1) × (product of parent states)
-
-Answer: 19 parameters are needed to specify this Bayes Network.
-
-
-### CASE-A: Car Start Failure Analysis in Bayesian Network
-
-<br>
-
-```mermaid
-graph TD
-   BA((Battery Age<br/>states:1)) --> BD((Battery Dead<br/>states:2<br/>params:2))
-   AB((Alternator Broken<br/>states:1)) --> NC((Not Charging<br/>states:2<br/>params:2))
-   FB((Fan Belt Broken<br/>states:1)) --> NC
-   NC --> BD
-   BD --> CW((Car Won't Start<br/>states:2<br/>total combinations:2¹⁶-1))
-   SB((Starter Broken<br/>states:1)) --> CW
-   FL((Fuel Line Broken<br/>states:1)) --> CW
-
-   classDef root fill:#e6f3ff,font-size:12px
-   classDef intermediate fill:#fff2e6,font-size:12px
-   classDef target fill:#ffe6e6,font-size:12px
-
-   class BA,AB,FB,SB,FL root
-   class BD,NC intermediate
-   class CW target
 ```
 
-Parameters breakdown:
+## Parameter Calculation for Bayesian Network (Total: 19)
 
-1. Root nodes (no params needed):
+### 1. Root Nodes
+**Nodes A, B, C (each 1 state)**:
+* Formula: states - 1
+* Calculation: 1 - 1 = 0 parameters each
+* Total root parameters: 3 × 0 = 0
 
-   Battery Age (1 state): 0
-   Alternator Broken (1 state): 0
-   Fan Belt Broken (1 state): 0
-   Starter Broken (1 state): 0
-   Fuel Line Broken (1 state): 0
+### 2. Node D (2 states)
+**Parents: A(1), B(1), C(1)**
+* Formula: (states - 1) × (product of parent states)
+* Calculation: (2 - 1) × (1 × 1 × 1) = 1 parameter
 
-2. Intermediate nodes (2 states each, with parents):
+### 3. Nodes E and F (each 2 states)
+**Parent: D(2)**
+* Formula: (states - 1) × parent states
+* For each node: (2 - 1) × 2 = 2 parameters
+* Total for E and F: 2 × 2 = 4 parameters
 
-   Battery Dead (2 states, with parents): 2 params
-   Not Charging (2 states, with parents): 2 params
+### 4. Node G (4 states)
+**Parents: D(2), C(1)**
+* Formula: (states - 1) × (product of parent states)
+* Calculation: (4 - 1) × (2 × 1) = 14 parameters
 
-3. Target node:
+## Total Network Parameters
+* Root Nodes (A, B, C): 0
+* Node D: 1
+* Nodes E and F: 4
+* Node G: 14
+* Total: 0 + 1 + 4 + 14 = 19 parameters
 
-   Car Won't Start: contributes to 2¹⁶ - 1 = 65,535 possible combinations
-
-Total network parameters shown in diagram with states and parameter counts at each node.
+This breakdown shows how the network's 19 parameters are distributed across different node types, with more complex nodes (multiple states and parents) requiring more parameters.
 
 
-The network shows how mechanical failures propagate to affect whether the car will start, with both direct causes (starter, fuel line) and indirect causes through battery charging system.
-
-<br>
-
-## CASE-B: Extended Car Diagnostic System in Bayesian Network
+### Car Start Failure Analysis
 
 <br>
 
 ```mermaid
 graph TD
-    BA((Battery Age<br/>1)) --> BD((Battery Dead<br/>1))
-    AB((Alternator Broken<br/>1)) --> NC((Not Charging<br/>3))
-    FB((Fan Belt Broken<br/>1)) --> NC
-    BD --> BM((Battery Meter<br/>1))
-    BD --> BF((Battery Flat<br/>3))
+    BA[battery age<br/>states:1] --> BD[battery dead<br/>states:2]
+    BD --> BM[battery meter<br/>states:2]
+    BD --> BF[battery flat<br/>states:4]
+    
+    AB[alternator broken<br/>states:1] --> NC[not charging<br/>states:4]
+    FB[fan belt broken<br/>states:1] --> NC
     NC --> BF
-    BF --> NO((No Oil<br/>1))
-    BF --> NG((No Gas<br/>1))
-    BM --> L((Lights<br/>1))
-    BF --> OL((Oil Light<br/>1))
-    BF --> GG((Gas Gauge<br/>3))
-    NG --> GG
-    NO --> DS((Dip Stick<br/>1))
-    BD --> CW((Car Won't Start<br/>remaining))
-    SB((Starter Broken<br/>1)) --> CW
-    FL((Fuel Line Broken<br/>1)) --> CW
-
-    classDef root fill:#e6f3ff
-    classDef intermediate fill:#fff2e6
-    classDef sensor fill:#e6ffe6
-    classDef target fill:#ffe6e6
-
-    class BA,AB,FB,SB,FL root
-    class BD,NC,BF,NO,NG intermediate
-    class BM,L,OL,GG,DS sensor
-    class CW target
+    
+    BM --> L[lights<br/>states:2]
+    BF --> L
+    BF --> OL[oil light<br/>states:4]
+    BF --> GG[gas gauge<br/>states:4]
+    
+    NO[no oil<br/>states:1] --> CW[car won't start<br/>states:16]
+    NG[no gas<br/>states:1] --> CW
+    FLB[fuel line broken<br/>states:1] --> CW
+    SB[starter broken<br/>states:1] --> CW
+    DS[dip stick<br/>states:1] --> CW
+    BF --> CW
+    
+    classDef root fill:#e6f3ff,stroke:#333,stroke-width:2px;
+    classDef intermediate fill:#fff2e6,stroke:#333,stroke-width:2px;
+    classDef target fill:#ffe6e6,stroke:#333,stroke-width:2px;
+    
+    class BA,AB,FB,FLB,SB,DS,NO,NG root;
+    class BD,NC,BM,BF,L,OL,GG intermediate;
+    class CW target;
 ```
 
-### Parameter Calculation and Network Structure:
+<br>
+
+This diagram includes:
+
+1. All nodes with their states
+2. All connections between nodes
+3. Color coding:
+   - Root nodes in light blue
+   - Intermediate nodes in light orange
+   - Target node (car won't start) in light red
+4. States for each node shown in the node label
+
+<br>
+
+## Car Start Failure Network Description
+
+This Bayesian network models the various factors that can cause a car not to start, organized in a hierarchical structure:
+
+### 1. Battery System Chain
+- **Battery Age** (1 state) influences:
+  - **Battery Dead** (2 states), which affects:
+    - **Battery Meter** (2 states) → controls **Lights** (2 states)
+    - **Battery Flat** (4 states) → influences multiple indicators
+
+### 2. Charging System Chain
+- **Alternator Broken** (1 state) and **Fan Belt Broken** (1 state) both affect:
+  - **Not Charging** (4 states) → leads to **Battery Flat**
+
+### 3. Indicator Systems
+- **Battery Flat** influences multiple indicators:
+  - **Lights** (2 states)
+  - **Oil Light** (4 states)
+  - **Gas Gauge** (4 states)
+
+### 4. Direct Failure Causes
+Multiple components directly affect **Car Won't Start** (16 states):
+- **Battery Flat** (4 states)
+- **No Oil** (1 state)
+- **No Gas** (1 state)
+- **Fuel Line Broken** (1 state)
+- **Starter Broken** (1 state)
+- **Dip Stick** (1 state)
+
+### Network Structure
+- **Root Nodes** (8): Components that can fail independently
+- **Intermediate Nodes** (7): System states and indicators
+- **Target Node** (1): Final outcome (Car Won't Start)
+
+This network captures both:
+1. Direct causes of failure (like starter or fuel line problems)
+2. Indirect causes through the battery and charging systems
+3. Observable indicators (lights, gauges) that can help diagnose the problem
 
 
-### 1. Root Nodes (5 parameters total):
-- Each binary node requires 1 parameter:
-  * Battery Age: 1
-  * Alternator Broken: 1
-  * Fan Belt Broken: 1
-  * Starter Broken: 1
-  * Fuel Line Broken: 1
+This network effectively models how different car components interact and how their failures propagate through the system to ultimately cause the car not to start, while also including observable symptoms that can help in diagnosis.
 
-### 2. Single Parent Nodes (4 parameters total):
-- Battery Dead:
-  * Single parent (Battery Age)
-  * Parameters = 2¹-1 = 1
-- Not Charging:
-  * Two parents (Alternator Broken, Fan Belt Broken)
-  * Parameters = 2²-1 = 3
 
-### 3. Multiple Parent/Complex Nodes (15 parameters total):
-Simple nodes (1 parameter each):
-- Battery Meter: 2¹-1 = 1 (from Battery Dead)
-- No Oil: 2¹-1 = 1 (from Battery Flat)
-- No Gas: 2¹-1 = 1 (from Battery Flat)
-- Lights: 2¹-1 = 1 (from Battery Meter)
-- Oil Light: 2¹-1 = 1 (from Battery Flat)
-- Dip Stick: 2¹-1 = 1 (from No Oil)
+### Naive Join Calculation (Incorrect Approach)
 
-Complex nodes (3 parameters each):
-- Battery Flat: 2²-1 = 3 (from Battery Dead AND Not Charging)
-- Gas Gauge: 2²-1 = 3 (from Battery Flat AND No Gas)
+The naive join approach incorrectly assumes we need to consider every possible combination of every state of every node:
 
-### 4. Final Output Node (23 parameters):
-- Car Won't Start
-  * Multiple parent influences
-  * Remaining parameters to reach total of 47
-  * Parameters = 23
+### 1. Node State Count (Total: 16 nodes)
+- Root Nodes (8):
+  * Battery Age (1 state)
+  * Alternator Broken (1 state)
+  * Fan Belt Broken (1 state)
+  * Fuel Line Broken (1 state)
+  * Starter Broken (1 state)
+  * Dip Stick (1 state)
+  * No Oil (1 state)
+  * No Gas (1 state)
 
-### Total Network Parameters:
-- Root Nodes: 5
-- Single Parent: 4
-- Complex Nodes: 15
-- Final Output: 23
-- Total: 47 parameters
+- Intermediate Nodes (7):
+  * Battery Dead (2 states)
+  * Not Charging (4 states)
+  * Battery Meter (2 states)
+  * Battery Flat (4 states)
+  * Lights (2 states)
+  * Oil Light (4 states)
+  * Gas Gauge (4 states)
 
-This breakdown shows how parameter counts accumulate based on node complexity and parent relationships in the network.
+- Target Node (1):
+  * Car Won't Start (16 states)
 
-### Network Characteristics:
-- Shows both mechanical and electrical dependencies
-- Includes sensor readings and indicators
-- Demonstrates cascading effects of battery system failure
-- Incorporates both direct and indirect diagnostic indicators
+### Naive Join Calculation
+2¹⁶ - 1 = 65,535 combinations
 
-The network provides a comprehensive model for car diagnostic systems, showing how component failures affect both the car's operation and its diagnostic indicators.
+This calculation is incorrect because:
+1. It treats every node as binary (2 states) when many nodes have 1, 4, or 16 states
+2. It ignores the network structure and dependencies
+3. It calculates ALL possible combinations rather than just the necessary conditional probabilities
+4. It doesn't follow the Bayesian network parameter formula: (States-1) × (Product of parent states)
 
+### Correct Approach
+The proper calculation gives us 47 parameters total by:
+1. Only considering direct parent-child relationships
+2. Using the actual number of states for each node
+3. Applying the formula (States-1) × (Product of parent states) for each node
+4. Summing up the parameters needed for each node individually
+
+
+### Conditional Probability Table (CPT) Calculation
+
+The formula Parameters = (States-1) × (Product of parent states) is used to calculate the number of parameters needed in a Conditional Probability Table (CPT) for each node. 
+
+A CPT:
+1. Represents the conditional probability distribution for each node
+2. Shows the probability of a node being in each state given its parents' states
+3. Requires fewer parameters than a naive join because:
+   - It only considers direct parent-child relationships
+   - Uses the fact that probabilities must sum to 1 (hence the States-1)
+   - Follows the Markov assumption that a node only depends on its direct parents
+
+
+### CPT Parameter Calculation
+
+### 1. Root Nodes (all 1 state):
+All have (1-1) = 0 parameters each
+- Battery Age (1): 0
+- Alternator Broken (1): 0
+- Fan Belt Broken (1): 0
+- Starter Broken (1): 0
+- Fuel Line Broken (1): 0
+- Dip Stick (1): 0
+Total: 0
+
+### 2. Chain from Battery Age:
+- Battery Dead (2 states, parent: Battery Age[1]):
+  * (2-1) × 1 = 1
+- Battery Meter (2 states, parent: Battery Dead[2]):
+  * (2-1) × 2 = 2
+
+### 3. Charging Chain:
+- Not Charging (4 states, parents: Alternator[1], Fan Belt[1]):
+  * (4-1) × (1 × 1) = 3
+- Battery Flat (4 states, parent: Not Charging[4]):
+  * (4-1) × 4 = 12
+
+### 4. Indicator Nodes:
+- Lights (2 states, parents: Battery Meter[2], Battery Flat[4]):
+  * (2-1) × (2 × 4) = 8
+- Oil Light (4 states, parent: Battery Flat[4]):
+  * (4-1) × 4 = 12
+- Gas Gauge (4 states, parent: Battery Flat[4]):
+  * (4-1) × 4 = 12
+
+### 5. Target Node:
+- Car Won't Start (16 states, parents: Battery Flat[4], No Oil[1], No Gas[1], Fuel Line[1], Starter[1], Dip Stick[2]):
+  * (16-1) × (4 × 1 × 1 × 1 × 1 × 2) = 15 × 8 = 47
+
+### Total Parameters:
+Root nodes: 0
+Battery chain: 1 + 2 = 3
+Charging chain: 3 + 12 = 15
+Indicators: 8 + 12 + 12 = 32
+Target node: 47
+Total: 47 parameters
 
 <br>
 <br>
