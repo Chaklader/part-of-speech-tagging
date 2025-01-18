@@ -1233,6 +1233,95 @@ This makes sense because being happy on a non-sunny day is more likely to be due
 <br>
 
 
+## Bayesian Network
+
+<br>
+
+A Bayesian network is a probabilistic model that shows relationships between different variables (nodes). Let me break this down with examples:
+
+1. **States**: These are the possible values a node can take.
+   * Example 1: A "Weather" node might have 3 states: **[Sunny, Rainy, Cloudy]**
+   * Example 2: A "Temperature" node might have 2 states: **[Hot, Cold]**
+
+2. **Parents**: These are nodes that directly influence another node.
+   * Example: If "Weather" affects "Mood", then Weather is a parent of Mood
+
+Let's work through a concrete example:
+Imagine a simple Bayesian network about ice cream sales with these nodes:
+
+1. "Weather" (Parent 1): **[Sunny, Rainy, Cloudy]** (3 states)
+2. "Temperature" (Parent 2): **[Hot, Cold]** (2 states)
+3. "Ice Cream Sales" (Child node): **[High, Medium, Low]** (3 states)
+
+Let's calculate the parameters needed for "Ice Cream Sales":
+
+1. Number of states - 1 = 3 - 1 = 2 parameters per combination
+2. Product of parent states = 3 (Weather states) × 2 (Temperature states) = 6 combinations
+3. Total parameters = 2 × 6 = 12 parameters
+
+Why 12 parameters? Because:
+
+For each combination of Weather and Temperature (6 combinations):
+   - Sunny & Hot
+   - Sunny & Cold
+   - Rainy & Hot
+   - Rainy & Cold
+   - Cloudy & Hot
+   - Cloudy & Cold
+
+You need to specify probabilities for 2 of the 3 states (High, Medium) for each combination. The third state (Low) can be calculated since probabilities must sum to 1.
+
+For example, given Sunny & Hot:
+
+   P(Sales=High | Sunny, Hot) = 0.7
+   P(Sales=Medium | Sunny, Hot) = 0.2
+   P(Sales=Low | Sunny, Hot) = 0.1 (calculated: 1 - 0.7 - 0.2)
+
+This is why we need (states-1) parameters for each combination of parent states. The formula ensures we capture all necessary probabilities while avoiding redundancy.
+
+
+<br>
+<br>
+
+1. **(Number of states - 1)** Let's say we have a node representing "Weather" with 3 states: **[Sunny, Rainy, Cloudy]**
+
+For any given situation, these probabilities must sum to 1.0
+If we know:
+   P(Sunny) = 0.6
+   P(Rainy) = 0.3
+Then we can automatically calculate:
+   P(Cloudy) = 1 - 0.6 - 0.3 = 0.1
+This is why we only need (states - 1) parameters. The last one is determined by the others.
+
+2. **(Product of parent states)** Imagine "Ice Cream Sales" with two parent nodes:
+
+   Weather: [Sunny, Rainy] (2 states)
+   Temperature: [Hot, Cold] (2 states)
+
+We need different probabilities for EACH combination:
+
+```
+Weather    Temperature    Need probabilities for Ice Cream Sales
+Sunny      Hot           Set 1 of probabilities
+Sunny      Cold          Set 2 of probabilities
+Rainy      Hot           Set 3 of probabilities
+Rainy      Cold          Set 4 of probabilities
+```
+
+Total combinations = 2 (Weather states) × 2 (Temperature states) = 4
+
+3. **Putting it all together:** If Ice Cream Sales has 3 states **[High, Medium, Low]**:
+
+We need (3-1) = 2 parameters for each combination
+We have 4 combinations from parents
+
+Total parameters = 2 × 4 = 8 parameters
+
+This is why we multiply: (Number of states - 1) × (Product of parent states)
+The formula ensures we have enough parameters to specify all probabilities while avoiding redundancy, as the last probability in each case can be calculated from the others.
+
+
+
 # Bayes Network Parameter Computation
 
 Each node in a Bayesian network needs a set of parameters to define its conditional probability distribution. The number of parameters needed follows this formula:
@@ -1248,27 +1337,7 @@ Generally:
 
  **Parameters = (Number of states - 1) × (Product of parent states)**
 
-
-## Why This Formula Works
-
-1. (Number of states - 1):
-   - If a node has n states, we only need n-1 parameters
-   - Last state probability can be computed as 1 minus sum of others
-   - Example: Binary node (2 states) needs 1 parameter because P(False) = 1 - P(True)
-
-2. (Product of parent states):
-   - Need parameters for each possible combination of parent states
-   - Multiply parent states together to get total combinations
-   - Example: Two binary parents = 2 × 2 = 4 combinations
-
-For a node with:
-- 4 states (needs 3 parameters per combination)
-- Two parents: one binary (2 states) and one ternary (3 states)
-
-Parameters = (4-1) × (2 × 3)
-           = 3 × 6
-           = 18 parameters
-
+<br>
 
 ## Common Cases
 
