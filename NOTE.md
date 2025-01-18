@@ -2154,9 +2154,12 @@ learning applications.
 
 
 
+<br>
+<br>
 
-# 5. Inference in Bayes Nets
+# CHAPTER-5: Inference in Bayes Nets
 
+<br>
 
 In this lesson, you will learn about probabilistic inference using Bayes Nets, i.e. how to answer questions that you are interested in, given certain inputs.
 
