@@ -2478,63 +2478,69 @@ Posterior probability of a burglary occurring (+b) given that both John called (
 P(+b|+j,+m) = P(+b,+j,+m) / P(+j,+m)
             = ∑ₑ∑ₐ [P(+b) × P(e) × P(a|+b, e) × P(+m|a) x P(+j|a)]/P(+j,+m)
             = ∑ₑ∑ₐ [P(+b) × P(e) × P(a|+b, e) × P(+m|a) x P(+j|a)]/f(e,a)
+            = P(+b) ∑ₑ P(e) ∑ₐ P(a|+b,e) P(+j|a) P(+m|a) x P(+j|a)]/f(e,a)
 
 
 The f(e,a) in denominator is a normalizing factor to ensure probabilities sum to 1.
 
-
-––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
-
-Let me OCR the tables and fill the boxes for +e,+a case:
-
-Tables:
-
-B    P(B)         E    P(E)
-+b   0.001        +e   0.002
-¬b   0.999        ¬e   0.998
-
-A    J    P(J|A)      A    M    P(M|A)
-+a   +j   0.9         +a   +m   0.7
-+a   ¬j   0.1         +a   ¬m   0.3
-¬a   +j   0.05        ¬a   +m   0.01
-¬a   ¬j   0.95        ¬a   ¬m   0.99
-
-B    E    A    P(A|B,E)
-+b   +e   +a   0.95
-+b   +e   ¬a   0.05
-+b   ¬e   +a   0.94
-+b   ¬e   ¬a   0.06
-¬b   +e   +a   0.29
-¬b   +e   ¬a   0.71
-¬b   ¬e   +a   0.001
-¬b   ¬e   ¬a   0.999
+So, finally, the posterior probability of burglary (+b) given John calls (+j) and Mary calls (+m) is:
 
 
-For +e,+a case, filling the boxes:
+**P(+b|+j,+m) = P(+b) ∑ₑ P(e) ∑ₐ P(a|+b,e) P(+j|a) P(+m|a) x P(+j|a)]/f(e,a)**
+
+<br>
+<br>
+
+## Probability Tables for Burglar Alarm System
+
+## Prior Probabilities
+
+```
+| B    | P(B)   | E    | P(E)   |
+|------|---------|------|---------|
+| +b   | 0.001   | +e   | 0.002   |
+| ¬b   | 0.999   | ¬e   | 0.998   |
+```
+
+## Conditional Probabilities for Calls
+
+```
+| A    | J    | P(J\|A) | A    | M    | P(M\|A) |
+|------|------|---------|------|------|---------|
+| +a   | +j   | 0.9     | +a   | +m   | 0.7     |
+| +a   | ¬j   | 0.1     | +a   | ¬m   | 0.3     |
+| ¬a   | +j   | 0.05    | ¬a   | +m   | 0.01    |
+| ¬a   | ¬j   | 0.95    | ¬a   | ¬m   | 0.99    |
+```
+
+## Conditional Probabilities for Alarm
+
+```
+| B    | E    | A    | P(A\|B,E) |
+|------|------|------|-----------|
+| +b   | +e   | +a   | 0.95      |
+| +b   | +e   | ¬a   | 0.05      |
+| +b   | ¬e   | +a   | 0.94      |
+| +b   | ¬e   | ¬a   | 0.06      |
+| ¬b   | +e   | +a   | 0.29      |
+| ¬b   | +e   | ¬a   | 0.71      |
+| ¬b   | ¬e   | +a   | 0.001     |
+| ¬b   | ¬e   | ¬a   | 0.999     |
+```
 
 P(+b) = 0.001
 P(+e) = 0.002
 P(+a|+b,+e) = 0.95
 P(+j|+a) = 0.9
 P(+m|+a) = 0.7
-+e,+a = [product of above] = 0.001 × 0.002 × 0.95 × 0.9 × 0.7
 
+<br>
 
+∑ₑ ∑ₐ P(+b) P(e) P(a|+b,e) P(+j|a) P(+m|a) = P(+b) ∑ₑ P(e) ∑ₐ P(a|+b,e) P(+j|a) P(+m|a)
+                                           = 0.001 × 0.002 × 0.95 × 0.9 × 0.7
 
-### Pulling out terms
-
-∑ₑ ∑ₐ P(+b) P(e) P(a|+b,e) P(+j|a) P(+m|a)
-
-= P(+b) ∑ₑ P(e) ∑ₐ P(a|+b,e) P(+j|a) P(+m|a)
-
-
-
-
-
-––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
-––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+<br>
+<br>
 
 
 ## Variable Elimination in Bayesian Networks
