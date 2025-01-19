@@ -3011,24 +3011,76 @@ Weight = P(W=+w|S=-s, R=+r)
 3. May need more samples for accurate results
 
 
+<br>
+<br>
 
-Imagine a smart home system that manages energy usage. We'll create a simple Bayesian Network for this scenario:
+## Bayesian Network for Smart Home Energy Consumption
 
-Nodes:
-1. Time of Day (T): Morning, Afternoon, Evening
-2. Occupancy (O): Occupied, Unoccupied
-3. Outside Temperature (E): Hot, Mild, Cold
-4. AC Usage (A): On, Off
-5. Energy Consumption (C): High, Medium, Low
+<br>
+<br>
 
-Network Structure:
-Time of Day → Occupancy
-Time of Day → Outside Temperature
-Occupancy → AC Usage
-Outside Temperature → AC Usage
-AC Usage → Energy Consumption
 
-Now, let's discuss inference in this Bayesian Network:
+
+**Network Structure:**
+
+<br>
+
+Bayesian Network diagram showing the relationships between Time of Day, Occupancy, Outside Temperature, AC Usage, and Energy Consumption:
+
+```mermaid
+graph TD
+    T[Time of Day] --> O[Occupancy]
+    T --> E[Outside Temperature]
+    O --> A[AC Usage]
+    E --> A
+    A --> C[Energy Consumption]
+```
+
+<br>
+
+**Nodes:**
+
+<br>
+
+1. **Time of Day (T)**: Morning, Afternoon, Evening
+2. **Occupancy (O)**: Occupied, Unoccupied
+3. **Outside Temperature (E)**: Hot, Mild, Cold
+4. **AC Usage (A)**: On, Off
+5. **Energy Consumption (C)**: High, Medium, Low
+
+<br>
+<br>
+
+**Edges:**
+
+<br>
+This diagram shows:
+1. Time of Day (T) influences both:
+   - Occupancy (O)
+   - Outside Temperature (E)
+2. AC Usage (A) depends on:
+   - Occupancy (O)
+   - Outside Temperature (E)
+3. Energy Consumption (C) depends directly on:
+   - AC Usage (A)
+
+Considering the following relationships:
+
+1. Time of Day → Occupancy
+2. Time of Day → Outside Temperature
+3. Occupancy → AC Usage
+4. Outside Temperature → AC Usage
+5. AC Usage → Energy Consumption
+
+The arrows represent direct causal relationships and conditional dependencies between variables in the smart building energy management system.
+
+
+<br>
+<br>
+
+### Inference in the AC Usage Bayesian Network:
+
+<br>
 
 1. Types of Inference:
 
@@ -3076,11 +3128,18 @@ Now, let's discuss inference in this Bayesian Network:
    - Diagnosis: Identifying potential causes of unexpected energy usage patterns.
    - Decision Making: Determining optimal AC settings to balance comfort and energy efficiency.
 
-In practice, software libraries (like PyMC, PGMPy, or BUGS) are often used to perform these inferences, as they can handle 
-the complex calculations required for larger, real-world Bayesian Networks.
+<br>
+<br>
 
-This example demonstrates how Bayesian Networks can model complex systems with multiple interrelated variables, allowing 
-for various types of probabilistic reasoning and inference.
+<br>
+<br>
+
+## Probability of AC Usage Given Time of Day and Energy Consumption:
+
+<br>
+<br>
+
+**P(A|T,C)** represents the probability of AC Usage (A) given Time of Day (T) and Energy Consumption (C). The formula uses marginalization over hidden variables Occupancy (O) and Outside Temperature (E).
 
 
 The Chain Rule of Probability is a fundamental rule that allows us to express a joint probability as a product of conditional probabilities. In its general form, for events A, B, and C, it states:
@@ -3158,7 +3217,7 @@ This approach, while computationally intensive, allows us to compute the desired
 probabilities defined in the Bayesian network structure. It's a fundamental method in understanding how inference works in 
 these networks, though more efficient algorithms are often used in practice for larger networks.
 
-Certainly! Let's break down how we go from P(A|T,C) to P(C|A,T) * P(A|T) / P(C|T) using Bayes' theorem. This is a fundamental transformation in probability theory and is crucial for many applications in Bayesian networks.
+Break down how we go from P(A|T,C) to P(C|A,T) * P(A|T) / P(C|T) using Bayes' theorem. This is a fundamental transformation in probability theory and is crucial for many applications in Bayesian networks.
 
 Step 1: Start with Bayes' theorem
 Bayes' theorem in its general form is:
@@ -3204,43 +3263,14 @@ that often matches the structure and available information in a Bayesian network
 inference in these networks.
 
 
-Variable elimination is an algorithm for inference in Bayesian networks. Based on the chart provided, let's explain how it would work for this specific network:
+<br>
+<br>
 
-The network shows:
-R (Rain) → T (Traffic) → L (Late)
+### Likelihood Weighting
 
-We're calculating P(+l) (probability of being late) using the formula:
-P(+l) = Σr Σt P(r) P(t|r) P(+l|t)
+<br>
 
-Variable elimination would proceed as follows:
-
-1. Goal: Compute P(+l) by eliminating variables R and T.
-
-2. Order of elimination: We'll eliminate R first, then T.
-
-3. Eliminate R:
-   - Compute f1(t) = Σr P(r) P(t|r)
-   - This creates a factor f1(t) that no longer depends on R
-
-4. Eliminate T:
-   - Compute f2 = Σt f1(t) P(+l|t)
-   - This results in the final probability P(+l)
-
-5. Detailed steps:
-   a. Calculate f1(+t) = P(+r)P(+t|+r) + P(-r)P(+t|-r)
-                      = 0.1 * 0.8 + 0.9 * 0.1 = 0.17
-   b. Calculate f1(-t) = P(+r)P(-t|+r) + P(-r)P(-t|-r)
-                      = 0.1 * 0.2 + 0.9 * 0.9 = 0.83
-   c. Final computation:
-      P(+l) = f1(+t) * P(+l|+t) + f1(-t) * P(+l|-t)
-            = 0.17 * 0.3 + 0.83 * 0.1
-            = 0.051 + 0.083
-            = 0.134
-
-The key idea of variable elimination is to compute intermediate factors (like f1) that allow us to sum out variables one 
-at a time, reducing the overall computation compared to enumerating all possible combinations.
-
-Certainly! Likelihood Weighting is an approximate inference technique used in Bayesian networks. It's a type of importance sampling method that's particularly useful for networks with evidence. Let's break it down:
+Likelihood Weighting is an approximate inference technique used in Bayesian networks. It's a type of importance sampling method that's particularly useful for networks with evidence. Let's break it down:
 
 Key Concept:
 Likelihood Weighting generates weighted samples from the network, where the weights are determined by how well each sample matches the observed evidence.
@@ -3292,6 +3322,13 @@ Let's say we want to estimate P(R|L=+l) (probability of rain given we're late).
 
 Likelihood Weighting is particularly useful in this network because it ensures that every sample is consistent with the 
 evidence (L=+l), making it more efficient than methods that might generate inconsistent samples and reject them.
+
+<br>
+<br>
+
+## Gibbs sampling
+
+<br>
 
 Gibbs sampling is another method of approximate inference in Bayesian networks. It's a Markov Chain Monte Carlo (MCMC) technique that's particularly useful for high-dimensional problems. Let's break it down with an example.
 
@@ -3363,36 +3400,54 @@ Gibbs sampling is particularly useful in complex networks where direct probabili
 us to approximate probabilities through this iterative sampling process.
 
 
+<br>
+<br>
+
+## SUMMARY: Inference Methods in Bayesian Networks
+
+## Exact Inference Algorithms
+
+### 1. Enumeration
+* Computes query's conditional probability by summing terms from full joint distribution
+* Uses complete probability distribution
+
+### 2. Variable Elimination
+* Reduces enumeration computation complexity
+* Stores intermediate results for reuse
+* More efficient than pure enumeration
+
+## Approximate Inference through Sampling
+For large, highly connected networks where exact inference is computationally expensive
+
+### 1. Direct Sampling
+* Simplest form of sample generation
+* Uses known probability distributions
+* Example: Coin flip sampling using uniform distribution
+
+### 2. Rejection Sampling
+* Generates samples from known network distribution
+* Rejects samples that don't match evidence
+* More selective than direct sampling
+
+### 3. Likelihood Sampling
+* Similar to rejection sampling
+* Only generates events consistent with evidence
+* More efficient than rejection sampling
+
+### 4. Gibbs Sampling
+* Starts with arbitrary state
+* Generates next state by randomly sampling non-evidence variables
+* Keeps evidence variables fixed
+* Useful for complex networks
 
 
+<br>
+<br>
 
-In this lesson, we learned how to make inferences (query) from Bayes Nets based on the evidence variables and the conditional probabilities as configured in the Bayes Nets. of the evidence variables as defined in the network.
+# CHAPTER-6: Part of Speech Tagging with HMMs
 
-There are two algorithms that to compute exact inferences:
-
-1. Enumeration: the query’s conditional probability is computed by summing the terms from the full joint distribution.
-2. Variable Elimination: an algorithm to reduce the enumeration computation by doing the repeated calculations once and store the results for later re-use.
-
-However, it is computationally expensive to make exact inference from a large and highly connected Bayes Network. In these cases, we can approximate inferences by sampling. Sampling is a technique to select and count the occurances of the query and evidence variables to estimate the probability distributions in the network. We looked at four sampling techniques as follows:
-
-1. Direct sampling: the simplest form of samples generation from a known probability distribution. For example, to sample the odds of Head or Tail in a coin flip, we can randomly generate the events based on uniform probability distribution (assuming we use a non-bias coin).
-2. Rejection sampling: generates samples from the known distribution in the network and rejects the non-matching evidence.
-3. Likelihood sampling: is similar to rejection sampling but generating only events that are consistent with the evidence.
-4. Gibbs sampling: initiates an arbitrary state and generates the next state by randomly sampling a non-evidence variable, while keeping all evidence variables fixed.
-
-
-In the final lesson, we will learn the Hidden Markov Model (HMM) and its application in the Natural Language Processing task to tag Parts of Speech. HMM assumes unobservable states and computes the transition and emission probabilities from one state to another.
-
-
-
-
-
-
-
-
-
-# 6. Part of Speech Tagging with HMMs
-
+<br>
+<br>
 
 Hidden Markov Models (HMMs) are used to model sequences (including time-series data). HMMs have been successfully used on both supervised and unsupervised problems with sequence data in applications like speech recognition, bioinformatics, sign language recognition, and gesture recognition.
 
