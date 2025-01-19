@@ -2560,30 +2560,6 @@ Variable Elimination is a technique for computing conditional probabilities in B
    - Sum out variables one by one
    - Multiply relevant factors before summing
 
-### 2. Example (Rain-Traffic-Late Network)
-Using previous example:
-
-Initial Factors:
-- P(R)
-- P(T|R)
-- P(L|T)
-
-To find P(L):
-1. Multiply P(R) and P(T|R) to get P(R,T)
-2. Eliminate R by summing: P(T)
-3. Multiply P(T) and P(L|T) to get P(T,L)
-4. Eliminate T by summing: P(L)
-
-
-### 3. Worked Example
-
-P(L) from P(T,L):
-P(+l) = ∑ₜ P(t,+l)
-      = P(+t,+l) + P(-t,+l)
-      = 0.051 + 0.083
-      = 0.134
-
-
 ## Advantages
 1. Efficiency
    - More efficient than full joint probability table
@@ -2612,77 +2588,94 @@ P(+l) = ∑ₜ P(t,+l)
    - Fault diagnosis
    - Risk assessment
 
+<br>
+<br>
 
+### 2. Example (Rain-Traffic-Late Network)
+
+<br>
 
 R = Rain 
 T = Traffic 
 L = Late
 
+Bayesian Network: ```R → T → L```
 
-
-Bayesian Network: R → T → L
-
-P(R):
-+r  0.1
--r  0.9
-
-P(T|R):
-+r  +t  0.8
-+r  -t  0.2
--r  +t  0.1
--r  -t  0.9
-
-P(L|T):
-+t  +l  0.3
-+t  -l  0.7
--t  +l  0.1
--t  -l  0.9
-
+<br>
 
 This shows a simple Bayes Network with three nodes in a chain:
 - R (root node) with prior probabilities
 - T (depends on R) with conditional probabilities given R
 - L (depends on T) with conditional probabilities given T
 
+
+<br>
+
+**Probability Tables**
+
+<br>
+
+## Prior Probability P(R)
+
+```
+| R    | P(R) |
+|------|-------|
+| +r   | 0.1   |
+| -r   | 0.9   |
+```
+
+<br>
+
+## Conditional Probability P(T|R)
+
+```
+| R    | T    | P(T\|R) |
+|------|------|---------|
+| +r   | +t   | 0.8     |
+| +r   | -t   | 0.2     |
+| -r   | +t   | 0.1     |
+| -r   | -t   | 0.9     |
+```
+
+<br>
+
+## Conditional Probability P(L|T)
+
+```
+| T    | L    | P(L\|T) |
+|------|------|---------|
+| +t   | +l   | 0.3     |
+| +t   | -l   | 0.7     |
+| -t   | +l   | 0.1     |
+| -t   | -l   | 0.9     |
+```
+
+<br>
+
+### 3. Worked Example
+
+
+The marginalization formula that calculates the probability of being late P(+l) by summing over all possible values of rain (r) and traffic (t). The double summation (∑ᵣ ∑ₜ) means we're summing over all possible values of both rain and traffic variables, which is necessary to marginalize out these variables to get P(+l):
+
+P(+L) = ∑ᵣ ∑ₜ P(R)P(T|R)P(+L|T)
+      = ∑ᵣ ∑ₜ P(R,T)P(+L|T) [Note: P(R,T) = P(R)P(T|R)]
+      = ∑ₜ [∑ᵣP(R,T)]xP(+L|T) 
+      = ∑ₜ P(T)P(+L|T) 
+      = ∑ₜ P(T,+L)
+      = P(+T,+L) + P(-T,+L)
+      = 0.051 + 0.083
+      = 0.134
+
 Each node is binary (+ or -) and the probabilities for each condition sum to 1:
+
 - For P(R): 0.1 + 0.9 = 1
 - For P(T|R) given +r: 0.8 + 0.2 = 1
 - For P(T|R) given -r: 0.1 + 0.9 = 1
 - For P(L|T) given +t: 0.3 + 0.7 = 1
 - For P(L|T) given -t: 0.1 + 0.9 = 1
 
-
-
-
-R → T → L (Bayesian Network)
-
-Tables:
-P(R):
-+r | 0.1
--r | 0.9
-
-P(T|R):
-+r +t | 0.8
-+r -t | 0.2
--r +t | 0.1 
--r -t | 0.9
-
-P(L|T):
-+t +l | 0.3
-+t -l | 0.7
--t +l | 0.1
--t -l | 0.9
-
-Formula:
-P(+l) = ∑ᵣ ∑ₜ P(r)P(t|r)P(+l|t)
-
-
-This shows:
-1. A three-node chain Bayesian network
-2. Probability tables for each node
-3. Formula for computing P(+l) by marginalizing over r and t variables
-4. Uses sum notation for marginalization over both r and t variables
-
+<br>
+<br>
 
 
 P(R):
