@@ -1,7 +1,20 @@
+<br>
+<br>
+
+
 # Fundamentals ofProbabilistic Graphical Model
+
+<br>
+<br>
+
 
 # CHAPTER-1: Introduction to Probabilistic Models
 
+<br>
+<br>
+
+
+## Why Use Probabilistic Models?
 
 Knowledge-based AI agents utilize belief state to reason and plan under uncertainty.
 They use Probabilistic Models and Bayes Networks as the tools for these AI agents to quantify and act under the uncertainty of the surrounding world. Unlike the logical assertions, which see the possible worlds in a set of strict rules, the probabilistic assertions quantify how probable the various worlds are.
@@ -650,11 +663,7 @@ Bayes Nets is a graph that has no directed cycles, also known as a directed acyc
 
 
 <br>
-
-<div align="center">
-   <img src="images/alarm_bayes_network.png" width="800" height="auto">
-</div>
-
+<img src="images/alarm_bayes_network.png" width="800" height="auto">
 <br>
 
 
@@ -3649,9 +3658,7 @@ N - lamb
 ```
 
 <br>
-
-<img src="images/hmm.png" width="400" height=auto>
-
+<img src="images/hmm.png" width="800" height=auto>
 <br>
 
 
@@ -3758,126 +3765,86 @@ These methods provide a richer, more nuanced understanding of language, making t
 
 
 <br>
-
-<img src="images/hmm_1.png" width="600" height=auto>
-
+<img src="images/hmm_1.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/hmm_2.png" width="600" height=auto>
-
+<img src="images/hmm_2.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/hmm_3.png" width="600" height=auto>
-
+<img src="images/hmm_3.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/hmm_4.png" width="600" height=auto>
-
+<img src="images/hmm_4.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/hmm_5.png" width="600" height=auto>
-
+<img src="images/hmm_5.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/hmm_6.png" width="600" height=auto>
-
+<img src="images/hmm_6.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/hmm_7.png" width="600" height=auto>
-
+<img src="images/hmm_7.png" width="800" height=auto>
 <br>
 
 
 <br>
-
-<img src="images/hmm_8.png" width="600" height=auto>
-
+<img src="images/hmm_8.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/hmm_9.png" width="600" height=auto>
-
+<img src="images/hmm_9.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/hmm_10.png" width="600" height=auto>
-
+<img src="images/hmm_10.png" width="800" height=auto>
 <br>
 
 
 <br>
-
-<img src="images/hmm_11.png" width="600" height=auto>
-
+<img src="images/hmm_11.png" width="800" height=auto>
 <br>
 
 
 <br>
-
-<img src="images/hmm_12.png" width="600" height=auto>
-
+<img src="images/hmm_12.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/hmm_13.png" width="600" height=auto>
-
+<img src="images/hmm_13.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/hmm_14.png" width="600" height=auto>
-
+<img src="images/hmm_14.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/hmm_15.png" width="600" height=auto>
-
+<img src="images/hmm_15.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/hmm_16.png" width="600" height=auto>
-
+<img src="images/hmm_16.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/hmm_17.png" width="600" height=auto>
-
+<img src="images/hmm_17.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/hmm_18.png" width="600" height=auto>
-
+<img src="images/hmm_18.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/hmm_19.png" width="600" height=auto>
-
+<img src="images/hmm_19.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/hmm_20.png" width="600" height=auto>
-
+<img src="images/hmm_20.png" width="800" height=auto>
 <br>
 
 
@@ -4366,92 +4333,66 @@ This is much more efficient than checking all possible tag sequences, which woul
 <br>
 <br>
 
-<img src="images/viterbi_1.png" width="600" height=auto>
-
+<br>
+<img src="images/viterbi_1.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/viterbi_2.png" width="600" height=auto>
-
+<img src="images/viterbi_2.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/viterbi_3.png" width="600" height=auto>
-
+<img src="images/viterbi_3.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/viterbi_4.png" width="600" height=auto>
-
+<img src="images/viterbi_4.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/viterbi_5.png" width="600" height=auto>
-
+<img src="images/viterbi_5.png" width="800" height=auto>
 <br>
 
 
 <br>
-
-<img src="images/viterbi_6.png" width="600" height=auto>
-
+<img src="images/viterbi_6.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/viterbi_7.png" width="600" height=auto>
-
+<img src="images/viterbi_7.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/viterbi_8.png" width="600" height=auto>
-
+<img src="images/viterbi_8.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/viterbi_9.png" width="600" height=auto>
-
+<img src="images/viterbi_9.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/viterbi_10.png" width="600" height=auto>
-
+<img src="images/viterbi_10.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/viterbi_11.png" width="600" height=auto>
-
+<img src="images/viterbi_11.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/viterbi_12.png" width="600" height=auto>
-
+<img src="images/viterbi_12.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/viterbi_13.png" width="600" height=auto>
-
+<img src="images/viterbi_13.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/viterbi_14.png" width="600" height=auto>
-
+<img src="images/viterbi_14.png" width="800" height=auto>
 <br>
 
 <br>
-
-<img src="images/viterbi_15.png" width="600" height=auto>
+<img src="images/viterbi_15.png" width="800" height=auto>
+<br>
 
 <br>
 <br>
@@ -4591,8 +4532,8 @@ probabilistic methods like HMMs or more advanced deep learning techniques have l
 useful in certain domains and can complement probabilistic approaches in some scenarios.
 
 
-
-
+<br>
+<br>
 
 
 
