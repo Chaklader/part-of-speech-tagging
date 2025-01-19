@@ -2261,11 +2261,18 @@ This network models a home security scenario with five variables:
 3. Models how multiple causes can lead to the same effect
 4. Shows how evidence (calls) can help infer causes (burglary or earthquake)
 
+
+<br>
+
+```mermaid
+graph TD
+    B[Burglary] --> A[Alarm]
+    E[Earthquake] --> A
+    A --> J[John Calls]
+    A --> M[Mary Calls]
 ```
-Burglary → Alarm ← Earthquake
-            ↓        ↓
-     John calls   Mary calls
-```
+
+<br>
 
 Types of variables:
 
@@ -2357,208 +2364,120 @@ While enumeration serves as a foundational concept in probabilistic reasoning, i
 In this analysis, we explore the application of Bayes' Theorem to calculate the probability of a burglary given evidence from two observers (John and Mary calling). The derivation breaks down the complex conditional probability P(+b|+j,+m) into more manageable components using the joint probability rule and chain rule of conditional probability, factoring in additional variables like earthquake occurrence and alarm status to create a comprehensive probability model for the burglary detection system.
 
 <br>
-Let me derive the equation using Bayes' Theorem step by step:
 
-1. Starting with Bayes' Theorem:
+<br>
 
-P(A|B) = P(B|A)P(A)/P(B)
+```mermaid
+graph TD
+    B[Burglary] --> A[Alarm]
+    E[Earthquake] --> A
+    A --> J[John Calls]
+    A --> M[Mary Calls]
+```
 
+<br>
 
-2. In our case:
-- A is burglary (+b)
-- B is evidence of John and Mary calling (+j,+m)
+P(+b|+j,+m) represents the posterior probability of a burglary occurring (+b) given that both John called (+j) and Mary called (+m).
 
-P(+b|+j,+m) = P(+j,+m|+b)P(+b)/P(+j,+m)
+Let's break down what this notation means:
 
-
-3. Using the joint probability rule:
-
-P(+j,+m|+b)P(+b) = P(+b,+j,+m)
-
-
-4. Therefore:
-
-P(+b|+j,+m) = P(+b,+j,+m)/P(+j,+m)
-
-
-This final form is useful because:
-- Numerator P(+b,+j,+m): joint probability of burglary and both calls
-- Denominator P(+j,+m): probability of evidence (normalizing constant)
-
-Each of these terms can be computed by:
-- Summing over all possible values of hidden variables (alarm, earthquake)
-- Using conditional independence assumptions from Bayes network
-- Multiplying appropriate conditional probabilities
+1. P(+b|+j,+m) reads as "probability of burglary given John called AND Mary called"
+2. +b means "burglary occurred" (positive case of burglary)
+3. +j means "John called" (positive case of John calling)
+4. +m means "Mary called" (positive case of Mary calling)
+5. The vertical bar | means "given that" or "conditional on"
 
 
-Let's break down the equation using conditional probability:
+The variables in this equation are:
 
-**P(+j, +m, e, a | +b) = P(e | +b) × P(+j, +m, a | +b, e)**
-
-Here's a detailed explanation:
-
-### Understanding the Components:
-
-- **P(+j, +m, e, a | +b):**
-  - This is the joint conditional probability of Jon calling (+j), Marry calling (+m), an earthquake occurring (e), and the alarm sounding (a), all given that there's a burglar (+b).
-
-- **P(e | +b):**
-  - This is the probability of an earthquake occurring given that there's a burglar. Since we've stated that earthquakes are independent of burglars, this would simplify to just **P(e)**, but for this explanation, we'll keep it as **P(e | +b)**.
-
-- **P(+j, +m, a | +b, e):**
-  - This represents the joint probability of Jon and Marry calling and the alarm sounding, given both the presence of a burglar and an earthquake.
-
-### Using the Chain Rule of Conditional Probability:
-
-We can expand **P(+j, +m, e, a | +b)** using the chain rule:
-
-**P(+j, +m, e, a | +b) = P(e | +b) × P(a | +b, e) × P(+m | +b, e, a) × P(+j | +b, e, a, +m)**
-
-But, we're grouping some of these terms for simplicity:
-
-- **First, we consider** **P(e | +b):**
-  - This term is straightforward as we've assumed independence between earthquakes and burglars, but in this context, we're conditioning on +b to respect the given equation's form.
-
-- **Then, we deal with the rest as** **P(+j, +m, a | +b, e):**
-  - Here, **P(+j, +m, a | +b, e)** can be further broken down if needed:
-    - **P(a | +b, e)**: The alarm probability given both a burglar and an earthquake. 
-    - **P(+m | +b, e, a)**: Marry's call probability given the alarm and both conditions.
-    - **P(+j | +b, e, a, +m)**: Jon's call probability given all previous conditions and Marry calling.
-
-### Explanation in Words:
-
-- Given there's a burglar, we first check if there's an earthquake. This is **P(e | +b)**.
-- If there's both a burglar and an earthquake, we then look at the probability of the alarm sounding, Marry calling, and Jon calling under these conditions.
-
-This breakdown shows how we're conditioning each subsequent event on the occurrences before it, given the burglar's presence. The equation essentially says that the likelihood of all these events happening together, given a burglar, can be factored into the probability of an earthquake occurring and then the combined probability of the alarm, Marry's call, and Jon's call under the scenario of both a burglar and an earthquake.
-
-This use of conditional probability helps in understanding how different events influence each other within a specific context (here, the presence of a burglar).
+**b = Burglary**
+**e = Earthquake**
+**a = Alarm**
+**j = John Calls**
+**m = Mary Calls**
 
 <br>
 <br>
 
-P(+b|+j,+m) = P(+b,+j,+m) / P(+j,+m)
+The equation we want to calculate is:
 
-P(+b,+j,+m) = ∑ₑ∑ₐ P(+b,+j,+m,e,a) = 
-             ∑ₑ∑ₐ [P(+b)P(e)P(a|+b,e)P(+j|a)P(+m|a)] / f(e,a)
+**P(+b|+j,+m) = P(+b,+j,+m) / P(+j,+m)**
 
-Marginalization over hidden variables expanded:
+<br>
+
+We have hidden variables e (earthquake) and a (alarm) and to get joint probability without these variables, we sum over all their possible values, 
 
 P(+b,+j,+m) = P(+b,+j,+m,+e,+a) + P(+b,+j,+m,+e,¬a) + 
-               P(+b,+j,+m,¬e,+a) + P(+b,+j,+m,¬e,¬a)
+               P(+b,+j,+m,¬e,+a) + P(+b,+j,+m,¬e,¬a) 
 
+            = ∑ₑ∑ₐ P(+b,+j,+m,e,a)
 
-∑ₑ∑ₐ P(+b,+j,+m,e,a) = ∑ₑ∑ₐ [P(+b)P(e)P(a|+b,e)P(+j|a)P(+m|a)] / f(e,a)
+Let's break down the joint probability **P(+b, +j, +m, e, a)** into conditional probabilities:
 
-For all combinations:
+P(+b, +j, +m, e, a) = P(+b) × P(+j, +m, e, a | +b)
+                    = P(+b) × P(e|+b) × P(+j, +m, a | +b, e)
+                    = P(+b) × P(e|+b) × P(a|+b, e) × P(+j, +m | +b, e, a)
+                    = P(+b) × P(e|+b) × P(a|+b, e) × P(+m|+b, e, a) × P(+j | +b, e, a, +m)
+
+**P(+b, +j, +m, e, a) = P(+b) × P(e|+b) × P(a|+b, e) × P(+m|+b, e, a) × P(+j | +b, e, a, +m)**
+
+Assumptions:
+
+1. Earthquake, **e** is independent of Burglary, **+b**, hence P(e|+b) = P(e)
+2. Mary's call **+m** is conditionally independent of burglary **+b** given the alarm **a** and earthquake **e** states. This means once we know the state of the alarm **a** and earthquake **e** and whether or not there was a burglary **+b** doesn't provide any additional information about whether Mary will call. This is because Mary only calls based on hearing the alarm. She doesn't have direct knowledge of whether there's a burglary. Once we know if the alarm is on/off (a) and if there's an earthquake (e). The burglary state (+b) doesn't influence her decision to call. **+m** is conditionally independent of **+b** given **a** and **e** and we can simplify the equation,
+
+   **P(+m|+b, e, a) = P(+m|a, +b, e)**
+
+This equality shows that Mary's probability of calling depends only on the alarm state. 
+
+3. For John's call P(+j|a, +b, e, +m), only depends on the alarm state. It's independent of burglary, earthquake, and Mary's call. Therefore, P(+j|a, +b, e, +m) simplifies to P(+j|a). For Mary's call P(+m|a, +b, e) simplifies to P(+m|a).
+
+Thus, under these assumptions, the given equation:
+
+P(+b, +j, +m, e, a) = P(+b) × P(e|+b) × P(a|+b, e) × P(+m|+b, e, a) × P(+j|+b, e, a, +m)
+                    = P(+b) × P(e) × P(a|+b, e) × P(+m|a, +b, e) x P(+j|a, +b, e, +m) 
+                    = P(+b) × P(e) × P(a|+b, e) × P(+m|a) x P(+j|a)
+
+Finally, the given equation is correctly decomposed using the chain rule of probability and the given conditional independences:
+
+**P(+b, +j, +m, e, a) = P(+b) × P(e) × P(a|+b, e) × P(+m|a) x P(+j|a)**
+
+So, 
+
+P(+b,+j,+m) = ∑ₑ∑ₐ P(+b,+j,+m,e,a)
+            = ∑ₑ∑ₐ P(+b) × P(e) × P(a|+b, e) × P(+m|a) x P(+j|a)
+
+To find the joint probability of a specific combination of all variables (burglary, earthquake, alarm, John's call, and Mary's call) under different states of earthquake (e) and alarm (a):
+
+   1. f(+e,+a): Joint probability when earthquake occurs and alarm is on
+   2. f(+e,¬a): Joint probability when earthquake occurs and alarm is off
+   3. f(¬e,+a): Joint probability when no earthquake and alarm is on
+   4. f(¬e,¬a): Joint probability when no earthquake and alarm is off
+
+Together, they represent all possible scenarios or configurations of the hidden variables (earthquake and alarm) in our Bayesian network. When summed together, they form the normalization constant f(e,a), which ensures our final probability distribution is properly normalized.
 
 f(+e,+a) = P(+b)P(+e)P(+a|+b,+e)P(+j|+a)P(+m|+a)
 f(+e,¬a) = P(+b)P(+e)P(¬a|+b,+e)P(+j|¬a)P(+m|¬a)
 f(¬e,+a) = P(+b)P(¬e)P(+a|+b,¬e)P(+j|+a)P(+m|+a)
 f(¬e,¬a) = P(+b)P(¬e)P(¬a|+b,¬e)P(+j|¬a)P(+m|¬a)
 
-
 The sum of all these terms, each divided by f(e,a), gives us our final probability.
 = f(+e,+a) + f(+e,¬a) + f(¬e,+a) + f(¬e,¬a)
 
-
-Explanation:
-
-1. We want to find P(+b|+j,+m): Probability of burglary given John and Mary called
-   - +b: burglary occurred 
-   - +j: John called
-   - +m: Mary called
-
-2. Using Bayes Rule:
-   P(+b|+j,+m) = P(+b,+j,+m) / P(+j,+m)
-
-3. To find P(+b,+j,+m):
-   - Sum over all possible values of earthquake (e) and alarm (a)
-   - Break down using chain rule and conditional independence:
-     * P(+b): prior probability of burglary
-     * P(e): prior probability of earthquake
-     * P(a|+b,e): probability of alarm given burglary and earthquake
-     * P(+j|a): probability John calls given alarm
-     * P(+m|a): probability Mary calls given alarm
-
-4. Sum four cases:
-   - f(+e,+a): earthquake, alarm on
-   - f(+e,¬a): earthquake, alarm off
-   - f(¬e,+a): no earthquake, alarm on
-   - f(¬e,¬a): no earthquake, alarm off
-
-This is enumeration technique - explicitly calculating probabilities by considering all possible combinations of values for hidden variables (earthquake and alarm states).
+f(e,a)= f(+e,+a) + f(+e,¬a) + f(¬e,+a) + f(¬e,¬a)
 
 
+The probability P(+j,+m) is equivalent to f(e,a) because, f(e,a) is the sum of all joint probability terms. This sum represents all possible ways John and Mary could have called, and It's exactly what P(+j,+m) represents - the total probability of observing John and Mary's calls
+Therefore, 
+
+   **P(+j,+m) = f(e,a)**
 
 
+Posterior probability of a burglary occurring (+b) given that both John called (+j) and Mary called (+m):
 
-P(+b,+j,+m) = ∑ₑ∑ₐ P(+b,+j,+m,e,a)
-
-This is derived using marginalization over hidden variables:
-1. We have hidden variables e (earthquake) and a (alarm)
-2. To get joint probability without these variables, we sum over all their possible values
-
-
-P(+b,+j,+m) = P(+b,+j,+m,+e,+a) + P(+b,+j,+m,+e,¬a) + 
-               P(+b,+j,+m,¬e,+a) + P(+b,+j,+m,¬e,¬a)
-
-Written compactly as: ∑ₑ∑ₐ P(+b,+j,+m,e,a)
-
-∑ₑ∑ₐ P(+b,+j,+m,e,a) = ∑ₑ∑ₐ [P(+b)P(e)P(a|+b,e)P(+j|a)P(+m|a)] / f(e,a)
-
-This uses the Chain Rule and conditional independence:
-
-1. Chain Rule breaks down joint probability:
-
-To prove the given equation using joint probability, we need to understand how to decompose the joint probability of multiple events into a product of conditional probabilities. Here's how to do it step-by-step:
-
-Given the equation:
-
-**P(+b, +j, +m, e, a) = P(+b) × P(e) × P(a|+b, e) × P(+j|a, +b, e, +m) × P(+m|a, +b, e)**
-
-Let's break down the joint probability into conditional probabilities:
-
-### Start with the full joint probability:
-**P(+b, +j, +m, e, a)**
-
-### Use the chain rule of probability to decompose this:
-
-- **First, consider** **+b**:
-  - **P(+b, +j, +m, e, a) = P(+b) × P(+j, +m, e, a | +b)**
-
-- **Now, condition on** **e** given **+b**:
-  - **P(+j, +m, e, a | +b) = P(e|+b) × P(+j, +m, a | +b, e)**
-
-- **Next, condition on** **a** given **+b** and **e**:
-  - **P(+j, +m, a | +b, e) = P(a|+b, e) × P(+j, +m | +b, e, a)**
-
-- **Now, condition on** **+m** given **+b, e, a**:
-  - **P(+j, +m | +b, e, a) = P(+m|+b, e, a) × P(+j | +b, e, a, +m)**
-
-### Putting this all together:
-**P(+b, +j, +m, e, a) = P(+b) × P(e|+b) × P(a|+b, e) × P(+m|+b, e, a) × P(+j | +b, e, a, +m)**
-
-However, in the original equation, we have:
-
-- **P(e)** instead of **P(e|+b)**
-- **P(+m|a, +b, e)** instead of **P(+m|+b, e, a)**
-
-For these to match, we need to assume:
-
-- **e** is independent of **+b** (hence **P(e|+b) = P(e)**)
-- **+m** is conditionally independent of **+b** given **a** and **e** (hence **P(+m|+b, e, a) = P(+m|a, +b, e)**)
-
-If these assumptions hold:
-
-- **P(e|+b) = P(e)** because **e** does not depend on **+b**.
-- **P(+m|+b, e, a) = P(+m|a, +b, e)** because **+m** depends on **a** and **e** but not directly on **+b**.
-
-Thus, under these assumptions, the given equation:
-
-**P(+b, +j, +m, e, a) = P(+b) × P(e) × P(a|+b, e) × P(+j|a, +b, e, +m) × P(+m|a, +b, e)**
-
-is correctly decomposed using the chain rule of probability and the given conditional independences.
+P(+b|+j,+m) = P(+b,+j,+m) / P(+j,+m)
+            = ∑ₑ∑ₐ [P(+b) × P(e) × P(a|+b, e) × P(+m|a) x P(+j|a)]/P(+j,+m)
+            = ∑ₑ∑ₐ [P(+b) × P(e) × P(a|+b, e) × P(+m|a) x P(+j|a)]/f(e,a)
 
 
 The f(e,a) in denominator is a normalizing factor to ensure probabilities sum to 1.
