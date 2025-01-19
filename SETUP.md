@@ -1,6 +1,6 @@
 
 
-```textmate
+```
 conda env create -f hmm-tagger.yaml
 
 conda activate hmm-tagger

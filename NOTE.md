@@ -319,7 +319,7 @@ Using Bayes Theorem to find P(A|R) - probability it was Alex given we saw red:
 
 <br>
 
-```textmate
+```
 P(A|R) = P(R|A) × P(A) / P(R)
 
 where P(R) = P(R|A)×P(A) + P(R|B)×P(B)
@@ -342,7 +342,7 @@ Now the numbers make sense because:
 
 <br>
 
-```textmate
+```
                  P(R|A)
         P(A) ─→ A ─┬─→ R     P(R∩A)
 Event ─┤          └─→ Rᶜ    P(Rᶜ∩A)
@@ -382,7 +382,7 @@ P(+|H) = 0.01
 Total: 1,000,000
 
 
-```textmate
+```
 
                               (+) Test
                            ┌─→ 99    (True +)
@@ -410,7 +410,7 @@ P(S|+) = P(S)P(+|S) / [P(S)P(+|S) + P(H)P(+|H)]
 
 ### Problem: Spam Classifier
 
-```textmate
+```
 
 Spam:
 Win money now!
@@ -458,7 +458,7 @@ P(spam|'easy') = P(spam)P('easy'|spam) / [P(spam)P('easy'|spam) + P(ham)P('easy'
 
 P(spam | 'money')
 
-```textmate
+```
 
 Email ─┬─→ Spam (3/8) ─┬─→ 'money' (2/3)   1/4
        │              └─→ no (1/3)         1/4
@@ -662,7 +662,7 @@ Bayes Nets is a graph that has no directed cycles, also known as a directed acyc
 **Bayes Rule**
 
 
-```textmate
+```
 
 P(A|B) = P(B|A)P(A)/P(B)
 
@@ -738,7 +738,7 @@ This demonstrates why η is called the normalization constant - it ensures the p
 
 <br>
 
-```textmate
+```
 C           P(C) = 0.01    P(¬C) = 0.99
 T₁ T₂       P(+|C) = 0.9   P(-|C) = 0.1
            P(-|¬C) = 0.8   P(+|¬C) = 0.2
@@ -3441,6 +3441,12 @@ For large, highly connected networks where exact inference is computationally ex
 * Useful for complex networks
 
 
+
+
+
+
+
+
 <br>
 <br>
 
@@ -3449,26 +3455,159 @@ For large, highly connected networks where exact inference is computationally ex
 <br>
 <br>
 
+## Hidden Markov Models (HMMs) in Natural Language Processing
+
+<br>
+
 Hidden Markov Models (HMMs) are used to model sequences (including time-series data). HMMs have been successfully used on both supervised and unsupervised problems with sequence data in applications like speech recognition, bioinformatics, sign language recognition, and gesture recognition.
 
+<br>
+
+1. Definition:
+   A Hidden Markov Model is a statistical model used to represent probability distributions over sequences of observations. It consists of hidden states that emit observable outputs.
+
+2. Key Components:
+   a. Hidden States: Unobservable states (e.g., Parts of Speech)
+   b. Observations: Visible outputs (e.g., words in a sentence)
+   c. Transition Probabilities: Likelihood of moving between states
+   d. Emission Probabilities: Likelihood of an observation given a state
+   e. Initial State Probabilities: Likelihood of starting in each state
+
+3. Part-of-Speech (POS) Tagging Example:
+   States: N (Noun), M (Modal), V (Verb)
+   Observations: Words in a sentence
+   
+   Sample sentence: "Jane will spot Will."
+   
+   Transition Probabilities:
+   - Start → N: 3/4
+   - N → M: 1/3
+   - M → V: 3/4
+   - V → N: 1
+   - N → End: 4/9
+
+   Emission Probabilities:
+   - N → "Jane": 2/9
+   - M → "will": 3/4
+   - V → "spot": 1/4
+   - N → "Will": 1/9
+
+4. HMM Process:
+   a. Start in an initial state
+   b. Emit an observation based on emission probability
+   c. Transition to next state based on transition probability
+   d. Repeat b and c until reaching end state
+
+5. Markov Assumption:
+   The probability of a state depends only on the previous state, not the entire history.
+
+6. Applications:
+   - Speech Recognition
+   - Machine Translation
+   - Named Entity Recognition
+   - Gene Prediction in Bioinformatics
+
+7. Algorithms for HMMs:
+   a. Forward Algorithm: Computes probability of an observation sequence
+   b. Viterbi Algorithm: Finds most likely sequence of hidden states
+   c. Baum-Welch Algorithm: Learns model parameters from data
+
+8. Example: Weather Prediction HMM
+   States: Sunny, Rainy, Cloudy
+   Observations: Dry, Wet
+
+   Transition Probabilities:
+   Sunny → Sunny: 0.7, Sunny → Rainy: 0.2, Sunny → Cloudy: 0.1
+   Rainy → Rainy: 0.6, Rainy → Sunny: 0.3, Rainy → Cloudy: 0.1
+   Cloudy → Cloudy: 0.5, Cloudy → Sunny: 0.3, Cloudy → Rainy: 0.2
+
+   Emission Probabilities:
+   Sunny → Dry: 0.9, Sunny → Wet: 0.1
+   Rainy → Dry: 0.2, Rainy → Wet: 0.8
+   Cloudy → Dry: 0.6, Cloudy → Wet: 0.4
+
+9. Challenges:
+   - Computational complexity for large state spaces
+   - Handling long-range dependencies
+   - Dealing with sparse data
+
+10. Advanced Topics:
+    - Higher-Order HMMs
+    - Hierarchical HMMs
+    - Continuous HMMs
+
+Understanding HMMs is crucial for many NLP tasks, as they provide a powerful framework for modeling sequential data with underlying hidden states. They form the basis for more advanced models in machine learning and artificial intelligence.
 
 
+Transition Probabilities and Emission Probabilities are two key components of Hidden Markov Models (HMMs). While they're both types of probabilities, they represent different aspects of the model. Let's break down the differences:
+
+1. Transition Probabilities:
+
+   Definition: The probability of moving from one hidden state to another.
+   
+   Characteristics:
+   - Represent the likelihood of state changes over time.
+   - Only involve hidden states, not observations.
+   - Form a square matrix where rows sum to 1.
+   
+   Example (POS tagging):
+   - P(Verb | Noun) = 0.3 (probability of a verb following a noun)
+   - P(Noun | Verb) = 0.7 (probability of a noun following a verb)
+
+2. Emission Probabilities:
+
+   Definition: The probability of observing a particular output given a specific hidden state.
+   
+   Characteristics:
+   - Represent the relationship between hidden states and observable outputs.
+   - Involve both hidden states and observations.
+   - Each row (corresponding to a state) sums to 1.
+   
+   Example (POS tagging):
+   - P("run" | Verb) = 0.05 (probability of seeing "run" given the state is Verb)
+   - P("cat" | Noun) = 0.02 (probability of seeing "cat" given the state is Noun)
+
+Key Differences:
+
+1. What they model:
+   - Transition: State-to-state relationships
+   - Emission: State-to-observation relationships
+
+2. Matrix structure:
+   - Transition: Square matrix (state x state)
+   - Emission: Rectangular matrix (state x observation)
+
+3. Usage in the model:
+   - Transition: Used to predict the next state
+   - Emission: Used to predict the observation given a state
+
+4. In the HMM process:
+   - Transition: Applied when moving between time steps
+   - Emission: Applied at each time step to generate an observation
+
+5. Information they capture:
+   - Transition: Temporal dynamics of the hidden process
+   - Emission: How hidden states manifest as observable data
+
+Understanding the distinction between these two types of probabilities is crucial for effectively designing, implementing, 
+and interpreting Hidden Markov Models in various applications.
 
 
+<br>
+<br>
 
-––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+**Part-of-Speech (POS) tags**
+
+<br>
 
 N - Noun
 V - Verb
 Dt - Determiner
 Ad - Adjective
 
-N - Mary
-V - had
-Dt - a
-Ad - little
-N - lamb
-The full sentence is "Mary had a little lamb."
+<br>
+
+Example:
 
 N - Noun: house, car, Mary, Bob, etc.
 M - Modal verb: can, would, should, may, etc.
@@ -3478,25 +3617,36 @@ N - John
 M - can
 V - run
 
+<br>
 
+If the full sentence is "Mary had a little lamb", the POS tags are:
 
+N - Mary
+V - had
+Dt - a
+Ad - little
+N - lamb
 
+<br>
 
-
-
+```
 | Sentence | Parts of Speech |
 |----------|----------------|
 | Mary saw Will. | Noun Verb Noun |
 | Data: Mary saw Jane. | Noun Verb Noun |
 | Jane saw Will. | Noun Verb Noun |
+```
 
+<br>
 
+```
 |      | N | V |
 |------|---|---|
 | Mary | 1 | 0 |
 | saw  | 0 | 2 |
 | Jane | 2 | 0 |
 | Will | 1 | 0 |
+```
 
 <br>
 
@@ -3505,30 +3655,50 @@ V - run
 <br>
 
 
-
+```
 | Sentence | Parts of Speech |
 |----------|----------------|
 | Mary will see Will. | Noun Modal Verb Modal |
 | Data: Mary will see Jane. | Noun Modal Verb Noun |
 | Will will see Mary | Noun Modal Verb Noun |
 | Jane will see Will. | Noun Modal Verb Noun |
-
+```
 
 
 #### Lookup table
 
+```
 |      | N | V | M |
 |------|---|---|---|
 | Mary | 2 | 0 | 0 |
 | see  | 0 | 3 | 0 |
 | Jane | 2 | 0 | 0 |
 | Will | 2 | 0 | 3 |
+```
 
 This lookup table shows the count of occurrences for each part of speech (N - Noun, V - Verb, M - Modal) for the words "Mary", "see", "Jane", and "Will".
 
 
 ### Big Arms
 
+<br>
+
+Bigrams are pairs of consecutive words in a sentence. In the context of POS tagging, we're looking at the transition between parts of speech for consecutive words. The table shows three types of POS transitions:
+
+1. N-M: Noun to Modal (e.g., "Mary will", "Jane will")
+2. M-V: Modal to Verb (e.g., "will see")
+3. V-N: Verb to Noun (e.g., "see Will", "see Mary")
+
+For example, in "Mary will see Will":
+
+1. "Mary will" is an N-M bigram (Noun-Modal)
+2. "will see" is an M-V bigram (Modal-Verb)
+3. "see Will" is a V-N bigram (Verb-Noun)
+
+<br>
+<br>
+
+```
 | Bigram | N-M | M-V | V-N |
 |--------|-----|-----|-----|
 | mary-will | 1 | 0 | 0 |
@@ -3538,11 +3708,15 @@ This lookup table shows the count of occurrences for each part of speech (N - No
 | see-mary | 0 | 0 | 1 |
 | jane-will | 1 | 0 | 0 |
 | see-will | 0 | 0 | 1 |
+```
 
 This table shows the count of occurrences for each part of speech combination (N-M, M-V, V-N) for the various bigrams presented in the image.
 
 Mary will see Will.
-Mary | N  -> will | M  -> see | V  -> Will | N
+**Mary | N  -> will | M  -> see | V  -> Will | N**
+
+Jane will see Will.
+**Jane | N  -> will | M  -> see | V  -> Will | N**
 
 
 
@@ -3707,13 +3881,13 @@ These methods provide a richer, more nuanced understanding of language, making t
 <br>
 
 
-
-
-```textmate
+```
 N → M → V → N
 ↓   ↓   ↓   ↓
 Jane will spot Will
 ```
+
+<br>
 
 Based on the provided images, Hidden Markov Models (HMMs) are statistical models used for sequence labeling tasks like part-of-speech tagging. The images demonstrate an example of tagging sentences like "Mary Jane can see Will" and "Spot will see Mary."
 
@@ -3846,6 +4020,7 @@ Each probability represents the likelihood of moving between states (transitions
 
 ## Emission Probabilities Table
 
+```
 | Word | N | M | V |
 |------|---|---|---|
 | Mary | 4 | 0 | 0 |
@@ -3855,6 +4030,9 @@ Each probability represents the likelihood of moving between states (transitions
 | Can  | 0 | 1 | 0 |
 | See  | 0 | 0 | 2 |
 | Pat  | 0 | 0 | 1 |
+```
+
+<br>
 
 ## Example Sentences
 
@@ -3873,7 +4051,7 @@ The table shows how many times each word appears as a particular part of speech 
 
 ### Emission Probabilities Table
 
-```textmate
+```
 +---------+-------+-------+-------+
 | Word    |   N   |   M   |   V   |
 +---------+-------+-------+-------+
@@ -3914,8 +4092,6 @@ graph TD
 
 # Diagram 3: Verb (V) Emissions
 
-
-
 ```mermaid
 graph TD
     V((V)) --> |1/2| See
@@ -3933,7 +4109,7 @@ This represents the emission probabilities from each state (N, M, V) to their re
 ### Transition Probabilities Table
 
 
-```textmate
+```
 +--------+-----+-----+-----+-------+
 | From   |  N  |  M  |  V  | <E>  |
 +--------+-----+-----+-----+-------+
@@ -3947,7 +4123,7 @@ This represents the emission probabilities from each state (N, M, V) to their re
 
 # Example Sentences with POS Tags
 
-```textmate
+```
 1. `<S> N N M V N <E>`
    "Mary Jane can see Will."
 
@@ -3973,7 +4149,7 @@ The table shows the transition counts between different parts of speech, where e
 
 # Transition Probabilities Table
 
-```textmate
+```
 +--------+-------+-------+-------+-------+
 | From   |   N   |   M   |   V   | <E>  |
 +--------+-------+-------+-------+-------+
@@ -3986,7 +4162,7 @@ The table shows the transition counts between different parts of speech, where e
 
 # Example Sentences with POS Tags
 
-```textmate
+```
 1. <S> N N M V N <E>
    "Mary Jane can see Will."
 
@@ -4011,7 +4187,7 @@ This table shows the normalized transition probabilities between different parts
 
 # Transition Probabilities Table
 
-```textmate
+```
 +--------+-------+-------+-------+-------+
 | From   |   N   |   M   |   V   | <E>  |
 +--------+-------+-------+-------+-------+
@@ -4060,7 +4236,7 @@ The graph shows all possible transitions between states:
 
 Each arrow is labeled with its transition probability, and all outgoing probabilities from each state sum to 1. Self-loops (transitions to the same state) are also shown.
 
-
+<br>
 
 ```mermaid
 graph LR
@@ -4128,152 +4304,66 @@ This diagram shows:
 
 All state transitions and emissions follow the probability tables we discussed earlier, though they're not shown in the visualization for clarity.
 
-
-
-––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
-
-
-
-Hidden Markov Models (HMMs) in Natural Language Processing
-
-1. Definition:
-   A Hidden Markov Model is a statistical model used to represent probability distributions over sequences of observations. It consists of hidden states that emit observable outputs.
-
-2. Key Components:
-   a. Hidden States: Unobservable states (e.g., Parts of Speech)
-   b. Observations: Visible outputs (e.g., words in a sentence)
-   c. Transition Probabilities: Likelihood of moving between states
-   d. Emission Probabilities: Likelihood of an observation given a state
-   e. Initial State Probabilities: Likelihood of starting in each state
-
-3. Part-of-Speech (POS) Tagging Example:
-   States: N (Noun), M (Modal), V (Verb)
-   Observations: Words in a sentence
-   
-   Sample sentence: "Jane will spot Will."
-   
-   Transition Probabilities:
-   - Start → N: 3/4
-   - N → M: 1/3
-   - M → V: 3/4
-   - V → N: 1
-   - N → End: 4/9
-
-   Emission Probabilities:
-   - N → "Jane": 2/9
-   - M → "will": 3/4
-   - V → "spot": 1/4
-   - N → "Will": 1/9
-
-4. HMM Process:
-   a. Start in an initial state
-   b. Emit an observation based on emission probability
-   c. Transition to next state based on transition probability
-   d. Repeat b and c until reaching end state
-
-5. Markov Assumption:
-   The probability of a state depends only on the previous state, not the entire history.
-
-6. Applications:
-   - Speech Recognition
-   - Machine Translation
-   - Named Entity Recognition
-   - Gene Prediction in Bioinformatics
-
-7. Algorithms for HMMs:
-   a. Forward Algorithm: Computes probability of an observation sequence
-   b. Viterbi Algorithm: Finds most likely sequence of hidden states
-   c. Baum-Welch Algorithm: Learns model parameters from data
-
-8. Example: Weather Prediction HMM
-   States: Sunny, Rainy, Cloudy
-   Observations: Dry, Wet
-
-   Transition Probabilities:
-   Sunny → Sunny: 0.7, Sunny → Rainy: 0.2, Sunny → Cloudy: 0.1
-   Rainy → Rainy: 0.6, Rainy → Sunny: 0.3, Rainy → Cloudy: 0.1
-   Cloudy → Cloudy: 0.5, Cloudy → Sunny: 0.3, Cloudy → Rainy: 0.2
-
-   Emission Probabilities:
-   Sunny → Dry: 0.9, Sunny → Wet: 0.1
-   Rainy → Dry: 0.2, Rainy → Wet: 0.8
-   Cloudy → Dry: 0.6, Cloudy → Wet: 0.4
-
-9. Challenges:
-   - Computational complexity for large state spaces
-   - Handling long-range dependencies
-   - Dealing with sparse data
-
-10. Advanced Topics:
-    - Higher-Order HMMs
-    - Hierarchical HMMs
-    - Continuous HMMs
-
-Understanding HMMs is crucial for many NLP tasks, as they provide a powerful framework for modeling sequential data with underlying hidden states. They form the basis for more advanced models in machine learning and artificial intelligence.
-
-
-Transition Probabilities and Emission Probabilities are two key components of Hidden Markov Models (HMMs). While they're both types of probabilities, they represent different aspects of the model. Let's break down the differences:
-
-1. Transition Probabilities:
-
-   Definition: The probability of moving from one hidden state to another.
-   
-   Characteristics:
-   - Represent the likelihood of state changes over time.
-   - Only involve hidden states, not observations.
-   - Form a square matrix where rows sum to 1.
-   
-   Example (POS tagging):
-   - P(Verb | Noun) = 0.3 (probability of a verb following a noun)
-   - P(Noun | Verb) = 0.7 (probability of a noun following a verb)
-
-2. Emission Probabilities:
-
-   Definition: The probability of observing a particular output given a specific hidden state.
-   
-   Characteristics:
-   - Represent the relationship between hidden states and observable outputs.
-   - Involve both hidden states and observations.
-   - Each row (corresponding to a state) sums to 1.
-   
-   Example (POS tagging):
-   - P("run" | Verb) = 0.05 (probability of seeing "run" given the state is Verb)
-   - P("cat" | Noun) = 0.02 (probability of seeing "cat" given the state is Noun)
-
-Key Differences:
-
-1. What they model:
-   - Transition: State-to-state relationships
-   - Emission: State-to-observation relationships
-
-2. Matrix structure:
-   - Transition: Square matrix (state x state)
-   - Emission: Rectangular matrix (state x observation)
-
-3. Usage in the model:
-   - Transition: Used to predict the next state
-   - Emission: Used to predict the observation given a state
-
-4. In the HMM process:
-   - Transition: Applied when moving between time steps
-   - Emission: Applied at each time step to generate an observation
-
-5. Information they capture:
-   - Transition: Temporal dynamics of the hidden process
-   - Emission: How hidden states manifest as observable data
-
-Understanding the distinction between these two types of probabilities is crucial for effectively designing, implementing, 
-and interpreting Hidden Markov Models in various applications.
-
-
-
-
+<br>
+<br>
 
 ## Viterbi Algorithm
 
+<br>
+
+The Viterbi Algorithm is a dynamic programming algorithm used in Hidden Markov Models (HMMs) to find the most likely sequence of hidden states (called the Viterbi path) given a sequence of observations.
+
+In the context of POS tagging:
+* Hidden states are the parts of speech (N, V, M, etc.)
+* Observations are the actual words in the sentence
+* Goal is to find the most probable sequence of POS tags for the words
+
+## Algorithm Steps
+
+### 1. Initialization
+* Start with first word
+* Calculate probability for each possible state
+* Consider both:
+    * Initial state probability
+    * Emission probability of the word
+
+### 2. Recursion
+* For each subsequent word:
+    * Consider all possible previous states
+    * Calculate probability using:
+        * Transition probability from previous state
+        * Emission probability of current word
+        * Previous state's probability
+    * Keep track of the most likely previous state
+
+### 3. Termination
+* Find the final state with highest probability
+* Backtrack through saved states to get complete sequence
+
+## Example
+
+Consider the sentence "Mary will see":
+
+```
+Word sequence: Mary -> will -> see
+
+Possible tags:   N   ->  M   ->  V
+```
+
+At each step, Viterbi calculates:
+* P(state|word) = P(word|state) × P(state|previous_state) × P(previous_state)
+
+## Efficiency
+
+The algorithm is efficient because it:
+* Only keeps track of the most probable path to each state
+* Uses dynamic programming to avoid recalculating probabilities
+* Has complexity O(N×M²) where N is sequence length and M is number of states
+
+This is much more efficient than checking all possible tag sequences, which would be exponential in complexity.
 
 
+<br>
 <br>
 
 <img src="images/viterbi_1.png" width="600" height=auto>
@@ -4364,7 +4454,7 @@ and interpreting Hidden Markov Models in various applications.
 <img src="images/viterbi_15.png" width="600" height=auto>
 
 <br>
-
+<br>
 
 Suppose we have a Hidden Markov Model for predicting weather conditions (Sunny, Rainy) based on observed activities (Walk, Shop, Clean).
 
@@ -4432,11 +4522,13 @@ at each step.
 
 
 
+<br>
+<br>
 
+# CHAPTER-7: Dynamic Time Warping
 
-# 7. Dynamic Time Warping
-
-
+<br>
+<br>
 
 Dynamic Time Warping (DTW) is not typically associated with Probabilistic Graphical Models (PGMs), but it is an important 
 algorithm in time series analysis and pattern recognition. Let me explain DTW and then clarify its relationship to PGMs:
