@@ -2851,14 +2851,14 @@ Drawbacks:
    - Evidence: Likelihood weighting
    - Complex networks: Gibbs sampling
 
+<br>
+<br>
 
+## Bayesian Network: Cloudy → (Sprinkler, Rain) → WetGrass
 
+<br>
 
-
-
-Bayesian Network: Cloudy → (Sprinkler, Rain) → WetGrass
-
-
+```
 Cloudy
    /       \
   /         \
@@ -2868,36 +2868,61 @@ Sprinkler    Rain
   \         /
    v       v
    WetGrass
+```
 
+<br>
+<br>
 
-Probability Tables:
+**Probability Tables**
 
+<br>
+
+```
 P(S|C) - Sprinkler given Cloudy:
 +C +S | 0.1    +C -S | 0.9
 -C +S | 0.5    -C -S | 0.5
+```
 
+<br>
+
+```
 P(R|C) - Rain given Cloudy:
 +C +r | 0.8    +C -r | 0.2
 -C +r | 0.2    -C -r | 0.8
+```
 
+<br>
+
+```
 P(W|S,R) - WetGrass given Sprinkler and Rain:
 +S +r +w | 0.99    +S +r -w | 0.01
 +S -r +w | 0.90    +S -r -w | 0.10
 -S +r +w | 0.90    -S +r -w | 0.10
 -S -r +w | 0.01    -S -r -w | 0.99
+```
 
+<br>
+
+```
 P(C) - Cloudy prior:
 +C | 0.5
 -C | 0.5
+```
 
+<br>
+
+```
 Sample shown:
 +C, -S, +r, +w
+```
 
+<br>
+<br>
 
 This seems to be showing a sampling example for wet grass caused by either rain or sprinkler, with cloudiness affecting both. The dots to the right appear to indicate observations or samples, with filled dots representing wet grass (+w) and empty dots representing dry grass (-w).
 
-
-
+<br>
+<br>
 
 ### Rejection Sampling
 
@@ -2984,23 +3009,6 @@ Weight = P(W=+w|S=-s, R=+r)
 1. Samples not independent
 2. Can perform poorly with long sequences
 3. May need more samples for accurate results
-
-## Implementation Example
-
-
-
-def likelihood_weighting(evidence, num_samples):
-    weights = []
-    samples = []
-    for i in range(num_samples):
-        sample, weight = weighted_sample(evidence)
-        samples.append(sample)
-        weights.append(weight)
-    return normalize(samples, weights)
-
-––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
-
 
 
 
