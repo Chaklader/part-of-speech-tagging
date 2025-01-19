@@ -2629,7 +2629,7 @@ This shows a simple Bayes Network with three nodes in a chain:
 ## Conditional Probability P(T|R)
 
 ```
-| R    | T    | P(T\|R) |
+| R    | T    | P(T|R) |
 |------|------|---------|
 | +r   | +t   | 0.8     |
 | +r   | -t   | 0.2     |
@@ -2637,12 +2637,26 @@ This shows a simple Bayes Network with three nodes in a chain:
 | -r   | -t   | 0.9     |
 ```
 
+## Joint Probability Table P(R,T)
+
+```
+| R    | T    | P(R,T) |
+|------|------|---------|
+| +r   | +t   | 0.08    |
+| +r   | -t   | 0.02    |
+| -r   | +t   | 0.09    |
+| -r   | -t   | 0.81    |
+```
+
+The joint probability table shows all possible combinations of R and T variables and their probabilities, with all values summing to 1.
+
+
 <br>
 
 ## Conditional Probability P(L|T)
 
 ```
-| T    | L    | P(L\|T) |
+| T    | L    | P(L|T) |
 |------|------|---------|
 | +t   | +l   | 0.3     |
 | +t   | -l   | 0.7     |
@@ -2678,190 +2692,116 @@ Each node is binary (+ or -) and the probabilities for each condition sum to 1:
 <br>
 
 
-P(R):
-+r | 0.1
--r | 0.9
+## Network Structure Comparison and Parameter Analysis in Bayesian Networks
 
-P(T|R):
-+r +t | 0.8
-+r -t | 0.2
--r +t | 0.1
--r -t | 0.9
+<br>
+<br>
 
-P(L|T):
-+t +l | 0.3
-+t -l | 0.7
--t +l | 0.1
--t -l | 0.9
+## Law of Total Probability in Bayesian Networks
 
-P(R,T):
-+r +t | 0.08
-+r -t | 0.02
--r +t | 0.09
--r -t | 0.81
+## 1. Probability Sum for P(R) = 1
+* Rain has two states: raining (+r) or not raining (-r)
+* States are mutually exclusive and exhaustive
+* P(+r) + P(-r) = 0.1 + 0.9 = 1
 
+## 2. Conditional Probability P(T|R) Given Rain
+* When raining (+r), traffic states must sum to 1
+  * P(+t|+r) = 0.8 (heavy traffic given rain)
+  * P(-t|+r) = 0.2 (no heavy traffic given rain)
+  * Total: 0.8 + 0.2 = 1
 
-The P(R,T) table shows the joint probability distribution, which is calculated by:
-P(R,T) = P(T|R) × P(R)
+## 3. Conditional Probability P(T|R) Given No Rain
+* When not raining (-r), traffic states sum to 1
+  * P(+t|-r) = 0.1 (heavy traffic given no rain)
+  * P(-t|-r) = 0.9 (no heavy traffic given no rain)
+  * Total: 0.1 + 0.9 = 1
 
-For example:
-- P(+r,+t) = P(+t|+r) × P(+r) = 0.8 × 0.1 = 0.08
-- P(-r,-t) = P(-t|-r) × P(-r) = 0.9 × 0.9 = 0.81
+## 4. Conditional Probability P(L|T) Given Heavy Traffic
+* With heavy traffic (+t), lateness states sum to 1
+  * P(+l|+t) = 0.3 (late given heavy traffic)
+  * P(-l|+t) = 0.7 (not late given heavy traffic)
+  * Total: 0.3 + 0.7 = 1
 
-Each entry in P(R,T) represents the probability of both events occurring together.
+## 5. Conditional Probability P(L|T) Given No Heavy Traffic
+* Without heavy traffic (-t), lateness states sum to 1
+  * P(+l|-t) = 0.1 (late given no heavy traffic)
+  * P(-l|-t) = 0.9 (not late given no heavy traffic)
+  * Total: 0.1 + 0.9 = 1
 
-Let me explain the difference between these two Bayesian Network structures:
+## Importance of Sum to 1
+* Ensures all possible outcomes are accounted for
+* Maintains proper probability normalization
+* Validates the probability distribution model
 
-1. R → T → L (Chain structure):
-- Rain affects Traffic, which affects being Late
-- Given Traffic, Late is conditionally independent of Rain
-- P(L|T,R) = P(L|T)
-- As shown in previous network with probability tables
-
-2. RT → L (Combined structure):
-- Both Rain and Traffic together affect being Late
-- Late depends directly on both Rain and Traffic
-- Would need different probability table: P(L|R,T)
-- More parameters needed as conditional probability table grows exponentially
-
-Differences in Parameters:
-
-Chain (R → T → L):
-- P(R): 2-1 = 1 parameter
-- P(T|R): 2×(2-1) = 2 parameters
-- P(L|T): 2×(2-1) = 2 parameters
-Total: 5 parameters
-
-Combined (RT → L):
-- P(R): 2-1 = 1 parameter
-- P(T|R): 2×(2-1) = 2 parameters
-- P(L|R,T): 4×(2-1) = 4 parameters
-Total: 7 parameters
+## Warning Signs if Sum ≠ 1
+* Missing possible outcomes
+* Double-counting outcomes
+* Invalid probability assignments
 
 
-The chain structure makes stronger independence assumptions but requires fewer parameters to specify.
+## 1. Alternative Network Structures
+
+### Chain Structure (R → T → L)
+* Rain affects Traffic, which affects being Late
+* Exhibits conditional independence: P(L|T,R) = P(L|T)
+* Requires fewer parameters (total: 5)
+  * P(R): 1 parameter
+  * P(T|R): 2 parameters
+  * P(L|T): 2 parameters
+
+### Combined Structure (RT → L)
+* Both Rain and Traffic directly affect being Late
+* No conditional independence
+* Requires more parameters (total: 7)
+  * P(R): 1 parameter
+  * P(T|R): 2 parameters
+  * P(L|R,T): 4 parameters
+
+## 2. Parameter Calculation Details
+
+### Basic Rule for Binary Variables
+* For a binary variable (with states + and -), only one parameter needed
+* Probabilities must sum to 1, so P(-) = 1 - P(+)
+
+### Chain Structure Parameter Breakdown
+1. **P(R)**: 1 parameter
+   * Binary variable (+r, -r)
+   * Only need P(+r) as P(-r) = 1 - P(+r)
+
+2. **P(T|R)**: 2 parameters
+   * For each R state (+r, -r):
+     * T is binary, needs one parameter
+   * Total = 2 × (2-1) = 2
+
+3. **P(L|T)**: 2 parameters
+   * For each T state (+t, -t):
+     * L is binary, needs one parameter
+   * Total = 2 × (2-1) = 2
+
+### Combined Structure Parameter Breakdown
+1. **P(R)**: 1 parameter (same as chain)
+2. **P(T|R)**: 2 parameters (same as chain)
+3. **P(L|R,T)**: 4 parameters
+   * Four combinations of R and T
+   * For each combination, L is binary
+   * Total = 4 × (2-1) = 4
+
+## 3. Example Calculations
+
+```
+For P(T|R):
+P(+t|+r) = 0.8, P(-t|+r) = 0.2 (only need 0.8)
+P(+t|-r) = 0.1, P(-t|-r) = 0.9 (only need 0.1)
+```
+
+This structure explains why the combined structure requires more parameters (7) than the chain structure (5), due to the additional conditional probabilities needed for L depending on both R and T.
 
 
-Two Bayes Network structures:
-R → T → L
-RT → L
-
-Probability Tables:
-
-P(R,T):
-+r +t | 0.08
-+r -t | 0.02
--r +t | 0.09
--r -t | 0.81
-
-P(L|T):
-+t +l | 0.3
-+t -l | 0.7
--t +l | 0.1
--t -l | 0.9
-
-P(T):
-+t | 0.17
--t | 0.83
+<br>
+<br>
 
 
-Note: P(T) appears to be derived from P(R,T):
-- P(+t) = P(+r,+t) + P(-r,+t) = 0.08 + 0.09 = 0.17
-- P(-t) = P(+r,-t) + P(-r,-t) = 0.02 + 0.81 = 0.83
-
-This shows how joint probabilities P(R,T) can be marginalized to get P(T), and how the same probabilities can be structured either as a chain (R→T→L) or with direct dependence (RT→L).
-
-
-RT → L and T → L (Two network structures shown)
-
-Tables:
-
-P(T):
-+t | 0.17
--t | 0.83
-
-P(L|T):
-+t +l | 0.3
-+t -l | 0.7
--t +l | 0.1 
--t -l | 0.9
-
-
-This appears to show two alternative structures:
-1. RT → L: Using joint probability of Rain and Traffic to predict Late
-2. T → L: Using just Traffic to predict Late 
-
-The tables show:
-- Marginal probability of Traffic (P(T))
-- Conditional probability of being Late given Traffic (P(L|T))
-
-Note that P(T) was derived from previous P(R,T) table by marginalization:
-- P(+t) = 0.08 + 0.09 = 0.17 (traffic with and without rain)
-- P(-t) = 0.02 + 0.81 = 0.83 (no traffic with and without rain)
-
-
-P(T):
-+t | 0.17
--t | 0.83
-
-P(L|T):
-+t +l | 0.3
-+t -l | 0.7
--t +l | 0.1
--t -l | 0.9
-
-P(T,L):
-+t +l | 0.051
-+t -l | 0.119
--t +l | 0.083
--t -l | 0.747
-
-
-The P(T,L) table is derived from P(T) and P(L|T) using the chain rule:
-P(T,L) = P(L|T)P(T)
-
-For example:
-- P(+t,+l) = P(+l|+t)P(+t) = 0.3 × 0.17 = 0.051
-- P(+t,-l) = P(-l|+t)P(+t) = 0.7 × 0.17 = 0.119
-- P(-t,+l) = P(+l|-t)P(-t) = 0.1 × 0.83 = 0.083
-- P(-t,-l) = P(-l|-t)P(-t) = 0.9 × 0.83 = 0.747
-
-Note that the probabilities in P(T,L) sum to 1:
-0.051 + 0.119 + 0.083 + 0.747 = 1
-
-
-P(T,L):
-+t +l | 0.051
-+t -l | 0.119
--t +l | 0.083
--t -l | 0.747
-
-P(L):
-+l | 0.134
--l | 0.866
-
-
-P(L) is derived from P(T,L) by marginalization over T:
-
-For P(+l):
-- P(+l) = P(+t,+l) + P(-t,+l)
-- P(+l) = 0.051 + 0.083 = 0.134
-
-For P(-l):
-- P(-l) = P(+t,-l) + P(-t,-l)
-- P(-l) = 0.119 + 0.747 = 0.866
-
-This shows how to calculate the marginal probability of being late by summing over all traffic conditions. The probability of being late is about 13.4%, regardless of traffic conditions.
-
-
-
-
-––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
-––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
-
-
-# Approximate Inference through Sampling
+## Approximate Inference through Sampling
 
 Approximate Inference uses sampling methods to estimate probabilities in Bayesian networks when exact inference is computationally expensive. Instead of calculating exact probabilities, we generate random samples and use their frequencies to approximate the true probabilities.
 
