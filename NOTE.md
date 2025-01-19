@@ -293,85 +293,6 @@ This method allows us to break down complex joint conditional probabilities into
 <br>
 <br>
 
-### Helpful Examples
-
-<br>
-Let me derive the equation using Bayes' Theorem step by step:
-
-1. Starting with Bayes' Theorem:
-
-P(A|B) = P(B|A)P(A)/P(B)
-
-
-2. In our case:
-- A is burglary (+b)
-- B is evidence of John and Mary calling (+j,+m)
-
-P(+b|+j,+m) = P(+j,+m|+b)P(+b)/P(+j,+m)
-
-
-3. Using the joint probability rule:
-
-P(+j,+m|+b)P(+b) = P(+b,+j,+m)
-
-
-4. Therefore:
-
-P(+b|+j,+m) = P(+b,+j,+m)/P(+j,+m)
-
-
-This final form is useful because:
-- Numerator P(+b,+j,+m): joint probability of burglary and both calls
-- Denominator P(+j,+m): probability of evidence (normalizing constant)
-
-Each of these terms can be computed by:
-- Summing over all possible values of hidden variables (alarm, earthquake)
-- Using conditional independence assumptions from Bayes network
-- Multiplying appropriate conditional probabilities
-
-
-Let's break down the equation using conditional probability:
-
-**P(+j, +m, e, a | +b) = P(e | +b) × P(+j, +m, a | +b, e)**
-
-Here's a detailed explanation:
-
-### Understanding the Components:
-
-- **P(+j, +m, e, a | +b):**
-  - This is the joint conditional probability of Jon calling (+j), Marry calling (+m), an earthquake occurring (e), and the alarm sounding (a), all given that there's a burglar (+b).
-
-- **P(e | +b):**
-  - This is the probability of an earthquake occurring given that there's a burglar. Since we've stated that earthquakes are independent of burglars, this would simplify to just **P(e)**, but for this explanation, we'll keep it as **P(e | +b)**.
-
-- **P(+j, +m, a | +b, e):**
-  - This represents the joint probability of Jon and Marry calling and the alarm sounding, given both the presence of a burglar and an earthquake.
-
-### Using the Chain Rule of Conditional Probability:
-
-We can expand **P(+j, +m, e, a | +b)** using the chain rule:
-
-**P(+j, +m, e, a | +b) = P(e | +b) × P(a | +b, e) × P(+m | +b, e, a) × P(+j | +b, e, a, +m)**
-
-But, we're grouping some of these terms for simplicity:
-
-- **First, we consider** **P(e | +b):**
-  - This term is straightforward as we've assumed independence between earthquakes and burglars, but in this context, we're conditioning on +b to respect the given equation's form.
-
-- **Then, we deal with the rest as** **P(+j, +m, a | +b, e):**
-  - Here, **P(+j, +m, a | +b, e)** can be further broken down if needed:
-    - **P(a | +b, e)**: The alarm probability given both a burglar and an earthquake. 
-    - **P(+m | +b, e, a)**: Marry's call probability given the alarm and both conditions.
-    - **P(+j | +b, e, a, +m)**: Jon's call probability given all previous conditions and Marry calling.
-
-### Explanation in Words:
-
-- Given there's a burglar, we first check if there's an earthquake. This is **P(e | +b)**.
-- If there's both a burglar and an earthquake, we then look at the probability of the alarm sounding, Marry calling, and Jon calling under these conditions.
-
-This breakdown shows how we're conditioning each subsequent event on the occurrences before it, given the burglar's presence. The equation essentially says that the likelihood of all these events happening together, given a burglar, can be factored into the probability of an earthquake occurring and then the combined probability of the alarm, Marry's call, and Jon's call under the scenario of both a burglar and an earthquake.
-
-This use of conditional probability helps in understanding how different events influence each other within a specific context (here, the presence of a burglar).
 
 
 <br>
@@ -2358,8 +2279,6 @@ In this network:
 - Middle node: Alarm
 - Leaf nodes: John calls, Mary calls
 
-
-
 This is a classic example of a Bayesian network showing an alarm system that can be triggered by either a burglary or an earthquake, and two people (John and Mary) who might call when they hear the alarm.
 
 This network demonstrates:
@@ -2373,16 +2292,150 @@ It's commonly used to explain probabilistic inference, where we might know some 
 <br>
 <br>
 
+<br>
+
+## Enumeration in Probabilistic Reasoning
+
+## Overview
+Enumeration is a fundamental exact inference algorithm used in probabilistic reasoning and Bayesian networks. It provides a systematic way to compute exact probability distributions by considering all possible combinations of random variables.
+
+## Core Concepts
+Enumeration is fundamentally about:
+* Summing over all possible values of hidden variables
+* Computing joint probabilities for each combination
+* Using these to calculate the posterior probability distribution
+
+## How It Works
+
+### Basic Principle
+* Applies Bayes' rule: `P(X|e) = αP(X,e)`
+* Computes joint probability `P(X,e)` by summing over all hidden variables
+* Uses the chain rule to decompose complex probabilities
+* Normalizes results using normalization constant α
+
+### Process Steps
+1. **Variable Enumeration**
+   * List all possible values for hidden variables
+   * Consider each possible combination systematically
+
+2. **Probability Computation**
+   * For each combination:
+      * Calculate probability using joint distribution
+      * Multiply relevant conditional probabilities
+   * Sum probabilities for matching query values
+   * Normalize the final distribution
+
+## Advantages and Limitations
+
+### Advantages
+* Guarantees exact results
+* Conceptually straightforward
+* Effective for small networks
+
+### Limitations
+* Computationally expensive
+* Exponential time complexity
+* Impractical for large networks
+
+## Example
+Consider computing `P(A|B=true)`:
+1. Enumerate all possible values of hidden variable C
+2. Calculate `P(A,B=true,C)` for each value of C
+3. Sum these probabilities
+4. Normalize to obtain final probability
+
+## Practical Significance
+While enumeration serves as a foundational concept in probabilistic reasoning, it's often replaced by more efficient methods in practical applications. However, understanding enumeration is crucial for grasping more advanced inference algorithms.
+
+<br>
+<br>
+
+## Bayes' Theorem Application in Burglary Detection System Analysis
+
+<br>
+
+In this analysis, we explore the application of Bayes' Theorem to calculate the probability of a burglary given evidence from two observers (John and Mary calling). The derivation breaks down the complex conditional probability P(+b|+j,+m) into more manageable components using the joint probability rule and chain rule of conditional probability, factoring in additional variables like earthquake occurrence and alarm status to create a comprehensive probability model for the burglary detection system.
+
+<br>
+Let me derive the equation using Bayes' Theorem step by step:
+
+1. Starting with Bayes' Theorem:
+
+P(A|B) = P(B|A)P(A)/P(B)
 
 
+2. In our case:
+- A is burglary (+b)
+- B is evidence of John and Mary calling (+j,+m)
+
+P(+b|+j,+m) = P(+j,+m|+b)P(+b)/P(+j,+m)
 
 
-––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––––
+3. Using the joint probability rule:
+
+P(+j,+m|+b)P(+b) = P(+b,+j,+m)
 
 
+4. Therefore:
+
+P(+b|+j,+m) = P(+b,+j,+m)/P(+j,+m)
 
 
-### Enumeration in Bayes Networks
+This final form is useful because:
+- Numerator P(+b,+j,+m): joint probability of burglary and both calls
+- Denominator P(+j,+m): probability of evidence (normalizing constant)
+
+Each of these terms can be computed by:
+- Summing over all possible values of hidden variables (alarm, earthquake)
+- Using conditional independence assumptions from Bayes network
+- Multiplying appropriate conditional probabilities
+
+
+Let's break down the equation using conditional probability:
+
+**P(+j, +m, e, a | +b) = P(e | +b) × P(+j, +m, a | +b, e)**
+
+Here's a detailed explanation:
+
+### Understanding the Components:
+
+- **P(+j, +m, e, a | +b):**
+  - This is the joint conditional probability of Jon calling (+j), Marry calling (+m), an earthquake occurring (e), and the alarm sounding (a), all given that there's a burglar (+b).
+
+- **P(e | +b):**
+  - This is the probability of an earthquake occurring given that there's a burglar. Since we've stated that earthquakes are independent of burglars, this would simplify to just **P(e)**, but for this explanation, we'll keep it as **P(e | +b)**.
+
+- **P(+j, +m, a | +b, e):**
+  - This represents the joint probability of Jon and Marry calling and the alarm sounding, given both the presence of a burglar and an earthquake.
+
+### Using the Chain Rule of Conditional Probability:
+
+We can expand **P(+j, +m, e, a | +b)** using the chain rule:
+
+**P(+j, +m, e, a | +b) = P(e | +b) × P(a | +b, e) × P(+m | +b, e, a) × P(+j | +b, e, a, +m)**
+
+But, we're grouping some of these terms for simplicity:
+
+- **First, we consider** **P(e | +b):**
+  - This term is straightforward as we've assumed independence between earthquakes and burglars, but in this context, we're conditioning on +b to respect the given equation's form.
+
+- **Then, we deal with the rest as** **P(+j, +m, a | +b, e):**
+  - Here, **P(+j, +m, a | +b, e)** can be further broken down if needed:
+    - **P(a | +b, e)**: The alarm probability given both a burglar and an earthquake. 
+    - **P(+m | +b, e, a)**: Marry's call probability given the alarm and both conditions.
+    - **P(+j | +b, e, a, +m)**: Jon's call probability given all previous conditions and Marry calling.
+
+### Explanation in Words:
+
+- Given there's a burglar, we first check if there's an earthquake. This is **P(e | +b)**.
+- If there's both a burglar and an earthquake, we then look at the probability of the alarm sounding, Marry calling, and Jon calling under these conditions.
+
+This breakdown shows how we're conditioning each subsequent event on the occurrences before it, given the burglar's presence. The equation essentially says that the likelihood of all these events happening together, given a burglar, can be factored into the probability of an earthquake occurring and then the combined probability of the alarm, Marry's call, and Jon's call under the scenario of both a burglar and an earthquake.
+
+This use of conditional probability helps in understanding how different events influence each other within a specific context (here, the presence of a burglar).
+
+<br>
+<br>
 
 P(+b|+j,+m) = P(+b,+j,+m) / P(+j,+m)
 
