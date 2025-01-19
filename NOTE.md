@@ -3036,13 +3036,14 @@ Weight = P(W=+w|S=-s, R=+r)
 
 Bayesian Network diagram showing the relationships between Time of Day, Occupancy, Outside Temperature, AC Usage, and Energy Consumption:
 
+
 ```mermaid
 graph TD
-    T[Time of Day] --> O[Occupancy]
-    T --> E[Outside Temperature]
-    O --> A[AC Usage]
+    T["Time of Day (T)"] --> O["Occupancy (O)"]
+    T --> E["Outside Temperature (E)"]
+    O --> A["AC Usage (A)"]
     E --> A
-    A --> C[Energy Consumption]
+    A --> C["Energy Consumption (C)"]
 ```
 
 <br>
@@ -3143,7 +3144,7 @@ The arrows represent direct causal relationships and conditional dependencies be
 <br>
 <br>
 
-## Probability of AC Usage Given Time of Day and Energy Consumption:
+## Probability of AC Usage Given Time of Day and Energy Consumption
 
 <br>
 <br>
@@ -3151,125 +3152,116 @@ The arrows represent direct causal relationships and conditional dependencies be
 **P(A|T,C)** represents the probability of AC Usage (A) given Time of Day (T) and Energy Consumption (C). The formula uses marginalization over hidden variables Occupancy (O) and Outside Temperature (E).
 
 
-The Chain Rule of Probability is a fundamental rule that allows us to express a joint probability as a product of conditional probabilities. In its general form, for events A, B, and C, it states:
-
-P(A,B,C) = P(A|B,C) * P(B|C) * P(C)
-
-Now, let's apply this to our specific case of P(T,C|A):
-
-1. We start with P(T,C|A), which is a joint probability of T and C, conditioned on A.
-
-2. We can rewrite this using the chain rule as:
-   P(T,C|A) = P(C|T,A) * P(T|A)
-
-   This step breaks down the joint probability into:
-   - P(C|T,A): The probability of C given both T and A
-   - P(T|A): The probability of T given A
-
-3. The order matters here. We chose to condition on T first, but we could have done it the other way:
-   P(T,C|A) = P(T|C,A) * P(C|A)
-
-   We typically choose the order that aligns with the causal structure of our Bayesian network or the available conditional probability tables.
-
-4. In our case, P(C|T,A) aligns better with the causal structure (Time and AC usage influence Energy Consumption), so we stick with:
-   P(T,C|A) = P(C|T,A) * P(T|A)
-
-This decomposition is useful because:
-- It breaks a complex joint probability into simpler conditional probabilities.
-- These simpler probabilities often directly correspond to the conditional probability tables in our Bayesian network.
-- It allows us to leverage the conditional independence assumptions encoded in the network structure.
-
-In the context of Bayesian networks, this step is crucial as it helps us express probabilities in terms of the local conditional probabilities associated with each node, making computations more manageable and aligned with the network structure.
-
-Break down these steps in more detail
-
-1. Applying Bayes' Rule:
-   P(A|T,C) = P(C|A,T) * P(A|T) / P(C|T)
-
-   This is a direct application of Bayes' theorem. Here's why we use it:
-   - We want to find P(A|T,C), but it's often easier to define P(C|A,T) in a Bayesian network.
-   - P(A|T) represents our prior belief about A given T.
-   - P(C|T) acts as a normalization constant.
-
-2. Expanding using marginalization:
-   P(A|T,C) = Σ[O,E] P(C|A) * P(A|O,E) * P(O|T) * P(E|T) / P(C|T)
-
-   This step involves several key concepts:
-
-   a) Marginalization: We sum over all possible values of O and E because they're not observed (hidden variables).
-
-   b) Chain Rule of Probability: We break down the joint probability into a product of conditional probabilities.
-
-   c) Conditional Independence: We use the structure of the Bayesian network to simplify relationships. For example:
-      - P(C|A,T) becomes P(C|A) assuming C is independent of T given A.
-      - P(A|T) is expanded to P(A|O,E) * P(O|T) * P(E|T), reflecting the network structure.
-
-   Let's break it down further:
-
-   - P(C|A): Probability of the observed energy consumption given the AC state.
-   - P(A|O,E): Probability of the AC state given occupancy and temperature.
-   - P(O|T): Probability of occupancy given time of day.
-   - P(E|T): Probability of temperature given time of day.
-   - The sum (Σ) over O and E accounts for all possible scenarios of occupancy and temperature.
-
-3. Why this expansion is useful:
-   - It allows us to use the conditional probability tables defined in the Bayesian network.
-   - It breaks a complex probability into simpler, more manageable parts.
-   - It explicitly shows how we account for unknown variables (O and E).
-
-4. Computational process:
-   - Calculate each term inside the sum for all combinations of O and E.
-   - Sum these results.
-   - Divide by P(C|T), which itself would be calculated using a similar marginalization process.
-
-This approach, while computationally intensive, allows us to compute the desired probability using only the conditional 
-probabilities defined in the Bayesian network structure. It's a fundamental method in understanding how inference works in 
-these networks, though more efficient algorithms are often used in practice for larger networks.
-
-Break down how we go from P(A|T,C) to P(C|A,T) * P(A|T) / P(C|T) using Bayes' theorem. This is a fundamental transformation in probability theory and is crucial for many applications in Bayesian networks.
-
-Step 1: Start with Bayes' theorem
-Bayes' theorem in its general form is:
-P(X|Y) = P(Y|X) * P(X) / P(Y)
-
-Step 2: Apply Bayes' theorem to our specific case
-In our case:
-X = A (AC usage)
-Y = (T,C) (Time of day and Energy Consumption together)
-
-Applying the theorem:
-P(A|T,C) = P(T,C|A) * P(A) / P(T,C)
-
-Step 3: Use the chain rule of probability to expand P(T,C|A)
-P(T,C|A) = P(C|A,T) * P(T|A)
-
-Substituting this back:
-The probability of Time of day (T) and Energy Consumption (C) occurring together, given that the AC usage (A) is known.
-
-P(A|T,C) = [P(C|A,T) * P(T|A)] * P(A) / P(T,C)
+P(A|T,C) = P(C|A,T) * P(A|T) / P(C|T) [Note: Bayes Theorem]
 
 
+According to the Law of Total Probability, for any events X and Y, where Y₁, Y₂, ..., Yₙ form a partition of the sample space:
 
-Step 4: Rearrange using the definition of conditional probability
-P(A|T) = P(T|A) * P(A) / P(T)
+**P(X) = Σᵢ P(X|Yᵢ)P(Yᵢ)**
 
-Rearranging this: P(T|A) * P(A) = P(A|T) * P(T)
+In our case, we want P(A|T), and we have two hidden variables O and E:
 
-Step 5: Substitute this into our equation
-P(A|T,C) = P(C|A,T) * [P(A|T) * P(T)] / P(T,C)
+1. Each combination of O and E values forms a partition
+2. For example, if O is binary (occupied/unoccupied) and E is ternary (hot/mild/cold), we have 6 possible combinations
 
-Step 6: Cancel out P(T) in numerator and denominator
-P(A|T,C) = P(C|A,T) * P(A|T) / [P(T,C) / P(T)]
 
-Step 7: Recognize that P(T,C) / P(T) = P(C|T)
-This is again by the definition of conditional probability.
+P(A|T) = Σ[O,E] P(A|O,E,T)P(O,E|T)
+       = Σ[O,E] P(A,O,E|T) [Note: Law of Conditional Probability]
 
-Final result:
+This is marginalization - we're "summing out" the variables O and E to get the probability of A given T. It's like saying: "To find the probability of AC usage at a given time, consider all possible combinations of occupancy and temperature at that time, and sum their contributions". For example, if O = {0,1} and E = {hot,mild,cold}:
+
+P(A|T) = P(A,O=0,E=hot|T) + P(A,O=0,E=mild|T) + P(A,O=0,E=cold|T) +
+         P(A,O=1,E=hot|T) + P(A,O=1,E=mild|T) + P(A,O=1,E=cold|T)
+
+
+Hence, our formula becomes:
+
 P(A|T,C) = P(C|A,T) * P(A|T) / P(C|T)
+         = P(C|A,T) * Σ[O,E] P(A,O,E|T) / P(C|T)
+         
+According to the Chain Law of Probability, 
 
-This derivation shows how we can transform a conditional probability that we want to calculate (left side) into a form 
-that often matches the structure and available information in a Bayesian network (right side). It's a powerful tool for 
-inference in these networks.
+   **P(A,O,E|T) = P(A|O,E,T) * P(O,E|T)**
+
+
+P(A|T,C) = P(C|A,T) * Σ[O,E] P(A,O,E|T) / P(C|T)
+         = P(C|A,T) * Σ[O,E] P(A|O,E,T) * P(O,E|T) / P(C|T) 
+
+
+<br>
+
+```mermaid
+graph TD
+    T["Time of Day (T)"] --> O["Occupancy (O)"]
+    T --> E["Outside Temperature (E)"]
+    O --> A["AC Usage (A)"]
+    E --> A
+    A --> C["Energy Consumption (C)"]
+```
+
+<br>
+
+Due to conditional independence in the Bayesian network:
+1. A is conditionally independent of T given O and E
+2. O and E are conditionally independent given T
+
+Hence, we have:
+
+P(A|O,E,T) = P(A|O,E)
+P(O,E|T) = P(O|T) * P(E|T)
+
+Substituting back:
+
+P(A|T,C) = P(C|A,T) * Σ[O,E] P(A|O,E,T) * P(O,E|T) / P(C|T) 
+         = P(C|A,T) * Σ[O,E] P(A|O,E) * P(O|T) * P(E|T) / P(C|T) 
+
+Now for P(C|A,T), by conditional independence, C depends only on A in the network structure. Specifically, 
+
+   **P(C|A,T) = P(C|A)**
+
+Putting it all together:
+
+P(A|T,C) = P(C|A) * [Σ[O,E] P(A|O,E) * P(O|T) * P(E|T)] / P(C|T)
+         = Σ[O,E] P(C|A) * P(A|O,E) * P(O|T) * P(E|T) / P(C|T)
+
+So, our final equation becomes:
+
+   **P(A|T,C) = Σ[O,E] P(C|A) * P(A|O,E) * P(O|T) * P(E|T) / P(C|T)**
+
+
+This equation calculates "the probability of AC being ON given the Time of Day and Energy Consumption" where:
+
+## Probability Terms
+
+1. **P(C|A)**: Probability of seeing this Energy Consumption given AC state
+   * Example: P(Energy=High | AC=ON)
+
+2. **P(A|O,E)**: Probability of AC being ON given Occupancy and Temperature
+   * Example: P(AC=ON | Room=Occupied, Temp=Hot)
+
+3. **P(O|T)**: Probability of Occupancy at given Time
+   * Example: P(Room=Occupied | Time=Afternoon)
+
+4. **P(E|T)**: Probability of Temperature at given Time
+   * Example: P(Temp=Hot | Time=Afternoon)
+
+5. **P(C|T)**: Normalization term (probability of Energy Consumption at Time)
+
+## Summation Explanation
+
+The Σ[O,E] means we sum over all possible combinations of:
+* Occupancy (O): {Occupied, Unoccupied}
+* Temperature (E): {Hot, Mild, Cold}
+
+## Real-World Example
+
+If we want to know P(AC=ON | Time=Afternoon, Energy=High), we:
+1. Consider every possible combination of occupancy and temperature
+2. Multiply the probabilities for each combination
+3. Sum all these products
+4. Divide by the normalization term
+
+This accounts for all possible scenarios that could lead to the AC being ON at that time with high energy consumption.
 
 
 <br>
