@@ -332,18 +332,18 @@ Using Bayes Theorem to find P(A|R) - probability it was Alex given we saw red:
 
 <br>
 
-```
-P(A|R) = P(R|A) × P(A) / P(R)
-
-where P(R) = P(R|A)×P(A) + P(R|B)×P(B)
-         = 0.4 × 0.75 + 0.6 × 0.25
-         = 0.3 + 0.15
-         = 0.45
-
-P(A|R) = (0.4 × 0.75) / 0.45
-      = 0.3 / 0.45
-      = 0.667
-      ≈ 66.7%
+```math
+\begin{align*}
+P(A|R) &= P(R|A) \times P(A) / P(R) \\\\
+\text{where }P(R) &= P(R|A) \times P(A) + P(R|B) \times P(B) \\
+          &= 0.4 \times 0.75 + 0.6 \times 0.25 \\
+          &= 0.3 + 0.15 \\
+          &= 0.45 \\\\
+P(A|R) &= (0.4 \times 0.75) / 0.45 \\
+      &= 0.3 / 0.45 \\
+      &= 0.667 \\
+      &\approx 66.7\%
+\end{align*}
 ```
 
 Now the numbers make sense because:
@@ -355,24 +355,27 @@ Now the numbers make sense because:
 
 <br>
 
-```
-                 P(R|A)
-        P(A) ─→ A ─┬─→ R     P(R∩A)
+```asciiarmor
+                  P(R|A)
+       P(A) ─→ A ─┬─→ R     P(R∩A)
 Event ─┤          └─→ Rᶜ    P(Rᶜ∩A)
-       │
-       │            P(R|B)
-        P(B) ─→ B ─┬─→ R     P(R∩B)
-                   └─→ Rᶜ    P(Rᶜ∩B)
-
-                P(R|A)
-       P(A) ─→ A ────→ R     P(A)P(R|A)
-Event ─┤          
       │
       │            P(R|B)
-       P(B) ─→ B ────→ R     P(B)P(R|B)
+       P(B) ─→ B ─┬─→ R     P(R∩B)
+                  └─→ Rᶜ    P(Rᶜ∩B)
 
+                   P(R|A)
+      P(A) ─→ A ────→ R     P(A)P(R|A)
+Event ─┤          
+     │
+     │            P(R|B)
+      P(B) ─→ B ────→ R     P(B)P(R|B)
+```
 
-P(A|R) = P(A)P(R|A) / [P(A)P(R|A) + P(B)P(R|B)]
+<br>
+
+```math
+P(A|R) = P(A)P(R|A) / [P(A)P(R|A) + P(B)P(R|B)]\\
 P(B|R) = P(B)P(R|B) / [P(A)P(R|A) + P(B)P(R|B)]
 ```
 
@@ -1257,7 +1260,7 @@ Therefore, if you're happy, the probability you got a raise is about **1.85%**, 
    - Being happy slightly increases the probability of having received a raise (from 1% to 1.85%).
    - Sunny weather and happiness together only marginally increase the probability of a raise (to 1.42%).
    - The overall probability of happiness (52.45%) is influenced more by sunny weather than by getting a raise, due to the 
-   low probability of getting a raise.
+      low probability of getting a raise.
 
 
 ### Probability of a raise given that I look happy and it’s not sunny:
