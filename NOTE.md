@@ -3497,10 +3497,10 @@ Hidden Markov Models (HMMs) are used to model sequences (including time-series d
    - N → "Will": 1/9
 
 4. HMM Process:
-   a. Start in an initial state
-   b. Emit an observation based on emission probability
-   c. Transition to next state based on transition probability
-   d. Repeat b and c until reaching end state
+   - Start in an initial state
+   - Emit an observation based on emission probability
+   - Transition to next state based on transition probability
+   - Repeat b and c until reaching end state
 
 5. Markov Assumption:
    The probability of a state depends only on the previous state, not the entire history.
@@ -3512,23 +3512,23 @@ Hidden Markov Models (HMMs) are used to model sequences (including time-series d
    - Gene Prediction in Bioinformatics
 
 7. Algorithms for HMMs:
-   a. Forward Algorithm: Computes probability of an observation sequence
-   b. Viterbi Algorithm: Finds most likely sequence of hidden states
-   c. Baum-Welch Algorithm: Learns model parameters from data
+   - Forward Algorithm: Computes probability of an observation sequence
+   - Viterbi Algorithm: Finds most likely sequence of hidden states
+   - Baum-Welch Algorithm: Learns model parameters from data
 
 8. Example: Weather Prediction HMM
-   States: Sunny, Rainy, Cloudy
-   Observations: Dry, Wet
+   - States: Sunny, Rainy, Cloudy
+   - Observations: Dry, Wet
 
    Transition Probabilities:
-   Sunny → Sunny: 0.7, Sunny → Rainy: 0.2, Sunny → Cloudy: 0.1
-   Rainy → Rainy: 0.6, Rainy → Sunny: 0.3, Rainy → Cloudy: 0.1
-   Cloudy → Cloudy: 0.5, Cloudy → Sunny: 0.3, Cloudy → Rainy: 0.2
+   - Sunny → Sunny: 0.7, Sunny → Rainy: 0.2, Sunny → Cloudy: 0.1
+   - Rainy → Rainy: 0.6, Rainy → Sunny: 0.3, Rainy → Cloudy: 0.1
+   - Cloudy → Cloudy: 0.5, Cloudy → Sunny: 0.3, Cloudy → Rainy: 0.2
 
    Emission Probabilities:
-   Sunny → Dry: 0.9, Sunny → Wet: 0.1
-   Rainy → Dry: 0.2, Rainy → Wet: 0.8
-   Cloudy → Dry: 0.6, Cloudy → Wet: 0.4
+   - Sunny → Dry: 0.9, Sunny → Wet: 0.1
+   - Rainy → Dry: 0.2, Rainy → Wet: 0.8
+   - Cloudy → Dry: 0.6, Cloudy → Wet: 0.4
 
 9. Challenges:
    - Computational complexity for large state spaces
@@ -3543,11 +3543,13 @@ Hidden Markov Models (HMMs) are used to model sequences (including time-series d
 Understanding HMMs is crucial for many NLP tasks, as they provide a powerful framework for modeling sequential data with underlying hidden states. They form the basis for more advanced models in machine learning and artificial intelligence.
 
 
-Transition Probabilities and Emission Probabilities are two key components of Hidden Markov Models (HMMs). While they're both types of probabilities, they represent different aspects of the model. Let's break down the differences:
+**Transition Probabilities** and **Emission Probabilities** are two key components of Hidden Markov Models (HMMs). While they're both types of probabilities, they represent different aspects of the model. Let's break down the differences:
+
+<br>
+<br>
 
 1. Transition Probabilities:
-
-   Definition: The probability of moving from one hidden state to another.
+   Transition Probability is the probability of moving from one hidden state to another.
    
    Characteristics:
    - Represent the likelihood of state changes over time.
@@ -3559,8 +3561,7 @@ Transition Probabilities and Emission Probabilities are two key components of Hi
    - P(Noun | Verb) = 0.7 (probability of a noun following a verb)
 
 2. Emission Probabilities:
-
-   Definition: The probability of observing a particular output given a specific hidden state.
+   Emission Probability is the probability of observing a particular output given a specific hidden state.
    
    Characteristics:
    - Represent the relationship between hidden states and observable outputs.
@@ -3571,7 +3572,10 @@ Transition Probabilities and Emission Probabilities are two key components of Hi
    - P("run" | Verb) = 0.05 (probability of seeing "run" given the state is Verb)
    - P("cat" | Noun) = 0.02 (probability of seeing "cat" given the state is Noun)
 
-Key Differences:
+<br>
+<br>
+
+**Key Differences:**
 
 1. What they model:
    - Transition: State-to-state relationships
@@ -3637,7 +3641,6 @@ N - lamb
 | Sentence | Parts of Speech |
 |----------|----------------|
 | Mary saw Will. | Noun Verb Noun |
-| Data: Mary saw Jane. | Noun Verb Noun |
 | Jane saw Will. | Noun Verb Noun |
 ```
 
@@ -3661,7 +3664,7 @@ N - lamb
 | Sentence | Parts of Speech |
 |----------|----------------|
 | Mary will see Will. | Noun Modal Verb Modal |
-| Data: Mary will see Jane. | Noun Modal Verb Noun |
+| Mary will see Jane. | Noun Modal Verb Noun |
 | Will will see Mary | Noun Modal Verb Noun |
 | Jane will see Will. | Noun Modal Verb Noun |
 ```
