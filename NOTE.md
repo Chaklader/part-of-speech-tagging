@@ -4077,6 +4077,61 @@ graph LR
 
 
 <br>
+
+### Noun (N) Emissions
+
+<br>
+
+```mermaid
+graph TD
+    N((N)) --> |4/9| Mary
+    N --> |2/9| Jane
+    N --> |2/9| Spot
+    N --> |1/9| Will
+
+    style N fill:#4682B4
+```
+
+<br>
+<br>
+
+### Modal (M) Emissions
+
+<br>
+
+```mermaid
+graph TD
+    M((M)) --> |3/4| Will
+    M --> |1/4| Can
+
+    style M fill:#228B22
+```
+
+<br>
+<br>
+
+### Verb (V) Emissions
+
+<br>
+
+```mermaid
+graph TD
+    V((V)) --> |1/2| See
+    V --> |1/4| Spot
+    V --> |1/4| Pat
+
+    style V fill:#8B4513
+```
+
+<br>
+<br>
+
+This represents the emission probabilities from each state (N, M, V) to their respective words, with the probabilities shown in fractions. The diagrams show how each part of speech (N, M, V) can emit different words with their associated probabilities. Note that the probabilities for each state sum to 1, which is a requirement for a valid probability distribution.
+
+<br>
+<br>
+
+<br>
 <img src="images/hmm_6.png" width="800" height=auto>
 <div style="text-align: center;">Figure: Transition Probability Graph</div>
 <br>
@@ -4091,23 +4146,70 @@ graph LR
 
 <br>
 <img src="images/hmm_14.png" width="800" height=auto>
+<div style="text-align: center;">Figure: Hidden Markov Model</div>
 <br>
 
 <br>
 <img src="images/hmm_15.png" width="800" height=auto>
+<div style="text-align: center;">Figure: Hidden Markov Model</div>
 <br>
 
-––––––––––––––––––––––––––––––––––––
+<br>
+<br>
 
+If we consider all possible POS tag combinations for the sentence "Jane will spot Will", without initially considering the transition or emission probabilities, we will have 81 possibilities come from . Here's how:
+
+
+1. For each word position, we have 3 possible tags:
+- N (Noun)
+- M (Modal)
+- V (Verb)
+
+2. For a sentence with 4 words, the total number of possibilities is:
+
+- 3 (possibilities for 1st word) 
+- 3 (possibilities for 2nd word) 
+- 3 (possibilities for 3rd word) 
+- 3 (possibilities for 4th word)
+
+<br>
+
+Total possibilities = 3⁴ = 81 
+
+<br>
+<br>
 
 <br>
 <img src="images/hmm_11.png" width="800" height=auto>
+<div style="text-align: center;">Figure: Total Path Possibilities</div>
 <br>
 
 
+However, most of these 81 possibilities have zero probability because:
+
+Some words can only be emitted from certain states (emission probability = 0)
+- "Jane" can only be N (Noun)
+- "will" can only be M (Modal)
+- "spot" can be N (Noun) or V (Verb)
+- "Will" can only be N (Noun)
+
+Some transitions are impossible (transition probability = 0)
+- Can't go from M to M
+- Can't go from V to V
+- Can't go from V to M
+
+This is why we only end up with 4 viable paths after applying our transition and emission probabilities:
+
+```
+N → N → N → N
+N → M → N → N
+N → N → V → N
+N → M → V → N
+```
 
 <br>
 <br>
+
 
 ## Transition Probabilities Analysis
 
@@ -4138,6 +4240,7 @@ graph LR
 
 <br>
 <img src="images/hmm_9.png" width="800" height=auto>
+<div style="text-align: center;">Figure: Hidden Markov Model</div>
 <br>
 
 ## Emission Probabilities Analysis
@@ -4162,6 +4265,7 @@ graph LR
 
 <br>
 <img src="images/hmm_10.png" width="800" height=auto>
+<div style="text-align: center;">Figure: Hidden Markov Model</div>
 <br>
 
 <br>
@@ -4193,59 +4297,6 @@ Let's calculate the probability of the sequence "Mary will see Will":
 Each probability represents the likelihood of moving between states (transitions) or generating specific words (emissions), and all probabilities from any state must sum to 1 to maintain a valid probability distribution.
 
 <br>
-
-### Diagram 1: Noun (N) Emissions
-
-<br>
-
-```mermaid
-graph TD
-    N((N)) --> |4/9| Mary
-    N --> |2/9| Jane
-    N --> |2/9| Spot
-    N --> |1/9| Will
-
-    style N fill:#4682B4
-```
-
-<br>
-<br>
-
-### Diagram 2: Modal (M) Emissions
-
-<br>
-
-```mermaid
-graph TD
-    M((M)) --> |3/4| Will
-    M --> |1/4| Can
-
-    style M fill:#228B22
-```
-
-<br>
-<br>
-
-### Diagram 3: Verb (V) Emissions
-
-<br>
-
-```mermaid
-graph TD
-    V((V)) --> |1/2| See
-    V --> |1/4| Spot
-    V --> |1/4| Pat
-
-    style V fill:#8B4513
-```
-
-<br>
-<br>
-
-This represents the emission probabilities from each state (N, M, V) to their respective words, with the probabilities shown in fractions. The diagrams show how each part of speech (N, M, V) can emit different words with their associated probabilities. Note that the probabilities for each state sum to 1, which is a requirement for a valid probability distribution.
-
-
-<br>
 <br>
 
 ## Viterbi Algorithm
@@ -4261,35 +4312,16 @@ In the context of POS tagging:
 
 
 <br>
+<br>
+
+<br>
 <img src="images/hmm_12.png" width="800" height=auto>
+<div style="text-align: center;">Figure: Hidden Markov Model</div>
 <br>
 
 <br>
 <img src="images/hmm_13.png" width="800" height=auto>
-<br>
-
-––––––––––––––––––––––––––
-
-
-
-<br>
-<img src="images/hmm_16.png" width="800" height=auto>
-<br>
-
-<br>
-<img src="images/hmm_17.png" width="800" height=auto>
-<br>
-
-<br>
-<img src="images/hmm_18.png" width="800" height=auto>
-<br>
-
-<br>
-<img src="images/hmm_19.png" width="800" height=auto>
-<br>
-
-<br>
-<img src="images/hmm_20.png" width="800" height=auto>
+<div style="text-align: center;">Figure: Hidden Markov Model</div>
 <br>
 
 <br>
@@ -4308,6 +4340,7 @@ In the context of POS tagging:
 <br>
 
 ### 2. Recursion
+
 For each subsequent word:
    1. Consider all possible previous states
    2. Calculate probability using:
@@ -4341,65 +4374,230 @@ This is much more efficient than checking all possible tag sequences, which woul
 <br>
 <br>
 
+We will use Viterbi to find the most likely sequence of POS tags for a given sentence. We have our Emmision and Transition Probabilities table derived earlier:
+
 <br>
-<img src="images/viterbi_1.png" width="800" height=auto>
+<br>
+
+```
+Emission Probabilities:
+| Word | N    | M    | V    |
+|------|------|------|------|
+| Jane | 2/9  | 0    | 0    |
+| will | 0    | 3/4  | 0    |
+| spot | 2/9  | 0    | 1/4  |
+| Will | 1/9  | 3/4  | 0    |
+```
+
+<br>
+<br>
+
+```
+Transition Probabilities:
+| From | N    | M    | V    | <E>  |
+|------|------|------|------|------|
+| <S>  | 3/4  | 1/4  | 0    | 0    |
+| N    | 1/9  | 1/3  | 1/9  | 4/9  |
+| M    | 1/4  | 0    | 3/4  | 0    |
+| V    | 1    | 0    | 0    | 0    |
+```
+
+<br>
+
+We can select 4 paths comes from analyzing the possible state transitions at each word, using our transition and emission probability tables. Let's break it down:
+
+1. For "Jane":
+- Can only be N (Noun) because emission probability exists only for N (2/9)
+- All paths must start with N
+
+2. For "will":
+- From N, we can go to:
+   - N (Noun): P(N→N) = 1/9
+   - M (Modal): P(N→M) = 1/3
+- "will" can only be emitted from M (3/4)
+- This gives us 2 possibilities: N or M
+
+3. For "spot":
+If previous was N:
+- Can go to N: P(N→N) = 1/9
+- Can go to V: P(N→V) = 1/9
+
+If previous was M:
+- Can go to N: P(M→N) = 1/4
+- Can go to V: P(M→V) = 3/4
+
+"spot" can be emitted from N (2/9) or V (1/4)
+
+4. For "Will":
+- Must end in N because it's a proper noun here
+- All paths must converge to N
+
+Therefore, our possible paths are:
+
+1. N → N → N → N  (all nouns)
+2. N → M → N → N  (modal for "will")
+3. N → N → V → N  (verb for "spot")
+4. N → M → V → N  (modal for "will", verb for "spot")
+
+
+We can visualize this as a tree:
+
+<br>
+<br>
+
+```mermaid
+graph LR
+    Start --> N1[N:Jane]
+    N1 --> N2[N:will]
+    N1 --> M1[M:will]
+    N2 --> N3[N:spot]
+    N2 --> V1[V:spot]
+    M1 --> N4[N:spot]
+    M1 --> V2[V:spot]
+    N3 --> N5[N:Will]
+    V1 --> N6[N:Will]
+    N4 --> N7[N:Will]
+    V2 --> N8[N:Will]
+```
+
 <br>
 
 <br>
-<img src="images/viterbi_2.png" width="800" height=auto>
-<br>
-
-<br>
-<img src="images/viterbi_3.png" width="800" height=auto>
-<br>
-
-<br>
-<img src="images/viterbi_4.png" width="800" height=auto>
-<br>
-
-<br>
-<img src="images/viterbi_5.png" width="800" height=auto>
 <br>
 
 
 <br>
-<img src="images/viterbi_6.png" width="800" height=auto>
+<img src="images/hmm_16.png" width="800" height=auto>
+<div style="text-align: center;">Figure: Viterbi Algorithm</div>
 <br>
 
 <br>
-<img src="images/viterbi_7.png" width="800" height=auto>
+<img src="images/hmm_17.png" width="800" height=auto>
+<div style="text-align: center;">Figure: Viterbi Algorithm</div>
+<br>
+
+
+<br>
+<br>
+
+
+**Path 1: N → N → N → N**
+
+Probability calculation:
+
+1. Start → N: 3/4
+2. N("Jane"): 2/9
+3. N → N: 1/9
+4. N("will"): 0
+5. N → N: 1/9
+6. N("spot"): 2/9
+7. N → N: 1/9
+8. N("Will"): 1/9
+9. N → : 4/9
+
+Total = (3/4)(2/9)(1/9)(0)(1/9)(2/9)(1/9)(1/9)(4/9) = 0.000000278
+
+<br>
+<img src="images/hmm_18.png" width="800" height=auto>
+<div style="text-align: center;">Figure: Viterbi Algorithm</div>
 <br>
 
 <br>
-<img src="images/viterbi_8.png" width="800" height=auto>
+<br>
+
+**Path 2: N → M → N → N**
+
+Probability calculation:
+
+Start → N: 3/4
+N("Jane"): 2/9
+N → M: 1/3
+M("will"): 3/4
+M → N: 1/4
+N("spot"): 2/9
+N → N: 1/9
+N("Will"): 1/9
+N → : 4/9
+
+Total = (3/4)(2/9)(1/3)(3/4)(1/4)(2/9)(1/9)(1/9)(4/9) = 0.000127
+
+
+<br>
+<img src="images/hmm_19.png" width="800" height=auto>
+<div style="text-align: center;">Figure: Viterbi Algorithm</div>
 <br>
 
 <br>
-<img src="images/viterbi_9.png" width="800" height=auto>
+<br>
+
+**Path 3: N → N → V → N**
+
+Probability calculation:
+
+Start → N: 3/4
+N("Jane"): 2/9
+N → N: 1/9
+N("will"): 0
+N → V: 1/9
+V("spot"): 1/4
+V → N: 1
+N("Will"): 1/9
+N → : 4/9
+
+Total = (3/4)(2/9)(1/9)(0)(1/9)(1/4)(1)(1/9)(4/9) = 0.00000282
+
+<br>
+<img src="images/hmm_20.png" width="800" height=auto>
+<div style="text-align: center;">Figure: Viterbi Algorithm</div>
 <br>
 
 <br>
-<img src="images/viterbi_10.png" width="800" height=auto>
 <br>
 
-<br>
-<img src="images/viterbi_11.png" width="800" height=auto>
-<br>
+**Path 4: N → M → V → N (Winner)**
+
+Probability calculation:
+
+Start → N: 3/4
+N("Jane"): 2/9
+N → M: 1/3
+M("will"): 3/4
+M → V: 3/4
+V("spot"): 1/4
+V → N: 1
+N("Will"): 1/9
+N → : 4/9
+
+Total = (3/4)(2/9)(1/3)(3/4)(3/4)(1/4)(1)(1/9)(4/9) = 0.000385
 
 <br>
-<img src="images/viterbi_12.png" width="800" height=auto>
 <br>
+
+Final Solution
+The path **N → M → V → N** has the highest probability (0.000385), making it the most likely sequence of POS tags for "Jane will spot Will."
+
+This is the correct tagging because:
+
+"Jane" is a noun (N)
+"will" is a modal verb (M)
+"spot" is a verb (V)
+"Will" is a noun (N)
+
+<br>
+<br>
+
+The Viterbi algorithm efficiently finds this optimal path by keeping track of the maximum probability path to each state at each step, eliminating the need to calculate all possible paths.
+
+
 
 <br>
 <img src="images/viterbi_13.png" width="800" height=auto>
+<div style="text-align: center;">Figure: Viterbi Algorithm</div>
 <br>
 
 <br>
 <img src="images/viterbi_14.png" width="800" height=auto>
-<br>
-
-<br>
-<img src="images/viterbi_15.png" width="800" height=auto>
+<div style="text-align: center;">Figure: Viterbi Algorithm</div>
 <br>
 
 <br>
@@ -4463,6 +4661,9 @@ Explanation:
 - Day 1: It was most likely Rainy when the person Walked.
 - Day 2: It was most likely still Rainy when they went Shopping.
 - Day 3: It most likely became Sunny when they Cleaned.
+
+<br>
+<br>
 
 This example demonstrates how the Viterbi algorithm efficiently computes the most likely sequence of hidden states (weather 
 conditions) given a sequence of observations (activities), taking into account both transition and emission probabilities 
