@@ -3471,30 +3471,14 @@ Hidden Markov Models (HMMs) are used to model sequences (including time-series d
    A Hidden Markov Model is a statistical model used to represent probability distributions over sequences of observations. It consists of hidden states that emit observable outputs.
 
 2. Key Components:
-   a. Hidden States: Unobservable states (e.g., Parts of Speech)
-   b. Observations: Visible outputs (e.g., words in a sentence)
-   c. Transition Probabilities: Likelihood of moving between states
-   d. Emission Probabilities: Likelihood of an observation given a state
-   e. Initial State Probabilities: Likelihood of starting in each state
+   - Hidden States: Unobservable states (e.g., Parts of Speech)
+   - Observations: Visible outputs (e.g., words in a sentence)
+   - Transition Probabilities: Likelihood of moving between states
+   - Emission Probabilities: Likelihood of an observation given a state
+   - Initial State Probabilities: Likelihood of starting in each state
 
 3. Part-of-Speech (POS) Tagging Example:
-   States: N (Noun), M (Modal), V (Verb)
-   Observations: Words in a sentence
-   
-   Sample sentence: "Jane will spot Will."
-   
-   Transition Probabilities:
-   - Start → N: 3/4
-   - N → M: 1/3
-   - M → V: 3/4
-   - V → N: 1
-   - N → End: 4/9
-
-   Emission Probabilities:
-   - N → "Jane": 2/9
-   - M → "will": 3/4
-   - V → "spot": 1/4
-   - N → "Will": 1/9
+   The calculations in the Part-of-Speech (POS) tagging example involve determining the probabilities of transitioning between states (POS tags) and the probabilities of emitting specific words from these states. 
 
 4. HMM Process:
    - Start in an initial state
@@ -3540,8 +3524,12 @@ Hidden Markov Models (HMMs) are used to model sequences (including time-series d
     - Hierarchical HMMs
     - Continuous HMMs
 
+<br>
+<br>
+
 Understanding HMMs is crucial for many NLP tasks, as they provide a powerful framework for modeling sequential data with underlying hidden states. They form the basis for more advanced models in machine learning and artificial intelligence.
 
+<br>
 
 **Transition Probabilities** and **Emission Probabilities** are two key components of Hidden Markov Models (HMMs). While they're both types of probabilities, they represent different aspects of the model. Let's break down the differences:
 
@@ -3549,7 +3537,7 @@ Understanding HMMs is crucial for many NLP tasks, as they provide a powerful fra
 <br>
 
 1. Transition Probabilities:
-   Transition Probability is the probability of moving from one hidden state to another.
+   Transition Probability is the probability of moving from one **hidden state** to another.
    
    Characteristics:
    - Represent the likelihood of state changes over time.
@@ -3561,7 +3549,7 @@ Understanding HMMs is crucial for many NLP tasks, as they provide a powerful fra
    - P(Noun | Verb) = 0.7 (probability of a noun following a verb)
 
 2. Emission Probabilities:
-   Emission Probability is the probability of observing a particular output given a specific hidden state.
+   Emission Probability is the probability of observing a **particular output** given a specific **hidden state**.
    
    Characteristics:
    - Represent the relationship between hidden states and observable outputs.
@@ -3608,69 +3596,57 @@ and interpreting Hidden Markov Models in various applications.
 
 <br>
 
-N - Noun
-V - Verb
-Dt - Determiner
-Ad - Adjective
+Notations:
+
+- N - Noun
+- V - Verb
+- Dt - Determiner
+- Ad - Adjective
 
 <br>
 
 Example:
 
-N - Noun: house, car, Mary, Bob, etc.
-M - Modal verb: can, would, should, may, etc.
-V - Verb: run, see, jump, eat, walk, etc.
-
-N - John
-M - can
-V - run
+N - Noun: house, car, Mary, Bob, etc. <br>
+M - Modal verb: can, would, should, may, etc. <br>
+V - Verb: run, see, jump, eat, walk, etc. <br>
 
 <br>
 
-If the full sentence is "Mary had a little lamb", the POS tags are:
-
-N - Mary
-V - had
-Dt - a
-Ad - little
-N - lamb
+N - John <br>
+M - can <br>
+V - run <br>
 
 <br>
+
+If the full sentence is **"Mary had a little lamb"**, the POS tags are:
+
+N - Mary <br>
+V - had <br>
+Dt - a <br>
+Ad - little <br>
+N - lamb <br>
+
+<br>
+
+Say, we have 3 sentences: "Mary will see Jane", "Will will see Mary" and "Jane will see Will." The POS tags are:
+
+<br>
+<br>
+
+**POS table:**
 
 ```
-| Sentence | Parts of Speech |
+| Sentence | Parts of Speech (POS) |
 |----------|----------------|
-| Mary saw Will. | Noun Verb Noun |
-| Jane saw Will. | Noun Verb Noun |
-```
-
-<br>
-
-```
-|      | N | V |
-|------|---|---|
-| Mary | 1 | 0 |
-| saw  | 0 | 2 |
-| Jane | 2 | 0 |
-| Will | 1 | 0 |
-```
-
-<br>
-<img src="images/hmm.png" width="800" height=auto>
-<br>
-
-
-```
-| Sentence | Parts of Speech |
-|----------|----------------|
-| Mary will see Will. | Noun Modal Verb Modal |
 | Mary will see Jane. | Noun Modal Verb Noun |
 | Will will see Mary | Noun Modal Verb Noun |
 | Jane will see Will. | Noun Modal Verb Noun |
 ```
 
+<br>
 
-#### Lookup table
+**Lookup table:**
 
 ```
 |      | N | V | M |
@@ -3681,10 +3657,7 @@ N - lamb
 | Will | 2 | 0 | 3 |
 ```
 
-This lookup table shows the count of occurrences for each part of speech (N - Noun, V - Verb, M - Modal) for the words "Mary", "see", "Jane", and "Will".
-
-
-### Big Arms
+**Big Arms:**
 
 <br>
 
@@ -3715,15 +3688,19 @@ For example, in "Mary will see Will":
 | see-will | 0 | 0 | 1 |
 ```
 
-This table shows the count of occurrences for each part of speech combination (N-M, M-V, V-N) for the various bigrams presented in the image.
+This table shows the count of occurrences for each part of speech combination (N-M, M-V, V-N) for the various bigrams for the mentioned 3 sentences.
 
-Mary will see Will.
+<br>
+
+Mary will see Will. The POS will be:
+<br>
 **Mary | N  -> will | M  -> see | V  -> Will | N**
 
-Jane will see Will.
+Jane will see Will. The POS will be:
+<br>
 **Jane | N  -> will | M  -> see | V  -> Will | N**
 
-
+<br>
 
 ### Why Bigrams like this Don't Work Well for NLP:
 
@@ -3748,6 +3725,9 @@ Jane will see Will.
 7. **Scalability Issues**:
    - As the size of the corpus grows or as one deals with languages with rich morphology, the number of unique bigrams can become extremely large, making the approach less practical or computationally intensive.
 
+<br>
+<br>
+
 Instead of this simplistic bigram model, modern NLP often employs:
 
 - **N-grams with higher N values** for capturing more context.
@@ -3757,7 +3737,8 @@ Instead of this simplistic bigram model, modern NLP often employs:
 
 These methods provide a richer, more nuanced understanding of language, making them more suitable for complex NLP tasks.
 
-
+<br>
+<br>
 
 ## Hidden Markov Models
 
