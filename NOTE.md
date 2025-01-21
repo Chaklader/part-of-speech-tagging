@@ -3740,33 +3740,289 @@ These methods provide a richer, more nuanced understanding of language, making t
 <br>
 <br>
 
-## Hidden Markov Models
+### Creating Probability Tables for Hidden Markov Model (HMM) in POS Tagging
 
 
 <br>
-<img src="images/hmm_1.png" width="800" height=auto>
 <br>
+
+**Given Example Sentences:**
+1. "Mary Jane can see Will"
+2. "Spot will see Mary"
+3. "Will Jane spot Mary?"
+4. "Mary will pat Spot"
+
+#### Step 1: Initial Count Table for Emissions
+
+First, count how many times each word appears as each part of speech:
+
 
 <br>
 <img src="images/hmm_2.png" width="800" height=auto>
+<div style="text-align: center;">Figure: Emmision Probability</div>
+<br>
+
+<br>
+
+```
+Emission Counts:
++--------+-------+-------+-------+
+| Word   |   N   |   M   |   V   |
++--------+-------+-------+-------+
+| Mary   |   4   |   0   |   0   |
+| Jane   |   2   |   0   |   0   |
+| Will   |   1   |   3   |   0   |
+| Spot   |   2   |   0   |   1   |
+| Can    |   0   |   1   |   0   |
+| See    |   0   |   0   |   2   |
+| Pat    |   0   |   0   |   1   |
++--------+-------+-------+-------+
+```
+
+#### Step 2: Convert to Emission Probabilities
+
+For each POS (column), divide by total words in that POS:
+- N total = 9 (4+2+1+2)
+- M total = 4 (3+1)
+- V total = 4 (1+2+1)
+
+<br>
+
+```
+Emission Probabilities:
++--------+-------+-------+-------+
+| Word   |   N   |   M   |   V   |
++--------+-------+-------+-------+
+| Mary   |  4/9  |   0   |   0   |
+| Jane   |  2/9  |   0   |   0   |
+| Will   |  1/9  |  3/4  |   0   |
+| Spot   |  2/9  |   0   | 1/4   |
+| Can    |   0   |  1/4  |   0   |
+| See    |   0   |   0   | 1/2   |
+| Pat    |   0   |   0   | 1/4   |
++--------+-------+-------+-------+
+```
+
 <br>
 
 <br>
 <img src="images/hmm_3.png" width="800" height=auto>
+<div style="text-align: center;">Figure: Emmision Probability</div>
 <br>
+
+
+<br>
+<br>
+
+The transition probability from Start (\<S>) to N will be calculated in the following discussion. First, look at all example sentences and count how each sentence starts:
+
+- "Mary Jane can see Will" - starts with N
+- "Spot will see Mary" - starts with N
+- "Will Jane spot Mary?" - starts with M
+- "Mary will pat Spot" - starts with N
+
+<br>
+
+Count total sentence starts (total transitions from \<S>):
+
+Total sentences = 4
+
+
+Count times sentences start with N:
+
+Sentences starting with N = 3
+(Mary, Spot, Mary)
+
+
+Calculate probability:
+
+P(\<S> → N) = (Number of N starts) / (Total starts)
+P(\<S> → N) = 3/4
+
+So 3/4 represents that out of 4 sentences, 3 of them start with a Noun (N).
+So, the transition probability from Start (\<S>) to N will be 3/4.
+
+
+Now, we can calculate all transitions from N (Noun) state:
+
+1. First, list all instances where we have a Noun and what comes after it:
+
+- Mary Jane (N->N)
+- Mary will (N->M)
+- Jane can  (N->M)
+- Will END  (N->E)
+- Spot will (N->M)
+- Jane spot (N->V)
+- Mary will (N->M)
+- Mary END  (N->E)
+- Spot END  (N->E)
+
+<br>
+
+2. Count total transitions from N (denominators):
+* Total transitions from N = 9 occurrences
+
+3. Count each type of transition (numerators):
+* N → N: 1 time (Mary Jane)
+* N → M: 3 times (Mary will, Jane can, Spot will)
+* N → V: 1 time (Jane spot)
+* N → END: 4 times (Will, Mary, Spot endings)
+
+4. Calculate probabilities:
+* P(N→N) = 1/9
+* P(N→M) = 3/9 = 1/3
+* P(N→V) = 1/9
+* P(N→END) = 4/9 (this was the unidentified probability)
+
+The probabilities sum to 1 (1/9 + 3/9 + 1/9 + 4/9 = 9/9 = 1), which verifies our calculations.
+
+
+<br>
+
+The emmission probability table is again provided for reference:
+
+
+```
+Emission Probabilities:
++--------+-------+-------+-------+
+| Word   |   N   |   M   |   V   |
++--------+-------+-------+-------+
+| Mary   |  4/9  |   0   |   0   |
+| Jane   |  2/9  |   0   |   0   |
+| Will   |  1/9  |  3/4  |   0   |
+| Spot   |  2/9  |   0   | 1/4   |
+| Can    |   0   |  1/4  |   0   |
+| See    |   0   |   0   | 1/2   |
+| Pat    |   0   |   0   | 1/4   |
++--------+-------+-------+-------+
+```
+
+<br>
+<br>
+
+```mermaid
+graph LR
+    %% States
+    Start(("<\S>"))
+    N((N))
+    M((M))
+    V((V))
+    End(("<\E>"))
+
+    %% Transitions
+    Start -->|"3/4"| N
+    N -->|"1/3"| M
+    N -->|"1/9"| V
+    N -->|"4/9"| End
+    N -->|"1/9"| N2((N))
+    M -->|"1/4"| N3((N))
+    M -->|"3/4"| V
+    V -->|"1"| N4((N))
+
+    %% Emissions
+    N --> |"4/9"| Mary["Mary"]
+    N --> |"2/9"| Jane["Jane"]
+    N --> |"1/9"| Will1["Will"]
+    N --> |"2/9"| Spot1["Spot"]
+    
+    M --> |"3/4"| Will2["will"]
+    M --> |"1/4"| Can["can"]
+    
+    V --> |"1/2"| See["see"]
+    V --> |"1/4"| Pat["pat"]
+    V --> |"1/4"| Spot2["spot"]
+
+    %% Styling
+    classDef state fill:#f9f,stroke:#333,stroke-width:2px;
+    classDef emission fill:#fff,stroke:#666;
+    class Start,N,M,V,End,N2,N3,N4 state;
+    class Mary,Jane,Will1,Spot1,Will2,Can,See,Pat,Spot2 emission;
+```
+
+<br>
+
+
+#### Step 3: Initial Count Table for Transitions
+
+Count transitions from each POS to next POS, including start (\<S>) and end (\<E>):
 
 <br>
 <img src="images/hmm_4.png" width="800" height=auto>
+<div style="text-align: center;">Figure: Transition Probability</div>
+<br>
+
+```
+Transition Counts:
++--------+-------+-------+-------+-------+
+| From   |   N   |   M   |   V   | <E>  |
++--------+-------+-------+-------+-------+
+| <S>    |   3   |   1   |   0   |  0   |
+| N      |   1   |   3   |   1   |  4   |
+| M      |   1   |   0   |   3   |  0   |
+| V      |   4   |   0   |   0   |  0   |
++--------+-------+-------+-------+-------+
+```
+
+<br>
+
+#### Step 4: Convert to Transition Probabilities
+
+For each state (row), divide by total transitions from that state:
+- \<S> total = 4 (3+1)
+- N total = 9 (1+3+1+4)
+- M total = 4 (1+3)
+- V total = 4 (all to N)
+
+<br>
+
+```
+Transition Probabilities:
++--------+-------+-------+-------+-------+
+| From   |   N   |   M   |   V   | <E>  |
++--------+-------+-------+-------+-------+
+| <S>    |  3/4  |  1/4  |   0   |  0   |
+| N      |  1/9  |  1/3  |  1/9  | 4/9  |
+| M      |  1/4  |   0   |  3/4  |  0   |
+| V      |   1   |   0   |   0   |  0   |
++--------+-------+-------+-------+-------+
+```
+
 <br>
 
 <br>
 <img src="images/hmm_5.png" width="800" height=auto>
+<div style="text-align: center;">Figure: Transition Probability</div>
 <br>
+
+<br>
+
+```mermaid
+graph LR
+    Start["<\S>"] --> |"3/4"| N1[N]
+    Start --> |"1/4"| M1[M]
+    N1 --> |"1/9"| N2[N]
+    N1 --> |"1/3"| M2[M]
+    N1 --> |"1/9"| V1[V]
+    N1 --> |"4/9"| End["<\E>"]
+    M1 --> |"1/4"| N3[N]
+    M1 --> |"3/4"| V2[V]
+    V1 --> |"1"| N4[N]
+    V2 --> |"1"| N5[N]
+```
+
+<br>
+
+<br>
+<br>
+
 
 <br>
 <img src="images/hmm_6.png" width="800" height=auto>
+<div style="text-align: center;">Figure: Transition Probability Graph</div>
 <br>
 
+
+––––––––––––––––––––––––––––––––––––
 <br>
 <img src="images/hmm_7.png" width="800" height=auto>
 <br>
