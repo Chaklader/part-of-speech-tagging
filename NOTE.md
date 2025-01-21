@@ -3459,7 +3459,7 @@ For large, highly connected networks where exact inference is computationally ex
 <br>
 <br>
 
-## Hidden Markov Models (HMMs) in Natural Language Processing
+## Hidden Markov Models (HMMs) 
 
 <br>
 
@@ -3528,6 +3528,16 @@ Hidden Markov Models (HMMs) are used to model sequences (including time-series d
 <br>
 
 Understanding HMMs is crucial for many NLP tasks, as they provide a powerful framework for modeling sequential data with underlying hidden states. They form the basis for more advanced models in machine learning and artificial intelligence.
+
+<br>
+
+## Basic HMM Equations
+
+1. Markov Assumption:
+   P(next state | current state) = P(next state | current state, all previous states)
+
+2. Total Probability:
+   P(sequence) = P(transitions) × P(emissions)
 
 <br>
 
@@ -3740,8 +3750,13 @@ These methods provide a richer, more nuanced understanding of language, making t
 <br>
 <br>
 
-### Creating Probability Tables for Hidden Markov Model (HMM) in POS Tagging
+<br>
+<img src="images/hmm_7.png" width="800" height=auto>
+<div style="text-align: center;">Figure: Hidden Markov Model</div>
 
+<br>
+
+### Creating Probability Tables for Hidden Markov Model (HMM) in POS Tagging
 
 <br>
 <br>
@@ -3879,6 +3894,50 @@ The probabilities sum to 1 (1/9 + 3/9 + 1/9 + 4/9 = 9/9 = 1), which verifies our
 
 <br>
 
+
+<br>
+
+```mermaid
+graph LR
+    S["<\S>"] --> N
+    N --> N
+    N --> M
+    N --> V
+    N --> E["<\E>"]
+    M --> N
+    M --> V
+    V --> N
+    V --> E
+
+    %% Emission probabilities shown as dashed lines
+    N -.-> Mary
+    N -.-> Will1[Will]
+    N -.-> Spot1[Spot]
+    N -.-> Jane
+    M -.-> Will2[Will]
+    M -.-> Can
+    V -.-> Spot2[Spot]
+    V -.-> See
+    V -.-> Pat
+
+    %% Styling
+    classDef start fill:#9370DB
+    classDef noun fill:#4682B4
+    classDef modal fill:#228B22
+    classDef verb fill:#8B4513
+    classDef endState fill:#9370DB
+    classDef word fill:#D3D3D3
+
+    class S start
+    class E endState
+    class N noun
+    class M modal
+    class V verb
+    class Mary,Will1,Will2,Spot1,Spot2,Jane,Can,See,Pat word
+```
+
+<br>
+
 The emmission probability table is again provided for reference:
 
 
@@ -3941,6 +4000,7 @@ graph LR
 
 <br>
 
+<br>
 
 #### Step 3: Initial Count Table for Transitions
 
@@ -4022,37 +4082,12 @@ graph LR
 <br>
 
 
-––––––––––––––––––––––––––––––––––––
-<br>
-<img src="images/hmm_7.png" width="800" height=auto>
-<br>
-
 
 <br>
 <img src="images/hmm_8.png" width="800" height=auto>
+<div style="text-align: center;">Figure: Hidden Markov Model</div>
 <br>
 
-<br>
-<img src="images/hmm_9.png" width="800" height=auto>
-<br>
-
-<br>
-<img src="images/hmm_10.png" width="800" height=auto>
-<br>
-
-
-<br>
-<img src="images/hmm_11.png" width="800" height=auto>
-<br>
-
-
-<br>
-<img src="images/hmm_12.png" width="800" height=auto>
-<br>
-
-<br>
-<img src="images/hmm_13.png" width="800" height=auto>
-<br>
 
 <br>
 <img src="images/hmm_14.png" width="800" height=auto>
@@ -4062,99 +4097,19 @@ graph LR
 <img src="images/hmm_15.png" width="800" height=auto>
 <br>
 
-<br>
-<img src="images/hmm_16.png" width="800" height=auto>
-<br>
+––––––––––––––––––––––––––––––––––––
+
 
 <br>
-<img src="images/hmm_17.png" width="800" height=auto>
-<br>
-
-<br>
-<img src="images/hmm_18.png" width="800" height=auto>
-<br>
-
-<br>
-<img src="images/hmm_19.png" width="800" height=auto>
-<br>
-
-<br>
-<img src="images/hmm_20.png" width="800" height=auto>
+<img src="images/hmm_11.png" width="800" height=auto>
 <br>
 
 
-```
-N → M → V → N
-↓   ↓   ↓   ↓
-Jane will spot Will
-```
 
 <br>
+<br>
 
-Based on the provided images, Hidden Markov Models (HMMs) are statistical models used for sequence labeling tasks like part-of-speech tagging. The images demonstrate an example of tagging sentences like "Mary Jane can see Will" and "Spot will see Mary."
-
-## Key Components 
-
-The HMM structure shows:
-1. Hidden States (N, M, V) - Representing parts of speech
-2. Start State (\<S>) and End State (\<E>)
-3. Transition Probabilities (solid arrows)
-4. Emission Probabilities (dotted arrows)
-5. Observations (words in gray boxes)
-
-## Transition Probabilities
-
-From Images 4, 5, and 6, we can see the transition probability matrix showing:
-- From \<S> to N: 3/4
-- From \<S> to M: 1/4
-- From N to M: 1/3
-- From M to V: 3/4
-- From V to N: 1
-
-## Emission Probabilities
-Images 2 and 3 show emission probability examples:
-- N can emit: Mary (4/9), Jane (2/9), Will (1/9), Spot (2/9)
-- M can emit: Will (3/4), Can (1/4)
-- V can emit: Spot (1/4), See (1/2), Pat (1/4)
-
-## Example Applications
-Using Images 1 and 2, we can see example sentences:
-1. "Mary Jane can see Will"
-2. "Spot will see Mary"
-3. "Will Jane spot Mary?"
-4. "Mary will pat Spot"
-
-## Basic HMM Equations
-Important equations (in plain text):
-1. Markov Assumption:
-   P(next state | current state) = P(next state | current state, all previous states)
-
-2. Total Probability:
-   P(sequence) = P(transitions) × P(emissions)
-
-## Path Generation
-From Image 1, we can see how paths are generated:
-N → M → V → N
-Creating sequences like "Jane will spot Will"
-
-## Practical Applications
-The model can be used for:
-- Part-of-speech tagging
-- Named entity recognition
-- Speech recognition
-- Sequence labeling tasks
-
-## Model Performance
-
-The model uses:
-1. Forward algorithm for sequence probability
-2. Viterbi algorithm for best path
-3. Baum-Welch algorithm for parameter learning
-
-Understanding these concepts is crucial for applications in natural language processing and sequential data analysis.
-
-
-## Transition Probabilities Analysis:
+## Transition Probabilities Analysis
 
 1. From \<S> (Start) State
    * Total probability from \<S> must sum to 1
@@ -4178,7 +4133,14 @@ Understanding these concepts is crucial for applications in natural language pro
    * V → N: 1 (1.0)
    * Verification: 1 = 1
 
-## Emission Probabilities Analysis:
+<br>
+<br>
+
+<br>
+<img src="images/hmm_9.png" width="800" height=auto>
+<br>
+
+## Emission Probabilities Analysis
 
 1. **From N (Noun) State**
    * N → Mary: 4/9 (0.44)
@@ -4198,7 +4160,17 @@ Understanding these concepts is crucial for applications in natural language pro
    * V → Pat: 1/4 (0.25)
    * Verification: 1/4 + 1/2 + 1/4 = 1
 
-## Example Calculation:
+<br>
+<img src="images/hmm_10.png" width="800" height=auto>
+<br>
+
+<br>
+<br>
+
+## Example Calculation
+
+<br>
+
 Let's calculate the probability of the sequence "Mary will see Will":
 
 1. Path: \<S> → N → M → V → N → \<E>
@@ -4220,55 +4192,11 @@ Let's calculate the probability of the sequence "Mary will see Will":
 
 Each probability represents the likelihood of moving between states (transitions) or generating specific words (emissions), and all probabilities from any state must sum to 1 to maintain a valid probability distribution.
 
-## Emission Probabilities Table
-
-```
-| Word | N | M | V |
-|------|---|---|---|
-| Mary | 4 | 0 | 0 |
-| Jane | 2 | 0 | 0 |
-| Will | 1 | 3 | 0 |
-| Spot | 2 | 0 | 1 |
-| Can  | 0 | 1 | 0 |
-| See  | 0 | 0 | 2 |
-| Pat  | 0 | 0 | 1 |
-```
-
 <br>
-
-## Example Sentences
-
-1. "Mary Jane can see Will" (N N M V N)
-2. "Spot will see Mary" (N M V N)
-3. "Will Jane spot Mary?" (M N V N)
-4. "Mary will pat Spot" (N M V N)
-
-Each example sentence is shown with its corresponding part-of-speech tags represented by colored circles:
-- N (blue) = Noun
-- M (green) = Modal
-- V (brown) = Verb
-
-The table shows how many times each word appears as a particular part of speech in the training data, which is then used to calculate emission probabilities.
-
-
-### Emission Probabilities Table
-
-```
-+---------+-------+-------+-------+
-| Word    |   N   |   M   |   V   |
-+---------+-------+-------+-------+
-| Mary    |  4/9  |   0   |   0   |
-| Jane    |  2/9  |   0   |   0   |
-| Will    |  1/9  |  3/4  |   0   |
-| Spot    |  2/9  |   0   | 1/4   |
-| Can     |   0   |  1/4  |   0   |
-| See     |   0   |   0   | 1/2   |
-| Pat     |   0   |   0   | 1/4   |
-+---------+-------+-------+-------+
-```
 
 ### Diagram 1: Noun (N) Emissions
 
+<br>
 
 ```mermaid
 graph TD
@@ -4280,8 +4208,12 @@ graph TD
     style N fill:#4682B4
 ```
 
+<br>
+<br>
 
-# Diagram 2: Modal (M) Emissions
+### Diagram 2: Modal (M) Emissions
+
+<br>
 
 ```mermaid
 graph TD
@@ -4291,8 +4223,12 @@ graph TD
     style M fill:#228B22
 ```
 
+<br>
+<br>
 
-# Diagram 3: Verb (V) Emissions
+### Diagram 3: Verb (V) Emissions
+
+<br>
 
 ```mermaid
 graph TD
@@ -4303,208 +4239,11 @@ graph TD
     style V fill:#8B4513
 ```
 
+<br>
+<br>
 
 This represents the emission probabilities from each state (N, M, V) to their respective words, with the probabilities shown in fractions. The diagrams show how each part of speech (N, M, V) can emit different words with their associated probabilities. Note that the probabilities for each state sum to 1, which is a requirement for a valid probability distribution.
 
-
-
-### Transition Probabilities Table
-
-
-```
-+--------+-----+-----+-----+-------+
-| From   |  N  |  M  |  V  | <E>  |
-+--------+-----+-----+-----+-------+
-| <S>    |  3  |  1  |  0  |  0   |
-| N      |  1  |  3  |  1  |  4   |
-| M      |  1  |  0  |  3  |  0   |
-| V      |  4  |  0  |  0  |  0   |
-+--------+-----+-----+-----+-------+
-```
-
-
-# Example Sentences with POS Tags
-
-```
-1. `<S> N N M V N <E>`
-   "Mary Jane can see Will."
-
-2. `<S> N M V N <E>`
-   "Spot will see Mary."
-
-3. `<S> M N V N <E>`
-   "Will Jane spot Mary?"
-
-4. `<S> N M V N <E>`
-   "Mary will pat Spot"
-```
-
-Each sentence shows the tag sequence:
-- N = Noun (blue)
-- M = Modal (green)
-- V = Verb (brown)
-- \<S> = Start tag (purple)
-- \<E> = End tag (purple)
-
-The table shows the transition counts between different parts of speech, where each row represents the "from" state and each column represents the "to" state.
-
-
-# Transition Probabilities Table
-
-```
-+--------+-------+-------+-------+-------+
-| From   |   N   |   M   |   V   | <E>  |
-+--------+-------+-------+-------+-------+
-| <S>    |  3/4  |  1/4  |   0   |  0   |
-| N      |  1/9  |  1/3  |  1/9  |  4/9 |
-| M      |  1/4  |   0   |  3/4  |  0   |
-| V      |   1   |   0   |   0   |  0   |
-+--------+-------+-------+-------+-------+
-```
-
-# Example Sentences with POS Tags
-
-```
-1. <S> N N M V N <E>
-   "Mary Jane can see Will."
-
-2. <S> N M V N <E>
-   "Spot will see Mary."
-
-3. <S> M N V N <E>
-   "Will Jane spot Mary?"
-
-4. <S> N M V N <E>
-   "Mary will pat Spot"
-```
-
-Note: The purple circle in the image highlights the row for Modal (M) transitions, showing:
-- M → N: 1/4 probability
-- M → M: 0 probability
-- M → V: 3/4 probability
-- M → \<E>: 0 probability
-
-This table shows the normalized transition probabilities between different parts of speech, where each row sums to 1.
-
-
-# Transition Probabilities Table
-
-```
-+--------+-------+-------+-------+-------+
-| From   |   N   |   M   |   V   | <E>  |
-+--------+-------+-------+-------+-------+
-| <S>    |  3/4  |  1/4  |   0   |  0   |
-| N      |  1/9  |  1/3  |  1/9  |  4/9 |
-| M      |  1/4  |   0   |  3/4  |  0   |
-| V      |   1   |   0   |   0   |  0   |
-+--------+-------+-------+-------+-------+
-```
-
-# State Transition Graph
-
-```mermaid
-graph LR
-    S(("<S>")) --> |3/4| N((N))
-    S --> |1/4| M((M))
-    
-    N --> |1/9| N
-    N --> |1/3| M
-    N --> |1/9| V((V))
-    N --> |4/9| E(("<E>"))
-    
-    M --> |1/4| N
-    M --> |0| M
-    M --> |3/4| V
-    M --> |0| E
-    
-    V --> |1| N
-    V --> |0| M
-    V --> |0| V
-    V --> |0| E
-
-    style S fill:#9370DB
-    style N fill:#4682B4
-    style M fill:#228B22
-    style V fill:#8B4513
-    style E fill:#9370DB
-```
-
-The graph shows all possible transitions between states:
-- \<S>: Start state (purple)
-- N: Noun state (blue)
-- M: Modal state (green)
-- V: Verb state (brown)
-- \<E>: End state (purple)
-
-Each arrow is labeled with its transition probability, and all outgoing probabilities from each state sum to 1. Self-loops (transitions to the same state) are also shown.
-
-<br>
-
-```mermaid
-graph LR
-    S[<S>] --> N
-    N --> N
-    N --> M
-    N --> V
-    N --> E[<E>]
-    M --> N
-    M --> V
-    V --> N
-    V --> E
-
-    %% Emission probabilities shown as dashed lines
-    N -.-> Mary
-    N -.-> Will1[Will]
-    N -.-> Spot1[Spot]
-    N -.-> Jane
-    M -.-> Will2[Will]
-    M -.-> Can
-    V -.-> Spot2[Spot]
-    V -.-> See
-    V -.-> Pat
-
-    %% Styling
-    classDef start fill:#9370DB
-    classDef noun fill:#4682B4
-    classDef modal fill:#228B22
-    classDef verb fill:#8B4513
-    classDef end fill:#9370DB
-    classDef word fill:#D3D3D3
-
-    class S start
-    class E end
-    class N noun
-    class M modal
-    class V verb
-    class Mary,Will1,Will2,Spot1,Spot2,Jane,Can,See,Pat word
-```
-
-Hidden Markov Model Structure:
-
-States and Transitions (Solid Lines):
-
-\<S> → N → M → V → \<E>
-
-Emission Probabilities (Dashed Lines):
-N (Noun) -----> Mary, Will, Spot, Jane
-M (Modal) ----> Will, Can
-V (Verb) -----> Spot, See, Pat
-
-Color Key:
-- Purple: \<S>, \<E> (Start/End)
-- Blue: N (Noun)
-- Green: M (Modal)
-- Brown: V (Verb)
-- Gray: Emitted Words
-
-
-This diagram shows:
-1. State transitions (solid lines)
-2. Emission probabilities (dashed lines)
-3. All possible words that can be emitted from each state
-4. The hierarchical structure of the HMM with different parts of speech
-
-All state transitions and emissions follow the probability tables we discussed earlier, though they're not shown in the visualization for clarity.
 
 <br>
 <br>
@@ -4520,47 +4259,81 @@ In the context of POS tagging:
 * Observations are the actual words in the sentence
 * Goal is to find the most probable sequence of POS tags for the words
 
+
+<br>
+<img src="images/hmm_12.png" width="800" height=auto>
+<br>
+
+<br>
+<img src="images/hmm_13.png" width="800" height=auto>
+<br>
+
+––––––––––––––––––––––––––
+
+
+
+<br>
+<img src="images/hmm_16.png" width="800" height=auto>
+<br>
+
+<br>
+<img src="images/hmm_17.png" width="800" height=auto>
+<br>
+
+<br>
+<img src="images/hmm_18.png" width="800" height=auto>
+<br>
+
+<br>
+<img src="images/hmm_19.png" width="800" height=auto>
+<br>
+
+<br>
+<img src="images/hmm_20.png" width="800" height=auto>
+<br>
+
+<br>
+<br>
+
 ## Algorithm Steps
 
 ### 1. Initialization
-* Start with first word
-* Calculate probability for each possible state
-* Consider both:
-    * Initial state probability
-    * Emission probability of the word
+
+- Start with first word
+- Calculate probability for each possible state
+- Consider both:
+    - Initial state probability
+    - Emission probability of the word
+
+<br>
 
 ### 2. Recursion
-* For each subsequent word:
-    * Consider all possible previous states
-    * Calculate probability using:
-        * Transition probability from previous state
-        * Emission probability of current word
-        * Previous state's probability
-    * Keep track of the most likely previous state
+For each subsequent word:
+   1. Consider all possible previous states
+   2. Calculate probability using:
+      - Transition probability from previous state
+      - Emission probability of current word
+      - Previous state's probability
+   3. Keep track of the most likely previous state
 
 ### 3. Termination
-* Find the final state with highest probability
-* Backtrack through saved states to get complete sequence
-
-## Example
-
-Consider the sentence "Mary will see":
-
-```
-Word sequence: Mary -> will -> see
-
-Possible tags:   N   ->  M   ->  V
-```
+- Find the final state with highest probability
+- Backtrack through saved states to get complete sequence
 
 At each step, Viterbi calculates:
-* P(state|word) = P(word|state) × P(state|previous_state) × P(previous_state)
+
+**P(state|word) = P(word|state) × P(state|previous_state) × P(previous_state)**
+
+<br>
+<br>
 
 ## Efficiency
 
 The algorithm is efficient because it:
-* Only keeps track of the most probable path to each state
-* Uses dynamic programming to avoid recalculating probabilities
-* Has complexity O(N×M²) where N is sequence length and M is number of states
+
+1. Only keeps track of the most probable path to each state
+2. Uses dynamic programming to avoid recalculating probabilities
+3. Has complexity O(N×M²) where N is sequence length and M is number of states
 
 This is much more efficient than checking all possible tag sequences, which would be exponential in complexity.
 
