@@ -2,7 +2,7 @@
 <br>
 
 
-# Fundamentals ofProbabilistic Graphical Model
+# Fundamentals of Probabilistic Graphical Model
 
 <br>
 <br>
