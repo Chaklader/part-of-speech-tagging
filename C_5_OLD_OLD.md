@@ -316,10 +316,6 @@ These methods provide a richer, more nuanced understanding of language, making t
 <br>
 
 <br>
-<img src="images/hmm_7.png" width="800" height=auto>
-<div style="text-align: center;">Figure: Hidden Markov Model</div>
-
-<br>
 
 ### Creating Probability Tables for Hidden Markov Model (HMM) in POS Tagging
 
