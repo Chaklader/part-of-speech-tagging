@@ -16,142 +16,6 @@
     - Limitations and Extensions
 
 
-```mermaid
-graph LR
-    S["<\S>"] --> N
-    N --> N
-    N --> M
-    N --> V
-    N --> E["<\E>"]
-    M --> N
-    M --> V
-    V --> N
-    V --> E
-
-    %% Emission probabilities shown as dashed lines
-    N -.-> Mary
-    N -.-> Will1[Will]
-    N -.-> Spot1[Spot]
-    N -.-> Jane
-    M -.-> Will2[Will]
-    M -.-> Can
-    V -.-> Spot2[Spot]
-    V -.-> See
-    V -.-> Pat
-
-    %% Styling
-    classDef start fill:#9370DB
-    classDef noun fill:#4682B4
-    classDef modal fill:#228B22
-    classDef verb fill:#8B4513
-    classDef endState fill:#9370DB
-    classDef word fill:#D3D3D3
-
-    class S start
-    class E endState
-    class N noun
-    class M modal
-    class V verb
-    class Mary,Will1,Will2,Spot1,Spot2,Jane,Can,See,Pat word
-```
-
-
-```mermaid
-graph LR
-    %% States
-    Start(("<\S>"))
-    N((N))
-    M((M))
-    V((V))
-    End(("<\E>"))
-
-    %% Transitions
-    Start -->|"3/4"| N
-    N -->|"1/3"| M
-    N -->|"1/9"| V
-    N -->|"4/9"| End
-    N -->|"1/9"| N2((N))
-    M -->|"1/4"| N3((N))
-    M -->|"3/4"| V
-    V -->|"1"| N4((N))
-
-    %% Emissions
-    N --> |"4/9"| Mary["Mary"]
-    N --> |"2/9"| Jane["Jane"]
-    N --> |"1/9"| Will1["Will"]
-    N --> |"2/9"| Spot1["Spot"]
-
-    M --> |"3/4"| Will2["will"]
-    M --> |"1/4"| Can["can"]
-
-    V --> |"1/2"| See["see"]
-    V --> |"1/4"| Pat["pat"]
-    V --> |"1/4"| Spot2["spot"]
-
-    %% Styling
-    classDef state fill:#f9f,stroke:#333,stroke-width:2px;
-    classDef emission fill:#fff,stroke:#666;
-    class Start,N,M,V,End,N2,N3,N4 state;
-    class Mary,Jane,Will1,Spot1,Will2,Can,See,Pat,Spot2 emission;
-```
-
-
-```mermaid
-graph LR
-    Start["<\S>"] --> |"3/4"| N1[N]
-    Start --> |"1/4"| M1[M]
-    N1 --> |"1/9"| N2[N]
-    N1 --> |"1/3"| M2[M]
-    N1 --> |"1/9"| V1[V]
-    N1 --> |"4/9"| End["<\E>"]
-    M1 --> |"1/4"| N3[N]
-    M1 --> |"3/4"| V2[V]
-    V1 --> |"1"| N4[N]
-    V2 --> |"1"| N5[N]
-```
-
-```mermaid
-graph TD
-    N((N)) --> |4/9| Mary
-    N --> |2/9| Jane
-    N --> |2/9| Spot
-    N --> |1/9| Will
-
-    style N fill:#4682B4
-```
-
-```mermaid
-graph TD
-    M((M)) --> |3/4| Will
-    M --> |1/4| Can
-
-    style M fill:#228B22
-```
-
-```mermaid
-graph TD
-    V((V)) --> |1/2| See
-    V --> |1/4| Spot
-    V --> |1/4| Pat
-
-    style V fill:#8B4513
-```
-
-```mermaid
-graph LR
-    Start --> N1[N:Jane]
-    N1 --> N2[N:will]
-    N1 --> M1[M:will]
-    N2 --> N3[N:spot]
-    N2 --> V1[V:spot]
-    M1 --> N4[N:spot]
-    M1 --> V2[V:spot]
-    N3 --> N5[N:Will]
-    V1 --> N6[N:Will]
-    N4 --> N7[N:Will]
-    V2 --> N8[N:Will]
-```
-
 
 #### Hidden Markov Models for POS Tagging
 
@@ -201,7 +65,10 @@ Consider the sentence "Jane will spot Will." In this example:
 
 The power of HMMs lies in their ability to capture two essential types of probabilities that govern language structure.
 
-<div align="center"> <img src="images/hmm_7.png" width="600" height="auto"> <p style="color: #555;">Figure: Visual representation of a Hidden Markov Model showing the relationship between hidden states (POS tags) and observations (words).</p> </div>
+<div align="center">
+<img src="images/hmm_7.png" width="600" height="auto">
+<p style="color: #555;">Figure: Visual representation of a Hidden Markov Model showing the relationship between hidden states (POS tags) and observations (words).</p>
+</div>
 
 ##### Emission vs. Transition Probabilities
 
